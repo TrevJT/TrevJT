@@ -17,7 +17,7 @@ Cloud session network policy blocks agent.robinhood.com and robinhood.com; no br
 - Orchestrator runs sub-agents, answers their questions itself, never stops until the task completes.
 - Keep replies extremely concise.
 
-## First task on desktop
+## First task on desktop (PLAN.md and research.md already on this branch)
 1. Verify MCP tools: list accounts, confirm Agentic account id + buying power, pull an option chain.
 2. Write `agents/options-100/PLAN.md` (strategy, entry/exit rules, sizing, max trades/week, what we expect to learn), present to Trevor, wait for approval.
 3. Then trade autonomously; log every decision to `journal/options-100.jsonl`.

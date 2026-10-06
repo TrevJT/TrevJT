@@ -39,3 +39,39 @@ Source notes: robinhood.com not fetchable from cloud; support-article facts are 
 - https://github.com/anthropics/claude-code/issues/65895
 - https://nexustrade.io/blog/robinhood-agentic-trading-mcp-review-20260708
 - https://medium.com/p/33d3725a23e0
+
+## B. Defined-risk options with $100 (as of Oct 2026)
+
+### Gating facts
+- Spreads need Level 3 + margin-type account; Agentic MCP is single-leg long only anyway. => Long calls/puts ONLY.
+- Fees ≈ $0.09/contract round trip. Negligible vs bid-ask drag.
+- PDT repealed 2026-06-04. Cash-type account: T+1 settlement, good-faith-violation risk => one round trip/day on settled cash unless limited margin is enabled.
+- No paper trading.
+
+### Feasible underlyings (approx Oct 2026)
+- F ~$14: 500k+ contracts/day, ATM spread ~$0.01, weekly ATM $0.20–0.35, 14–45 DTE ATM ~$0.30–0.60. Best fit.
+- SOFI ~$18: IV 50–70%, weekly ATM $0.50–0.90. More movement per dollar, wider spreads.
+- NIO ~$5: contracts $0.05–0.25, spreads often 20% of premium. Marginal.
+- XLF ~$57, SLV ~$59: OTM singles $0.15–0.50; ATM $0.50–1.50 (one contract, often over budget).
+- SPY/QQQ/IWM: singles unaffordable except far-OTM 0DTE lottos $0.05–0.30 (worst learning vehicle).
+- Excluded: PLTR (~$190), GDX, SPX/XSP, CSPs, covered calls, credit structures.
+
+### Strategy stats
+- Long ATM/ITM single, 14–45 DTE, +50%/−50%/time-stop: win rate ~35–50%, expectancy ~0 before skill. Survives ~6–10 losses.
+- 0DTE long OTM singles: win rate 25–40%; retail 0DTE buyers lose on aggregate, ~60% of losses are transaction costs. Survives 5–10 trades.
+- Theta: ATM loses 5–10%/week in final 30 days; <7 DTE = max decay.
+- Earnings: F Oct 22, SOFI Oct 27. IV crush 30–50% overnight.
+- Rule: never trade a contract whose bid-ask > 10% of its price; limit at mid.
+- Realistic cadence: 3–5 trades/week, shrinking with balance.
+
+### Sources
+- https://robinhood.com/support/articles/options-investing/
+- https://robinhood.com/support/articles/trading-fees-on-robinhood/
+- https://robinhood.com/support/articles/360001214723/expiration-exercise-and-assignment/
+- https://apexvol.com/options/f
+- https://fintel.io/siv/us/sofi
+- https://optionalpha.com/blog/0dte-options-strategy-performance
+- https://neudata.co/literature-reviews/zero-day-to-expiry-options-a-losing-bet-for-retail-traders
+- https://ryanoconnellfinance.com/option-theta/
+- https://crosstrade.io/learn/risk-management/risk-of-ruin
+- https://www.quantinsti.com/articles/finra-pdt-rule-removal-2026/

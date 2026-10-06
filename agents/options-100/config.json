@@ -1,0 +1,11 @@
+{
+  "agent": "options-100",
+  "broker": "robinhood-trading-mcp",
+  "capital_usd": 100,
+  "assets": ["options"],
+  "max_daily_loss_usd": 100,
+  "max_per_trade_usd": null,
+  "autonomous_after_plan_approval": true,
+  "plan_status": "draft",
+  "journal_path": "journal/options-100.jsonl"
+}

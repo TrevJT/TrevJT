@@ -75,3 +75,10 @@ Source notes: robinhood.com not fetchable from cloud; support-article facts are 
 - https://ryanoconnellfinance.com/option-theta/
 - https://crosstrade.io/learn/risk-management/risk-of-ruin
 - https://www.quantinsti.com/articles/finra-pdt-rule-removal-2026/
+
+## C. Desktop verification (2026-10-06 15:17Z, read-only)
+- robinhood-trading MCP authenticated (user scope). Agentic account ••••6765: individual, limited_margin, options Level 3. Value $100.00, cash $100.00, buying power $100.00, no positions, no orders.
+- Other accounts (••••3104 margin L3, IRAs) are NOT accessible to the agent.
+- SOFI 2026-10-09 16C: bid 0.26 / ask 0.27, delta 0.51, IV 45%, OI 13.3k. 16P: 0.25/0.26, delta −0.49, IV 44%, OI 12.7k. Spread ≈ 4% of mid. One contract ≈ $26.
+- Extra tools beyond the cloud research: get_equity_technical_indicators, run_scan / create_scan (scanners), create_alert, get_politician_trades, get_equity_analyst_ratings, get_option_historicals, get_index_quotes. Equity and crypto order tools exist but are OFF-LIMITS per Trevor (options only).
+- Still UNVERIFIED: whether Level 3 on the Agentic account unlocks multi-leg via review_option_order; test with a dry-run before assuming single-leg only.

@@ -1,11 +1,13 @@
-# PLAN: options-100 — Concept 2, 0DTE Momentum Scalper (APPROVED by Trevor 2026-10-06 22:30 ET)
+# PLAN: options-100 — multi-playbook router, 0DTE-first (Concept 2 approved 2026-10-06; router approved 2026-10-07, capital topped up to $143.64)
+
+The bot now chooses among playbooks P1-P7 each day per ROUTER.md. The Concept 2 rules below are playbook P1.
 
 ## Hard rules (Trevor, non-negotiable)
 1. Maximum possible loss is the $100 in the Agentic account. Nothing that can lose more.
 2. LONG options only: buy-to-open, sell-to-close. NEVER sell-to-open, never uncovered, never credit spreads, never futures, never equities, never crypto.
 3. No margin, no borrowed money, no leverage beyond the long premium itself. Order cost ≤ cash on hand at the moment of the order.
 4. Every order: `review_option_order` first, then `place_option_order` only if the review has no warnings and matches symbol/side/qty/price exactly.
-5. Limit orders only, regular hours only. Flat by 15:45 ET every day: never hold a 0DTE contract into expiry.
+5. Limit orders only, regular hours only. 0DTE contracts flat by 15:45 ET. Every contract closed by 15:00 ET on its expiry day. Swing positions (DTE ≥ 2, ROUTER.md P3/P4/P6) may be held overnight, total swing premium ≤ 40% of equity.
 6. Tools the agent may call: robinhood-trading get_*/search/review_option_order/place_option_order/cancel_option_order. Equity and crypto order tools are forbidden.
 
 ## Volatility gate (approved by Trevor 2026-10-07 after day-1 review)

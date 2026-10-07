@@ -5,7 +5,7 @@ Times ET; machine clock is MDT (ET−2h). Be fast: minimum tool calls, no narrat
 0. Guard. `TZ=America/New_York date "+%H:%M %u %F"`. Outside 09:24–16:06 ET or %u ≥ 6 → stop silently (write nothing).
    `touch S/cycle.lock` at start, `rm S/cycle.lock` at end (step 5). If repo-root STOP exists → cancel open orders, sell all at bid, journal "STOP", stop.
    Read S/day.json. If date ≠ today → step 1.
-1. Pre-open (once per day). get_portfolio(836776765) → start_equity, cash. get_option_positions(nonzero) + get_option_orders(created today) → reconcile S/positions.json (adopt anything held: entry = avg cost, entered = "09:30", window "A").
+1. Pre-open (once per day). Read S/premarket.json if present (orchestrator's pre-market news read) and carry its bias/flags into day.json. get_portfolio(836776765) → start_equity, cash. get_option_positions(nonzero) + get_option_orders(created today) → reconcile S/positions.json (adopt anything held: entry = avg cost, entered = "09:30", window "A").
    get_equity_historicals SPY,QQQ interval 5minute start_time = two sessions ago 13:30Z → `python3 agents/options-100/bot/score.py ingest SYM "<lines>"` per symbol, lines = begins_at,open,high,low,close,volume (compact, one per line).
    get_option_chains SPY and QQQ → today's expiry (YYYY-MM-DD) and chain ids. Event flags from PLAN.md (Oct 7: FOMC minutes 14:00 → no entries 13:30–14:15).
    Write S/day.json {date, start_equity, cash, trades_today:0, consecutive_losses:0, halted:false, regime:"NORMAL", regime_reason:"", regime_until:"", expiry:{SPY,QQQ}, chains:{SPY,QQQ}, flags:[]}. Journal "day_start".

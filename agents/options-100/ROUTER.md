@@ -11,19 +11,28 @@ When no playbook has an edge, standing down IS the trade.
 - Swing positions (DTE ≥ 2) may be held overnight; cap total swing premium at 40% of equity so the day-trading book keeps ≥ 60%.
 - Daily loss stop: −50% of start-of-day equity → no new entries that day. Equity < $15 → stop and report.
 
-## Playbooks
-| ID | Playbook | Instrument | When the router may pick it | Risk per trade |
-|---|---|---|---|---|
-| P1 | 0DTE momentum scalper (CYCLE.md step 4) | SPY/QQQ 0DTE singles or $1-wide debit spreads | VIX gate NORMAL or STRICT (prior VIX ≥ 16) or PM shock day | ≤ 35% equity |
-| P2 | Event-day straddle | 0-1DTE SPY/QQQ long call + long put (or two debit spreads) bought 14:30-15:30 the day BEFORE a scheduled print (CPI, PPI, NFP, FOMC, big-tech earnings AMC), sold next morning 09:35-10:15 | Scheduled catalyst tomorrow, VIX9D/VIX < 1 (event not fully priced) | ≤ 30% equity |
-| P3 | Catalyst sniper (concepts/1) | 0.30-0.40Δ weeklies / debit spreads on the event name (BAC, XLF, SOFI, F, RIVN, TSLA-sympathy) | Event 3-7 sessions out, IV/HV < 1.3 | ≤ 25% equity, swing cap applies |
-| P4 | Headline/peace dividend (concepts/4) | Jan-2027 debit spreads (JBLU 4/5C, NIO 3.5C/4C, CNH 15C) | Relevant Polymarket odds turning (≥ +5 pt 5d) toward the headline | ≤ 25% equity, swing cap applies |
-| P5 | PM-shock momentum | 0DTE XLE / USO / SPY options in the direction of the stable SAME-DAY correlation (correlate.py) | A tracked iran/hormuz/fed market moves ≥ 8 pt intraday (15-min odds feed); enter within 15 min, out in ≤ 60 min | ≤ 25% equity |
-| P6 | Full-Kelly momentum (concepts/3) | 7-14 DTE near-ATM on high-beta momentum names | Only if |S| ≥ 60 in concepts/3 model AND market regime TRENDY | ≤ 35% equity, swing cap applies |
-| P7 | Power-hour lotto | 0DTE SPY/QQQ 0.05-0.10Δ, ≤ $0.10 | 14:30-15:15, trend day confirmed (|o-c|/range > 0.6 so far, RVOL ≥ 1.3), max 1/day | ≤ 10% equity |
+## Playbooks (revised 2026-10-07 after 3-agent research sprint; evidence in research/brainstorm/ and research/SYNTHESIS.md)
+Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until ≥ 20 logged signals beat the baseline; RETIRED = tested, no edge.
+
+| ID | Playbook | Status | Instrument / timing | Fires when | Evidence | Risk |
+|---|---|---|---|---|---|---|
+| P8 | **Bold-play ladder** | LIVE | SPY 0DTE ATM/+$3 debit spread (call or put), bought 09:35-10:00; resting sell at 2× right after fill; exit 15:00 | prior-day VIX ≥ 20. Direction: gap direction if |gap| ≥ 0.5%, else first-15-min range break | Monte Carlo 1993-2023, no edge assumed: −6% EV/bet at VIX≥20 (best of all structures), 37% win at ~2.2×; all-in ladder P($1k)≈6.9%, P($5k)≈1.2% vs fair ceiling 14%/2.9% | ALL-IN (max whole lots). Stop at $1,500 → tell Trevor to withdraw $1,000 |
+| P9 | **Mega-cap earnings strangle** | LIVE | OTM call debit spread + OTM put debit spread, long strikes ≈ ±8-9%, expiry 2 days out; buy 15:30-15:55 day of AMC report; sell next day 09:45-10:30 | TSLA Oct 21 AMC, META ~Oct 28 AMC (confirm dates); skip if ATM straddle > 9% (TSLA) / > 10% (META) | Last 15 reports: TSLA avg move 9.2% vs ~6.4% implied; META 9.4% vs ~7% | TSLA ≤ $70; META funded from TSLA proceeds |
+| P10 | Oct 28 triple stack | WATCH→LIVE on Oct 28 if P9 META not taken | QQQ 2-day ~1.5% OTM call + put debit spreads, $3 wide, 13:30; exit Oct 29 by 11:00 | FOMC + GOOGL/MSFT/META same day | QQQ >2.5% moves on 15.8% of FOMC days vs 7.6% base, realized/implied 0.97 | ≤ $40 |
+| P11 | Gap-day QQQ breakout | WATCH | QQQ 0DTE debit spread in break direction after first 5m close outside 15-min opening range; resting sell 3× | |gap| ≥ 1% | gap ≥1% → ≥1% move with gap 25% vs 10% base; ORB replication ≈ 0 after costs | none until validated |
+| P1 | 0DTE momentum score | LIVE, re-tooled | Was 0.10-0.20Δ singles → now ATM/+$3 debit spreads only (0.10Δ singles: −46…−73% EV/bet) | VIX ≥ 18 and |S| ≥ 5 and RVOL ≥ 1.3 | score itself ≈ coin flip (60 sessions); spreads cut the bleed | ≤ 35% equity |
+| P5 | Iran-odds shock → oil | WATCH | USO/XLE 1-week debit spread in direction of odds move | tracked Iran/Hormuz market moves ≥ 10 pt in a day | next-day crude move 3.58% vs 2.47% (n=19, p≈0.05, not multiple-test robust) | none until validated |
+| P3 | Catalyst sniper (concepts/1) | WATCH | weeklies into scheduled events | — | CPI/NFP/FOMC realized < implied for SPY (0.61-0.82×): event premium already priced | — |
+| P4 | Headline/peace (concepts/4) | LIVE (swing) | Jan-2027 debit spreads | mapped odds ≥ +5 pt over 5d | thesis-driven, no backtest | ≤ 25%, swing cap |
+| P12 | Midterm relief call spread | LIVE (small) | SPY Nov 6 +1%/+2% call spread, buy Nov 3 15:45, exit Nov 4-5 | Nov 3 | SPY up day-after in 7/8 midterms since 1994, avg +0.48% | ≤ $20 |
+| P2 | Macro-print straddle (CPI/PPI/NFP) | RETIRED | — | — | realized/implied 0.74-0.82; CPI moves below normal days in last 12 prints | — |
+| P6 | Full-Kelly momentum (concepts/3) | RETIRED | — | — | log-growth negative at forced sizing; no directional edge found | — |
+| P7 | Power-hour / far-OTM lotto | RETIRED | — | — | 0.05Δ finishes ITM 1.5% vs 10% fair; Mondays 0/138; power-hour continuation 14.4% vs 15.2% reversal | — |
+
+Universal execution rules (from the research): never buy below 0.10Δ; prefer debit spreads over singles; place a resting take-profit (2× for P8/P1, 3× for P11) immediately after every fill; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.
 
 ## Daily selection (pre-open, after context brief + odds board)
-1. Gates: compute vix_gate (PLAN.md), regime_hist (context.py brief), pm_shock, and the event calendar for today/tomorrow.
+1. Gates: compute vix_gate (P8 needs prior VIX ≥ 20; P1 needs ≥ 18; nothing 0DTE below 16) (PLAN.md), regime_hist (context.py brief), pm_shock, and the event calendar for today/tomorrow.
 2. Score each playbook 0-3 on today's evidence:
    - P1: 3 if VIX ≥ 18 and TRENDY; 2 if VIX 16-18 or PM shock; 0 if STAND_DOWN.
    - P2: 3 if a top-tier print is tomorrow (CPI/FOMC/NFP) and VIX9D/VIX < 0.95; 2 for tier-2 (PPI, retail sales, mega-cap earnings); else 0.

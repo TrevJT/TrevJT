@@ -8,6 +8,13 @@
 5. Limit orders only, regular hours only. Flat by 15:45 ET every day: never hold a 0DTE contract into expiry.
 6. Tools the agent may call: robinhood-trading get_*/search/review_option_order/place_option_order/cancel_option_order. Equity and crypto order tools are forbidden.
 
+## Volatility gate (approved by Trevor 2026-10-07 after day-1 review)
+Source: SPY 1993-2026, prior-day VIX vs next-day range corr 0.74; direction ~coin flip.
+- Prior-day VIX < 16 → NO 0DTE entries (stand down). Exception: a prediction-market shock (any tracked iran/fed/midterms/trump market with stable same-day |r| ≥ 0.4 to SPY/QQQ/CL=F/XLE moving ≥ 8 pts since prior close) lifts the gate for that day, entries still need |S| ≥ 5.
+- Prior-day VIX 16-18 → entries need |S| ≥ 5, RVOL ≥ 1.3, ATR5 ≥ 0.06% of price.
+- Prior-day VIX ≥ 18 → base rules below, plus RVOL ≥ 1.3 and ATR5 ≥ 0.06% of price.
+- Standing down is a valid, logged decision ("no_trade_day" in the journal with the reason).
+
 ## Strategy (from concepts/2-0dte-momentum-scalper.md)
 - Universe: SPY and QQQ 0DTE (1DTE on Tue/Thu before 14:00). IWM only if RVOL ≥ 1.5.
 - Contract: delta 0.10–0.20, mid $0.15–0.40, spread ≤ 12% of mid, bid ≥ $0.05.

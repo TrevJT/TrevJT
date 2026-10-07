@@ -34,6 +34,22 @@ echo '<json line>' | python3 agents/options-100/bot/history.py snap   # archive 
 sqlite3 agents/options-100/data/market.db "SELECT ..."               # ad-hoc queries
 ```
 
+## Prediction markets (Polymarket + Kalshi, public APIs)
+
+Tables `pm_markets`, `pm_prices` in the same DB. Topics: iran (incl. Hormuz, Israel, nuclear deal), midterms, trump, fed, macro, china, ukraine, oil.
+Polymarket: ~200 markets ≥ $150k volume with full daily odds history. Kalshi: ~430 Fed/CPI/jobs/recession/oil markets (snapshots).
+A launchd job snapshots every tracked market every 15 min in market hours, so an intraday odds history accumulates from 2026-10-07.
+
+```
+python3 agents/options-100/bot/predictions.py update   # rediscover markets + backfill history (daily job does this)
+python3 agents/options-100/bot/predictions.py now      # odds board by topic with 1d/5d changes
+python3 agents/options-100/bot/predictions.py movers   # biggest odds moves
+python3 agents/options-100/bot/correlate.py scan       # odds-change vs asset-return correlations, split-half + Bonferroni
+python3 agents/options-100/bot/correlate.py pair <market_id> <ASSET>   # biggest odds days and what the asset did
+```
+
+Findings 2026-10-07 (3,848 tests): Iran odds co-move with oil/XLE the same day (r ≈ ±0.6, significant after Bonferroni): leadership change ↑ → oil ↑; nuclear deal / Hormuz normal ↑ → oil and XLE ↓; uranium-cap deal odds ↑ → SMH ↑. No next-day lead signal survives correction yet (best: Hormuz-normal odds ↑ → crude next day ↓, r −0.24, p 0.01). Treat odds moves as a real-time read of oil/energy/semis, not a forecast, until a lead survives on fresh data.
+
 ## How to use it
 
 - **Every pre-open:** `update`, then `brief > state/context_today.md`. The regime call (TRENDY / MIXED / CHOPPY) gates entries per CYCLE.md.

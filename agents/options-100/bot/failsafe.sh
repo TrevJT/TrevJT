@@ -10,6 +10,7 @@ dow=$(TZ=America/New_York date +%u); hm=$(TZ=America/New_York date +%H%M); now=$
 [ "$((10#$hm))" -gt 1606 ] && exit 0
 caffeinate -i -t 150 &
 [ -f "$REPO/STOP" ] && exit 0
+python3 -c "import json,sys,datetime;d=json.load(open('$S/day.json'));p=json.load(open('$S/positions.json'));sys.exit(0 if d.get('halted') and not p and d.get('date')==datetime.date.today().isoformat() else 1)" 2>/dev/null && exit 0   # halted + flat: nothing to protect
 hb=0; [ -f "$S/heartbeat.json" ] && hb=$(stat -f %m "$S/heartbeat.json")
 lk=0; [ -f "$S/cycle.lock" ] && lk=$(stat -f %m "$S/cycle.lock")
 [ $((now - hb)) -lt 240 ] && exit 0      # orchestrator alive

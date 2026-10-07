@@ -1,0 +1,50 @@
+{
+ "SPY": {
+  "symbol": "SPY",
+  "last_bar": "10:55",
+  "bar_age_min": 6,
+  "now": "11:01",
+  "window": null,
+  "close": 774.36,
+  "vwap": 774.7,
+  "vwap_slope_15m": -0.107,
+  "atr5": 0.565,
+  "range_hi": 776.15,
+  "range_lo": 775.48,
+  "rvol": 0.99,
+  "components": {
+   "vwap_side": -1,
+   "atr_dist": -1,
+   "vwap_slope": -1,
+   "bars_3of4": 0,
+   "range_break": -1,
+   "rvol": 0
+  },
+  "score": -4,
+  "decision": "NONE (outside entry window)"
+ },
+ "QQQ": {
+  "symbol": "QQQ",
+  "last_bar": "10:55",
+  "bar_age_min": 6,
+  "now": "11:01",
+  "window": null,
+  "close": 754.36,
+  "vwap": 753.61,
+  "vwap_slope_15m": 0.029,
+  "atr5": 0.874,
+  "range_hi": 754.8246,
+  "range_lo": 753.35,
+  "rvol": 0.87,
+  "components": {
+   "vwap_side": 1,
+   "atr_dist": 1,
+   "vwap_slope": 1,
+   "bars_3of4": -1,
+   "range_break": 0,
+   "rvol": 0
+  },
+  "score": 2,
+  "decision": "NONE (outside entry window)"
+ }
+}

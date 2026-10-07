@@ -1,0 +1,102 @@
+09:25 pre-open ok vix=15.8 SPY/QQQ bars loaded
+09:25 idle (pre-open)
+09:26 idle (pre-open)
+09:27 idle (pre-open)
+09:28 idle (pre-open)
+09:29 idle (pre-open)
+09:30 open, no bars yet
+09:31 no closed bar yet
+09:32 no closed bar yet
+09:33 no closed bar yet
+09:34 no closed bar yet
+09:36 bars=1 SPY 775.49 QQQ 754.37 gap-down; no score yet
+09:37 waiting for next bar
+09:38 waiting for next bar
+09:39 waiting for next bar
+09:40 waiting for next bar
+09:41 bars=2 SPY 774.51 QQQ 752.50 down; no score until 3 bars
+09:42 waiting for 3rd bar
+09:43 waiting for 3rd bar
+09:44 waiting for 3rd bar
+09:45 waiting for 3rd bar
+09:46 S SPY=-4 QQQ=-4 vix 15.8 ENTRY QQQ 747P x1 @0.38
+09:47 hold QQQ747P mid 0.355 pnl -7%
+09:48 hold QQQ747P mid 0.455 pnl +20%
+09:49 hold QQQ747P mid 0.475 pnl +25%
+09:50 hold QQQ747P mid 0.425 pnl +12% peak 0.475
+09:51 bars=4 hold QQQ747P mid 0.375 pnl -1%
+09:52 hold QQQ747P mid 0.315 pnl -17%
+09:53 hold QQQ747P mid 0.315 pnl -17%
+09:54 hold QQQ747P mid 0.305 pnl -20%
+09:55 hold QQQ747P mid 0.255 pnl -33%
+09:56 bars=5 S SPY=-4 QQQ=0 hold QQQ747P mid 0.235 pnl -38%
+09:57 hold QQQ747P mid 0.245 pnl -36%
+09:58 hold QQQ747P mid 0.235 pnl -38%
+09:59 hold QQQ747P mid 0.225 pnl -41%
+10:00 EXIT QQQ747P @0.19 hard stop pnl -19.08; equity 80.92
+10:01 bars=6 vix 15.64 flat
+10:01 S SPY=-4 QQQ=+3 ENTRY SPY 771P x1 @0.36
+10:02 hold SPY771P mid 0.325 pnl -10%
+10:03 hold SPY771P mid 0.355 pnl -1%
+10:04 hold SPY771P mid 0.315 pnl -13%
+10:05 hold SPY771P mid 0.315 pnl -13%
+10:06 bars=7 hold SPY771P mid 0.315 pnl -13%
+10:07 hold SPY771P mid 0.325 pnl -10%
+10:08 hold SPY771P mid 0.335 pnl -7%
+10:09 hold SPY771P mid 0.365 pnl +1%
+10:10 hold SPY771P mid 0.325 pnl -10%
+10:11 bars=8 vix 15.82 hold SPY771P mid 0.325 pnl -10%
+10:12 hold SPY771P mid 0.355 pnl -1%
+10:13 hold SPY771P mid 0.325 pnl -10%
+10:14 hold SPY771P mid 0.355 pnl -1%
+10:15 hold SPY771P mid 0.345 pnl -4%
+10:16 bars=9 hold SPY771P mid 0.315 pnl -13%
+10:17 hold SPY771P mid 0.345 pnl -4%
+10:18 hold SPY771P mid 0.285 pnl -21%
+10:19 hold SPY771P mid 0.285 pnl -21%
+10:20 hold SPY771P mid 0.245 pnl -32%
+10:21 bars=10 vix 15.72 hold SPY771P mid 0.235 pnl -35%
+10:21 S SPY=-4 QQQ=+4 ENTRY QQQ 759C x1 @0.20 (paired vs SPY put)
+10:22 hold SPY771P 0.205 (-43%) QQQ759C 0.215 (+8%)
+10:23 hold SPY771P 0.205 QQQ759C 0.215
+10:24 hold SPY771P 0.235 QQQ759C 0.215
+10:25 hold SPY771P 0.235 QQQ759C 0.215
+10:26 bars=11 hold SPY771P 0.205 (-43%) QQQ759C 0.245 (+23%)
+10:27 hold SPY771P 0.235 QQQ759C 0.225
+10:28 hold SPY771P 0.235 QQQ759C 0.205
+10:29 hold SPY771P 0.265 (-26%) QQQ759C 0.165 (-18%)
+10:30 hold SPY771P 0.275 (-24%) QQQ759C 0.165 (-18%)
+10:31 EXIT SPY771P @0.24 time stop pnl -12.08; hold QQQ759C 0.175; cash 48.80
+10:32 hold QQQ759C 0.155 (-23%)
+10:33 hold QQQ759C 0.195 (-3%)
+10:34 hold QQQ759C 0.195
+10:35 hold QQQ759C 0.155 (-23%)
+10:36 bars=13 hold QQQ759C 0.165 (-18%)
+10:37 hold QQQ759C 0.185 (-8%)
+10:38 hold QQQ759C 0.175 (-13%)
+10:39 hold QQQ759C 0.175
+10:40 hold QQQ759C 0.175
+10:41 bars=14 vix 15.65 hold QQQ759C 0.205 (+3%)
+10:42 hold QQQ759C 0.205
+10:43 hold QQQ759C 0.215 (+8%)
+10:44 hold QQQ759C 0.205 (+3%)
+10:45 hold QQQ759C 0.175 (-13%)
+10:46 bars=15 hold QQQ759C 0.165 (-18%)
+10:46 S SPY=-4 QQQ=+2 ENTRY SPY 770P x1 @0.19 (trade 4/4)
+10:47 hold QQQ759C 0.165 SPY770P 0.185
+10:48 hold QQQ759C 0.155 SPY770P 0.175
+10:49 hold QQQ759C 0.165 SPY770P 0.175
+10:50 hold QQQ759C 0.145 (-28%) SPY770P 0.205 (+8%)
+10:51 EXIT QQQ759C @0.12 time stop pnl -8.08; 3 losses -> no more entries today; hold SPY770P 0.185
+10:52 hold SPY770P 0.185 (halted)
+10:53 hold SPY770P 0.195 (+3%)
+10:54 hold SPY770P 0.185 (-3%)
+10:55 hold SPY770P 0.185
+10:56 bars=17 hold SPY770P 0.175 (-8%)
+10:57 hold SPY770P 0.165 (-13%)
+10:58 hold SPY770P 0.145 (-24%)
+10:59 hold SPY770P 0.135 (-29%)
+11:00 hold SPY770P 0.135
+11:01 bars=18 vix 15.63 hold SPY770P 0.125 (-34%)
+11:02 hold SPY770P 0.155 (-18%)
+13:20 RECOVERY: session stalled 11:02-13:20; sold SPY770P @0.02 (-17.08); flat; equity 43.64

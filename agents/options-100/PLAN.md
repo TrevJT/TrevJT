@@ -1,45 +1,25 @@
-# PLAN: options-100 (DRAFT — awaiting Trevor's approval)
+# PLAN: options-100 — Concept 2, 0DTE Momentum Scalper (APPROVED by Trevor 2026-10-06 22:30 ET)
 
-## Objective
-Learn, not earn. Turn $100 into labeled trade data on long-option behavior (delta, theta, IV, spread drag) while trying not to lose it faster than the lessons arrive. $100 is treated as spent.
+## Hard rules (Trevor, non-negotiable)
+1. Maximum possible loss is the $100 in the Agentic account. Nothing that can lose more.
+2. LONG options only: buy-to-open, sell-to-close. NEVER sell-to-open, never uncovered, never credit spreads, never futures, never equities, never crypto.
+3. No margin, no borrowed money, no leverage beyond the long premium itself. Order cost ≤ cash on hand at the moment of the order.
+4. Every order: `review_option_order` first, then `place_option_order` only if the review has no warnings and matches symbol/side/qty/price exactly.
+5. Limit orders only, regular hours only. Flat by 15:45 ET every day: never hold a 0DTE contract into expiry.
+6. Tools the agent may call: robinhood-trading get_*/search/review_option_order/place_option_order/cancel_option_order. Equity and crypto order tools are forbidden.
 
-## Hard constraints (from Robinhood + Trevor)
-- Agentic account, options only, single-leg long calls/puts (MCP does not support spreads).
-- Limit orders only, regular hours only. Always `review_option_order` before `place_option_order`.
-- Limited margin ON (reuse same-day proceeds, no loan). Options Level 2 on the Agentic account.
-- Fully autonomous after approval. Max daily loss: entire balance.
+## Strategy (from concepts/2-0dte-momentum-scalper.md)
+- Universe: SPY and QQQ 0DTE (1DTE on Tue/Thu before 14:00). IWM only if RVOL ≥ 1.5.
+- Contract: delta 0.10–0.20, mid $0.15–0.40, spread ≤ 12% of mid, bid ≥ $0.05.
+- Entry windows (ET): A 9:40–11:00, B 14:00–15:10. No new entries 11:00–14:00 or after 15:10.
+- Score S (−6…+6) from 5-min bars: VWAP side, >0.5 ATR from VWAP, VWAP slope, 3 of 4 bars in direction, range break (opening range in A, 13:00–14:00 range in B), RVOL ≥ 1.3. S ≥ +4 call, S ≤ −4 put.
+- Regime gate: VIX 13–28 (proxy if unavailable). Event days: FOMC minutes Oct 7 and FOMC Oct 28 → no entries 13:30–14:15. CPI Oct 14, PPI Oct 15, GDP/PCE Oct 29, jobs Nov 6 → no window-A entry before 10:00. Opex Oct 16 → window A only.
+- Sizing: unit = 35% of equity in whole contracts; 1 unit per entry; one pyramid add at S ≥ ±5 with position ≥ +50%; exposure cap 70%; max 2 positions (SPY+QQQ same direction count as one); max 4 round trips/day.
+- Exits: half at +80% (all at +100% if 1 contract); trail 65% of peak or 5-min close back through VWAP; hard stop −45%; time stop if not +25% in 30 min; window-A entries out by 12:00 unless +50%; flat by 15:45.
+- News overlay (every cycle): `search` headlines; on a major headline (Fed, war/ceasefire, tariff, outage, index shock) set regime NO_NEW_ENTRIES / CALLS_ONLY / PUTS_ONLY. Never overrides exits.
+- Kill switches: day −60% from open → no new entries; 3 consecutive losses → done for the day; VIX outside band, spread > 12%, stale quotes, or MCP errors → no new orders, flatten at bid if open; equity < $25 → 1 contract ≤ $0.25 no pyramids; equity < $12 → stop and report; `STOP` file in repo root → flatten and halt.
 
-## Capital split
-- Core book: $70. Lab book: $30. Books never borrow from each other.
-
-## Core book — swing longs on cheap, liquid names
-- Universe: F (primary), SOFI, XLF. NIO only if spread ≤10% of price.
-- Contract: ATM or 1 strike ITM, delta 0.50–0.70, 14–45 DTE. 1 contract. Cost ≤ $35.
-- Entry: after 10:15 ET. Direction = 20-day trend + 5-day momentum agree (from `get_equity_historicals`), IV rank not elevated (from `get_option_quotes`), no earnings inside the hold window (`get_earnings_calendar`). Skip if bid-ask > 10% of mid. Limit at mid, improve by $0.01 after 10 min, cancel after 30 min.
-- Exit: +50% take profit, −50% stop, or 21 DTE time stop, whichever first. Never hold past 15:30 ET on expiry day.
-- Cadence: at most 1 new entry per day, at most 2 open positions.
-
-## Lab book — short-dated data generator
-- Universe: SPY/QQQ OTM 0–1 DTE singles ≤ $0.20, or F weeklies ≤ $0.15.
-- Entry: after 10:15 ET, only with a stated intraday thesis (trend vs VWAP). 1 contract. 1 per day.
-- Exit: +40% / −50% or flat by 15:00 ET. Never carried into the final 30 minutes.
-- Stops when the $30 is gone. Not refilled from core.
-
-## Daily schedule (ET)
-- 10:20 scan + entries. 12:30 manage. 15:00 manage + lab flatten. 15:30 expiry-day flatten.
-- Runs are scheduled routines on the desktop session. Each run: pull positions, check exits, then look for entries.
-
-## Journal (every decision, JSONL)
-timestamp, book, underlying, contract, side, qty, limit, fill, thesis, greeks at entry, exit rule, exit fill, pnl, fees, lesson.
-
-## Kill switches
-- Balance < $15: stop trading, write final report.
-- 3 consecutive core losses: pause core 2 trading days, review journal, adjust rules, resume.
-- Any MCP error placing/cancelling orders twice in a row: stop, report to Trevor.
-- Auth failure: stop, report.
-
-## What we expect to learn
-Whether cheap long options with 50/50 brackets have any edge for us; how much bid-ask and theta actually cost; whether the lab book's intraday data is worth its burn rate.
-
-## Weekly report to Trevor
-P&L, trade count, win rate, avg spread paid, biggest lesson, proposed rule changes. Rule changes require Trevor's OK.
+## Operations
+- Executor and orchestrator are the same thing: the "robinhood" Claude Code desktop session, which has the Robinhood MCP tools loaded. An in-session cron fires the cycle every minute 7:24–14:06 MDT (9:24–16:06 ET) on weekdays; each firing runs when the session is idle, so the real cadence is 1–2 minutes. Procedure: `agents/options-100/CYCLE.md`. Math: `agents/options-100/bot/score.py`.
+- Crons are session-only and expire 7 days after creation (Oct 7 → renew Oct 13). If the session dies, nothing runs; positions are long-only and can only expire worthless (max loss = premium). Leave the terminal open and idle during market hours.
+- State: `agents/options-100/state/`. Journal: `journal/options-100.jsonl`, one line per decision. Daily report 16:05 ET committed to git. Weekly report Friday.

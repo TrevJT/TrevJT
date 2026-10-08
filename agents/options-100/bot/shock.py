@@ -6,7 +6,7 @@ DB = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "
 thr = float(sys.argv[1]) if len(sys.argv) > 1 else 8.0
 c = sqlite3.connect(DB); hits = []
 for mid, q, topic, vol in c.execute("SELECT market_id, question, topic, volume FROM pm_markets WHERE source='poly' AND topic IN ('iran','fed','midterms','trump','oil') AND volume >= 1e6"):
-    pts = c.execute("SELECT ts, prob FROM pm_prices WHERE source='poly' AND market_id=? AND length(ts)=16 ORDER BY ts DESC LIMIT 40", (mid,)).fetchall()
+    pts = c.execute("SELECT ts, prob FROM pm_prices WHERE source='poly' AND market_id=? AND length(ts)>=16 ORDER BY ts DESC LIMIT 400", (mid,)).fetchall()
     if len(pts) < 2: continue
     last_ts, last = pts[0]
     day = last_ts[:10]

@@ -118,6 +118,20 @@ def snap():
     n += kalshi(c); c.commit(); print(f"{ts} snapped {n} odds")
 
 
+def fastsnap():
+    """Every ~60s in RTH: one gamma-api call for the 12 highest-impact markets (iran/fed/midterms/oil by volume),
+    stamped to the second. Purpose: measure true odds-vs-market lead-lag (15-min snaps proved too slow on 2026-10-08)."""
+    c = conn(); now = datetime.now(ET); ts = now.strftime("%Y-%m-%d %H:%M:%S")
+    ids = [r[0] for r in c.execute("""SELECT market_id FROM pm_markets WHERE source='poly' AND topic IN ('iran','fed','midterms','oil')
+              AND (end_date IS NULL OR end_date > ?) ORDER BY volume DESC LIMIT 12""", (datetime.now(timezone.utc).isoformat(),))]
+    n = 0
+    for m in get("https://gamma-api.polymarket.com/markets?" + "&".join("id=" + x for x in ids) + "&limit=12") or []:
+        try: p = float(json.loads(m.get("outcomePrices") or "[]")[0])
+        except Exception: continue
+        c.execute("INSERT OR REPLACE INTO pm_prices VALUES (?,?,?,?)", ("poly", str(m["id"]), ts, p)); n += 1
+    c.commit(); print(f"{ts} fast {n}")
+
+
 def update():
     c = conn()
     found = poly_discover(c)
@@ -163,4 +177,4 @@ def movers():
 
 
 if __name__ == "__main__":
-    {"update": update, "snap": snap, "now": now, "movers": movers}.get(sys.argv[1] if len(sys.argv) > 1 else "now", now)()
+    {"update": update, "snap": snap, "fastsnap": fastsnap, "now": now, "movers": movers}.get(sys.argv[1] if len(sys.argv) > 1 else "now", now)()

@@ -16,7 +16,8 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
 | 2026-10-08 | self-audit: failsafe.log 'Input must be provided … --print' | --allowedTools is variadic and swallowed the prompt arg → failsafe never ran a cycle (yesterday's stall was unprotected) | prompt piped via stdin | `echo … | claude -p --allowedTools …` returned FAILSAFE-OK |
 
 ## Open improvement queue (work these when idle / nightly)
-1. Cache Robinhood instrument IDs per day (state/ids_<SYM>_<DATE>.json) so live-quote scans cost 1 quote call, not a 30 KB listing.
+1. [IN PROGRESS 10-08] ID cache per day (state/ids_<SYM>_<DATE>.json). Cheapest build: per-strike get_option_instruments calls (~0.8 KB each) for ±1% strikes at pre-open, not the full listing (~30 KB/page). SPY puts cached for 10-08.
 2. Grade engine picks against realized payoff; once ≥ 60 graded, recalibrate pool choice by which pool predicted better.
 3. Add QQQ/IWM recent-5m pools; add VIX-regime conditioning to the recent pool when ≥ 250 sessions accumulate.
-4. Detect intraday regime change (realized vol today vs pool) and switch pools mid-day.
+4. [DONE 10-08 12:40] 60s feed for top-12 markets (predictions.py fastsnap, launchd com.trevjt.options100.fastodds), second-stamped; shock.py reads it. ORIGINAL NOTE: PM shock 10-08 12:15-12:30: SPY spiked on the 12:15 bar BEFORE the odds jump showed in the 12:30 snapshot. 15-min odds snapshots are too slow to front-run headlines. Improvement: snapshot the ~10 highest-impact markets every 1-2 min during RTH (cheap: single gamma-api call) and timestamp precisely, to measure true lead-lag.
+5. Detect intraday regime change (realized vol today vs pool) and switch pools mid-day.

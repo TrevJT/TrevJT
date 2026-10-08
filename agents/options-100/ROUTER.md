@@ -31,6 +31,23 @@ Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until
 
 Universal execution rules (from the research): never buy below 0.10Δ; prefer debit spreads over singles; place a resting take-profit (2× for P8/P1, 3× for P11) immediately after every fill; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.
 
+## Decision framework v3 (2026-10-07): every trade must show a measured edge
+Why: with no edge, all-in betting loses everything ~95% of the time (bankroll sims). The fix is to find edge, not to bet bigger.
+Edge can only come from: (a) options priced cheaper than the move history says is coming (volatility mispricing, measurable now),
+(b) information the market prices slowly (earnings history, prediction-market shocks, gaps), (c) execution (spreads, selling into spikes).
+
+1. **EV gate (all playbooks):** before any entry run `python3 agents/options-100/bot/edge.py scan --sym <SYM> --exp <EXP> --log` on LIVE quotes.
+   A trade qualifies only if its exact structure shows EV ≥ +15% and P(profit) ≥ 10% with premium ≥ $0.10. Direction-neutral forecast, so
+   a playbook's directional reason must add to, never replace, the EV gate.
+2. **Shadow first:** the engine logs its top 5 picks at 09:45, 11:00 and 14:00 every trading day into edge_picks (no money).
+   Nightly `edge.py grade` scores them against the actual close. Engine is TRUSTED once ≥ 60 graded picks show positive realized
+   return on premium and realized ≈ predicted (within 15 pts).
+3. **Probe trades while untrusted:** at most 2 per day, ≤ $15 each, only on picks with EV ≥ +25%: real fills to measure slippage.
+4. **Once trusted:** size by quarter-Kelly on the engine's EV estimate (edge known → Kelly beats bold play); bold-play all-in only for
+   P8 days with EV ≥ +15%.
+5. **Report card:** reports/research nightly shows engine predicted vs realized, per-playbook P&L, and which inputs mattered.
+   Anything that stops earning is demoted automatically on Friday's review.
+
 ## Daily selection (pre-open, after context brief + odds board)
 1. Gates: compute vix_gate (P8 needs prior VIX ≥ 20; P1 needs ≥ 18; nothing 0DTE below 16) (PLAN.md), regime_hist (context.py brief), pm_shock, and the event calendar for today/tomorrow.
 2. Score each playbook 0-3 on today's evidence:

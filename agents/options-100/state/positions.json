@@ -1,1 +1,1 @@
-[{"id":"5720c9e9-f209-4825-8106-c016d7e6cc92","symbol":"QQQ","type":"put","strike":746,"expiry":"2026-10-08","qty":1,"entry":0.14,"entered":"09:46","window":"A","peak":0.14,"scaled":false,"playbook":"EV-probe","order_id":"6ac79e94-18aa-463d-9b13-2d2490a71a23","tp_order_id":"6ac79ea2-73e2-4e17-8f21-f9ded5a5b07e","tp":0.42,"exit_rule":"EV-probe: no stop/time-stop (engine is graded held-to-expiry); resting TP 0.42 GFD; at 15:30 cancel TP and sell at bid"}]
+[]

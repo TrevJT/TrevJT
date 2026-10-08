@@ -1,0 +1,5 @@
+{"ts":"2026-10-08 12:08","spot":774.38,"expiry":"2026-10-08","quotes":[
+{"type":"put","strike":767,"bid":0.03,"ask":0.04,"oi":3705},{"type":"put","strike":768,"bid":0.03,"ask":0.04,"oi":4568},
+{"type":"put","strike":769,"bid":0.04,"ask":0.05,"oi":3741},{"type":"put","strike":770,"bid":0.06,"ask":0.07,"oi":11230},
+{"type":"put","strike":771,"bid":0.10,"ask":0.11,"oi":5206},{"type":"put","strike":772,"bid":0.18,"ask":0.19,"oi":8519},
+{"type":"put","strike":773,"bid":0.35,"ask":0.36,"oi":5727},{"type":"put","strike":774,"bid":0.66,"ask":0.67,"oi":6765}]}

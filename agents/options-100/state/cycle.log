@@ -102,3 +102,5 @@
 13:20 RECOVERY: session stalled 11:02-13:20; sold SPY770P @0.02 (-17.08); flat; equity 43.64
 09:25 pre-open: equity 143.64, VIX gate STAND_DOWN, playbooks EV-shadow + P5
 09:46 EV scan logged; PROBE QQQ746P x1 @0.14 TP 0.42; spreads rejected by MCP
+09:50 hold QQQ746P mid 0.125 TP resting
+11:00 scan logged (shadow); EVs implausible (+200-415%) -> no 2nd probe, calibrate tonight

@@ -77,17 +77,60 @@ def hist(c, sym):
     return rows
 
 
-def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7):
+def intraday_pool(c, sym, vix_now, mins_left):
+    """Real historical returns from the same clock time to the close (1h bars, ~730 sessions), prior-day VIX within ±3,
+    demeaned. Anchor = first bar starting at/after now; scaled by sqrt(actual minutes / anchor minutes) for the remainder."""
+    vix = dict(c.execute("SELECT ts, close FROM bars WHERE symbol='^VIX' AND interval='1d'").fetchall())
+    days = sorted({r[0] for r in c.execute("SELECT DISTINCT substr(ts,1,10) FROM bars WHERE symbol=? AND interval='1h'", (sym,))})
+    vdates = sorted(vix)
+    now_min = 16 * 60 - mins_left
+    starts = [9*60+30 + 60*i for i in range(7)]
+    anchor = next((s for s in starts if s >= now_min), None)
+    if anchor is None or mins_left <= 0: return None
+    a_hm = f"{anchor//60:02d}:{anchor%60:02d}"; a_left = 16*60 - anchor
+    scale = math.sqrt(mins_left / a_left) if a_left > 0 else 1.0
+    out = []
+    for d in days:
+        pv = None
+        for v in reversed(vdates):
+            if v < d: pv = vix[v]; break
+        if pv is None or abs(pv - vix_now) > 3: continue
+        rows = c.execute("SELECT ts, open, close FROM bars WHERE symbol=? AND interval='1h' AND ts LIKE ? ORDER BY ts", (sym, d + "%")).fetchall()
+        st = next((o for t, o, cl in rows if t[11:16] == a_hm), None)
+        if st and rows and rows[-1][0][11:16] == "15:30":
+            out.append((rows[-1][2] / st - 1) * scale)
+    if len(out) < 60: return None
+    m = statistics.mean(out); long_pool = [x - m for x in out]
+    # Recent-regime pool: last 60+ sessions of 5m bars, same clock time -> close (no VIX filter; it IS the current regime)
+    rec = []
+    for d in sorted({r[0] for r in c.execute("SELECT DISTINCT substr(ts,1,10) FROM bars WHERE symbol=? AND interval='5m'", (sym,))}):
+        rows = c.execute("SELECT ts, open, close FROM bars WHERE symbol=? AND interval='5m' AND ts LIKE ? ORDER BY ts", (sym, d + "%")).fetchall()
+        hm = f"{now_min//60:02d}:{(now_min%60)//5*5:02d}"
+        st = next((o for t, o, cl in rows if t[11:16] >= hm), None)
+        if st and rows and rows[-1][0][11:16] == "15:55": rec.append(rows[-1][2] / st - 1)
+    if len(rec) >= 40:
+        mr = statistics.mean(rec); rec = [x - mr for x in rec]
+        # CONSERVATIVE: use whichever pool implies smaller moves (lower stdev) -> never overstate the edge
+        if statistics.pstdev(rec) < statistics.pstdev(long_pool):
+            intraday_pool.which = f"recent 5m n={len(rec)} (sd {100*statistics.pstdev(rec):.2f}% < long {100*statistics.pstdev(long_pool):.2f}%)"
+            return rec
+    intraday_pool.which = f"long 1h n={len(long_pool)}"
+    return long_pool
+
+
+def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
     rows = hist(c, sym)
     pool = [r for r in rows if abs(r[0] - vix_now) <= 2.5] or rows
     # remove drift: the engine must take no directional view (30y SPY uptrend would otherwise favour calls)
     m_oc = statistics.mean(r[1] for r in pool); m_cc = statistics.mean(r[2] for r in pool)
     pool = [(v, oc - m_oc, cc - m_cc) for v, oc, cc in pool]
     rnd = random.Random(seed); out = []
+    ip = intraday_pool(c, sym, vix_now, mins_left) if (mins_left and frac_today < 1) else None
+    forecast.source = f"intraday {getattr(intraday_pool,'which','?')}" if ip else "daily o->c scaled"
     for _ in range(n):
         r = 1.0
-        if frac_today > 0:  # rest of today: open->close draw scaled by sqrt(time left)
-            r *= 1 + rnd.choice(pool)[1] * math.sqrt(frac_today)
+        if frac_today > 0:
+            r *= 1 + (rnd.choice(ip) if ip else rnd.choice(pool)[1] * math.sqrt(frac_today))
         for _ in range(days):  # whole sessions after today
             r *= 1 + rnd.choice(pool)[2]
         out.append(r)
@@ -109,7 +152,13 @@ def scan():
     sym = arg("--sym", "SPY"); min_ev = arg("--min-ev", 0.10, float)
     c = conn()
     vix_now = c.execute("SELECT close FROM bars WHERE symbol='^VIX' AND interval='1d' ORDER BY ts DESC LIMIT 1").fetchone()[0]
-    spot, rows = chains(sym)
+    qf = arg("--quotes", None)
+    if qf:  # REAL-TIME Robinhood quotes written by the cycle: {"spot":..,"expiry":..,"quotes":[{"type","strike","bid","ask","oi"}]}
+        J = json.load(open(qf)); spot = float(J["spot"])
+        rows = [(J["expiry"], q["type"], float(q["strike"]), float(q["bid"]), float(q["ask"]), 0.0, int(q.get("oi", 0)), 0) for q in J["quotes"]]
+        src = f"ROBINHOOD live ({J.get('ts','?')})"
+    else:
+        spot, rows = chains(sym); src = "Yahoo (delayed ~15m; research only, never for orders)"
     exps = sorted({r[0] for r in rows}); exp = arg("--exp", exps[0])
     now = datetime.now(ET); today = now.date(); ed = date.fromisoformat(exp)
     open_now = now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
@@ -122,7 +171,7 @@ def scan():
         if d.weekday() < 5: sess += 1
     if not open_now and sess > 0:  # after hours: next session is a full open->close; first draw uses o->c via frac=1
         frac, sess = 1.0, sess - 1
-    paths, npool = forecast(c, sym, vix_now, sess, frac)
+    paths, npool = forecast(c, sym, vix_now, sess, frac, mins_left=mins_left if open_now else None)
     q = [r for r in rows if r[0] == exp and r[4] > 0]
     res = []
     MIN_PX, MIN_P = arg("--min-px", 0.10, float), arg("--min-p", 0.10, float)
@@ -147,6 +196,7 @@ def scan():
     qual = [r for r in res if r[0] >= min_ev]
     print(f"{sym} {exp}: spot {spot:.2f}, prior VIX {vix_now:.2f} ({npool} analog days), forecast horizon "
           f"{frac*390:.0f} min today + {sess} sessions{'' if open_now else ' [market closed: quotes stale, indicative only]'}")
+    print(f"  quotes: {src} | forecast: {getattr(forecast, 'source', '?')}")
     print(f"  {len(res)} structures priced; {len(qual)} with EV ≥ {min_ev:+.0%} vs history (held to expiry, fees in)")
     for evv, pw, desc, oi in res[:10]:
         print(f"  EV {evv:+6.0%}  P(profit) {pw:4.0%}  {desc}")

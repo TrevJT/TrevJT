@@ -31,6 +31,9 @@ Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until
 
 Universal execution rules (from the research): never buy below 0.10Δ; prefer debit spreads over singles; place a resting take-profit (2× for P8/P1, 3× for P11) immediately after every fill; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.
 
+## Prime directive: recursive self-improvement
+Read LEARNINGS.md at every pre-open and work the top open improvement when idle. Any anomaly → observe, hypothesize, test, fix, verify, log. Never trade on an input you distrust: replace it first. Option prices for decisions come ONLY from live Robinhood quotes (`edge.py scan --quotes`); Yahoo chains are research/archive only.
+
 ## Broker limitation (discovered 2026-10-08)
 The Robinhood Trading MCP REJECTS multi-leg orders at placement ("Multi-leg options orders aren't supported in the Robinhood Trading MCP yet"), even though review_option_order accepts them. Until that changes: SINGLE LEGS ONLY. Every playbook that specified a debit spread uses the long leg alone (P8: ATM single; P9: OTM call + OTM put singles at ~±8%; P10/P12: long legs only), with sizing cut so max premium stays inside the same risk cap. Re-check monthly with a $0.01 dry spread order.
 

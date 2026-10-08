@@ -196,3 +196,6 @@
 2026-10-07 11:18:19 heartbeat stale 8221s -> running one-shot cycle
 /Users/trevorthompson/code/TrevJT/agents/options-100/bot/failsafe.sh: line 19: : command not found
 2026-10-07 11:18:19 one-shot cycle finished
+2026-10-08 07:24:59 heartbeat stale 69950s -> running one-shot cycle
+Error: Input must be provided either through stdin or as a prompt argument when using --print
+2026-10-08 07:25:03 one-shot cycle finished

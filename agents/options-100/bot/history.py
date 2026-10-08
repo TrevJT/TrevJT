@@ -20,7 +20,7 @@ DB = os.path.join(ROOT, "data", "market.db")
 DAILY = ["SPY", "QQQ", "IWM", "DIA", "^GSPC", "^NDX", "^RUT", "^VIX", "^VIX9D", "^VIX3M", "^VVIX", "^SKEW",
          "^TNX", "^IRX", "TLT", "DX-Y.NYB", "CL=F", "GC=F", "BTC-USD",
          "XLK", "XLF", "XLE", "XLY", "XLV", "XLI", "XLC", "SMH",
-         "NVDA", "AAPL", "MSFT", "AMZN", "GOOGL", "META", "AVGO", "TSLA"]
+         "XLRE", "IYT", "KRE", "XLU", "XHB", "ITB", "TIP", "RINF", "UGA", "USO", "NVDA", "AAPL", "MSFT", "AMZN", "GOOGL", "META", "AVGO", "TSLA"]
 INTRADAY = {"5m": ("60d", ["SPY", "QQQ", "IWM", "^VIX"]),
             "1m": ("7d", ["SPY", "QQQ"]),
             "1h": ("730d", ["SPY", "QQQ", "IWM", "^VIX"])}

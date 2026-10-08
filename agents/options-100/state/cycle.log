@@ -100,3 +100,5 @@
 11:01 bars=18 vix 15.63 hold SPY770P 0.125 (-34%)
 11:02 hold SPY770P 0.155 (-18%)
 13:20 RECOVERY: session stalled 11:02-13:20; sold SPY770P @0.02 (-17.08); flat; equity 43.64
+09:25 pre-open: equity 143.64, VIX gate STAND_DOWN, playbooks EV-shadow + P5
+09:46 EV scan logged; PROBE QQQ746P x1 @0.14 TP 0.42; spreads rejected by MCP

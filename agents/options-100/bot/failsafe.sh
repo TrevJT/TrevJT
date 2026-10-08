@@ -17,8 +17,9 @@ lk=0; [ -f "$S/cycle.lock" ] && lk=$(stat -f %m "$S/cycle.lock")
 [ $((now - lk)) -lt 300 ] && exit 0      # a cycle is running right now
 echo "$(date '+%F %T') heartbeat stale $((now - hb))s -> running one-shot cycle" >> "$LOG"
 touch "$S/cycle.lock"
-cd "$REPO" && ( "$(command -v claude || echo $HOME/.local/bin/claude)" -p --model claude-opus-5-5 \
+PROMPT="You are the options-100 FAILSAFE (the main orchestrator session is down). Read agents/options-100/PLAN.md, ROUTER.md and CYCLE.md and run exactly ONE cycle now, obeying every hard rule. Write agents/options-100/state/heartbeat.json with source=failsafe. Then stop."
+cd "$REPO" && ( echo "$PROMPT" | "$(command -v claude || echo $HOME/.local/bin/claude)" -p --model claude-opus-5-5 \
   --allowedTools "mcp__robinhood-trading__*,WebSearch,Read,Write,Edit,Bash(python3:*),Bash(date:*),Bash(TZ=*),Bash(cat:*),Bash(echo:*),Bash(ls:*),Bash(git:*),Bash(touch:*),Bash(rm:*),Bash(mkdir:*)" \
-  "You are the options-100 FAILSAFE (the main orchestrator session is down). Read agents/options-100/PLAN.md and agents/options-100/CYCLE.md and run exactly ONE cycle now, obeying every hard rule. Write state/heartbeat.json with source=failsafe. Then stop." >> "$LOG" 2>&1 ) &
+  >> "$LOG" 2>&1 ) &
 pid=$!; ( sleep 300; kill $pid 2>/dev/null ) & wait $pid; rm -f "$S/cycle.lock"
 echo "$(date '+%F %T') one-shot cycle finished" >> "$LOG"

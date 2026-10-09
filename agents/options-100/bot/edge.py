@@ -228,6 +228,12 @@ def grade():
         spent = sum(x[0] * 100 for x in allg); pnl = sum(x[1] for x in allg)
         print(f"graded {n} new; all-time {len(allg)} picks, return on premium {pnl/spent:+.0%} "
               f"(engine predicted avg EV {statistics.mean(x[2] for x in allg):+.0%}), win rate {sum(x[1]>0 for x in allg)/len(allg):.0%}")
+        for side in ("call", "put"):  # calls trade at lower IV than puts (skew); check the engine is not mistaking skew for edge
+            g = c.execute("SELECT cost, graded_pnl, ev FROM edge_picks WHERE graded_pnl IS NOT NULL AND type=?", (side,)).fetchall()
+            if g:
+                sp = sum(x[0] * 100 for x in g)
+                print(f"  {side}s: {len(g)} picks, return {sum(x[1] for x in g)/sp:+.0%} vs predicted {statistics.mean(x[2] for x in g):+.0%}, "
+                      f"win {sum(x[1]>0 for x in g)/len(g):.0%}")
     else:
         print(f"graded {n}; nothing graded yet")
 

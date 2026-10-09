@@ -1,5 +1,63 @@
-{"ts":"2026-10-08 12:08","spot":774.38,"expiry":"2026-10-08","quotes":[
-{"type":"put","strike":767,"bid":0.03,"ask":0.04,"oi":3705},{"type":"put","strike":768,"bid":0.03,"ask":0.04,"oi":4568},
-{"type":"put","strike":769,"bid":0.04,"ask":0.05,"oi":3741},{"type":"put","strike":770,"bid":0.06,"ask":0.07,"oi":11230},
-{"type":"put","strike":771,"bid":0.10,"ask":0.11,"oi":5206},{"type":"put","strike":772,"bid":0.18,"ask":0.19,"oi":8519},
-{"type":"put","strike":773,"bid":0.35,"ask":0.36,"oi":5727},{"type":"put","strike":774,"bid":0.66,"ask":0.67,"oi":6765}]}
+{
+ "ts": "2026-10-09 15:04",
+ "spot": 778.925,
+ "expiry": "2026-10-09",
+ "quotes": [
+  {
+   "type": "put",
+   "strike": 773,
+   "bid": 0.02,
+   "ask": 0.03,
+   "oi": 10613
+  },
+  {
+   "type": "put",
+   "strike": 775,
+   "bid": 0.02,
+   "ask": 0.03,
+   "oi": 18278
+  },
+  {
+   "type": "put",
+   "strike": 774,
+   "bid": 0.02,
+   "ask": 0.03,
+   "oi": 11263
+  },
+  {
+   "type": "call",
+   "strike": 779,
+   "bid": 0.4,
+   "ask": 0.41,
+   "oi": 15880
+  },
+  {
+   "type": "call",
+   "strike": 780,
+   "bid": 0.11,
+   "ask": 0.12,
+   "oi": 43838
+  },
+  {
+   "type": "call",
+   "strike": 781,
+   "bid": 0.04,
+   "ask": 0.05,
+   "oi": 13926
+  },
+  {
+   "type": "call",
+   "strike": 777,
+   "bid": 1.99,
+   "ask": 2.0,
+   "oi": 14953
+  },
+  {
+   "type": "call",
+   "strike": 778,
+   "bid": 1.07,
+   "ask": 1.08,
+   "oi": 14305
+  }
+ ]
+}

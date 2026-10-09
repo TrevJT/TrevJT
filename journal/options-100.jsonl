@@ -17,3 +17,6 @@
 {"ts":"2026-10-08T18:00:36Z","et":"14:00","event":"scan","scores":{"SPY":-2,"QQQ":-3},"p1":"no (|S|<5)","ev":"no single-leg >= +15%; only spread artifacts from stale Yahoo quotes (P(profit) 99% = inconsistent quotes) and spreads are unplaceable","note":"QQQ -1.6% intraday, ATR5 1.66 vs ~0.5 typical: intraday regime shift the recent-5m pool does not see (LEARNINGS item 5)"}
 {"ts":"2026-10-08T20:04:25Z","event":"failsafe_cycle","et":"16:04","positions":0,"open_orders":0,"equity":171.55,"action":"none (after 15:10 entry cutoff, flat)"}
 {"ts":"2026-10-08T20:05:55Z","event":"day_end","date":"2026-10-08","equity":171.55,"pnl":27.91,"trades":1,"wins":1,"engine_graded":21}
+{"ts":"2026-10-09T13:24:21Z","et":"09:24","event":"router","date":"2026-10-09","equity":171.55,"vix_prior":15.53,"vix_pre":15.18,"vix_gate":"STAND_DOWN","regime_hist":"CHOPPY","playbooks":["EV live-quote probes","P5 watch"],"evidence":"futures +0.4/+0.8 on oil down + chip rebound; DAL miss/guide cut; telecom hit by SpaceX mobile"}
+{"ts":"2026-10-09T09:47","event":"no_entry","reason":"EV scan top 779C +57% but vix_gate STAND_DOWN, no pm shock; engine untrusted"}
+{"ts":"2026-10-09T16:05","event":"eod","end_equity":171.55,"pnl":0,"trades":0}

@@ -1,8 +1,7 @@
-{"date":"2026-10-08","written_et":"08:55",
- "futures":{"ES":"-0.5%","NQ":"-0.7%","YM":"-0.9%","RTY":"-1.3%"},"spy_pre":774.68,"qqq_pre":753.85,
- "vix":{"prior_close":15.08,"premarket":15.69},"vix_gate":"STAND_DOWN (prior close < 16)",
- "drivers":["Reports: White House directed Pentagon to draft Iran strike options before midterms; Brent > $101","Oil up -> inflation worries; 10y 5.33% (+9bp/5d); Fed minutes signal further hikes (Dec hike 68-72% priced)","Jobless claims 08:30","PEP beat (2.34 vs 2.29 est) BMO"],
- "pm_shock":false,"pm_notes":"Iran markets barely moved overnight: US invades Iran 15.5% (-0.5pt), Hormuz normal Dec 18.5% (+1pt), ceasefire thru Oct 31 70.5% (+8pt 5d). No >=8pt shock -> 0DTE gate stays shut.",
- "earnings_week":{"Oct 9 AM":"DAL","Oct 13 AM":"JPM GS C WFC UNH JNJ DPZ","Oct 14 AM":"BAC MS BLK ASML PGR STT + CPI 08:30","Oct 15":"TSM PNC SCHW USB BNY AM; JBHT IBKR AA PM","Oct 16 AM":"TFC TRV RF MTB CFG + monthly opex","Oct 21 PM":"TSLA (P9)"},
- "plan":["No P1/P8 0DTE (VIX gate).","EV engine shadow scans 09:45/11:00/14:00 on SPY+QQQ; probe trades (<=2, <=$15) only if live EV >= +25%.","P5 watch: an intraday Iran odds jump >= 8pt on the 15-min feed would open the PM-shock exception; strike headlines are live risk today.","Watch the DAL print tomorrow (oil + Iran sensitive airline) as data, no trade.","Prep CPI (Oct 14) put-spread idea for Tuesday afternoon via EV gate."],
- "regime":"NORMAL","bias":"risk-off open on oil/Iran; no directional trade without measured edge"}
+{"date":"2026-10-09","written_et":"09:06",
+ "futures":{"ES":"+0.4%","NQ":"+0.8%","YM":"+0.2%"},
+ "vix":{"prior_close":15.53,"premarket":15.18},"vix_gate":"STAND_DOWN (prior close < 16)",
+ "drivers":["Oil falling as US-Iran tensions ease (ceasefire-thru-Oct-31 odds held ~78-80%)","AI chip rebound after QQQ -1.3% Thursday","DAL Q3 adj EPS 1.72 (miss), FY guide cut to 5.10-5.60 on jet fuel; DAL -4% pre","Telecom shock: SpaceX entering mobile; TMUS -7%, T -6% pre","Yields still high"],
+ "pm_shock":false,
+ "context":"regime CHOPPY (analogs), VIX 32nd pct, realized vol 29th pct; Fed: 2 hikes in 2026 at 69.5% (+8pt 5d)",
+ "plan":["0DTE P1 stand-down (VIX gate) unless PM shock","EV engine on LIVE Robinhood quotes at 09:45/11:00/14:00; <=2 probes <=$15, EV>=+25%","Note: recent-5m pool may now under-state vol after Thursday's -1.3% QQQ; engine conservative choice stays","Watch: oil/Iran odds (60s feed), telecom names (data only)"]}

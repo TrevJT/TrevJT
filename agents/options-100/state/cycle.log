@@ -108,3 +108,88 @@
 12:50 TP FILL QQQ746P @0.42 (entry 0.14) +27.91; equity 171.55; flat
 14:00 scan: S SPY -2 QQQ -3; no EV single; flat
 16:04 failsafe: post-close, flat (broker-verified), equity 171.55, no action
+09:06 premarket brief written (futures up, oil down, DAL miss); idle until 09:24
+09:09 idle pre-open
+09:14 idle pre-open
+09:19 idle pre-open
+09:24 pre-open: equity 171.55, VIX gate STAND_DOWN, EV live + P5 watch
+09:29 flat
+09:34 flat
+09:39 flat
+2026-10-09 07:46 ET-1 | 09:45 EV scan live: top 779C +57% P15% (call-skew cheap: call IV 14.5% vs put 16-19%). NO ENTRY: vix_gate STAND_DOWN (15.53), no PM shock. flat $171.55
+2026-10-09 07:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 07:54 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 07:59 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:04 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:14 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:14 MT | idle work: edge.py grade now splits call vs put (skew check)
+2026-10-09 08:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:24 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:29 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:39 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:44 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:54 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 08:59 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:04 MT | 11:00 EV scan live (spot 777.33 same-batch). shadow only, STAND_DOWN. flat $171.55
+2026-10-09 09:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:09 MT | idle: logged both-sides-EV hypothesis to LEARNINGS
+2026-10-09 09:14 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:14 MT | idle: tested EV source = fat tails (sd 0.349 all, 0.257 ex-top10%), logged
+2026-10-09 09:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:24 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:29 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:39 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:44 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:54 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 09:59 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:04 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:14 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:24 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:29 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:39 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:44 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:54 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 10:59 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:04 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:14 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:34 MT | NOTE: Mac lid-close sleep 11:20-11:34 skipped 2 cycles; flat so no impact; logged
+2026-10-09 11:50 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 11:50 MT | lid-closed sleep continues (11:35-11:50); pushed Trevor to open lid
+2026-10-09 12:08 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:19 MT | lid opened 12:18:54, full wake; normal cadence resumes
+2026-10-09 12:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:24 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:29 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:39 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:44 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:54 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 12:59 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:04 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:04 MT | late 14:00 scan (missed in sleep), run 15:04 ET spot 778.93; shadow only. flat $171.55
+2026-10-09 13:09 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:14 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:19 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:24 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:29 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:34 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:39 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:44 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-09 13:54 MT | quiet: flat $171.55, waiting for 16:05 report
+16:03 - - 15.53 NORMAL 0 failsafe quiet: STAND_DOWN, flat $171.55, broker confirms 0 positions/0 orders

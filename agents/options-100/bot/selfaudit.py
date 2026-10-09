@@ -6,9 +6,12 @@ import os, json, sqlite3, glob, statistics
 from datetime import datetime
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); S = os.path.join(R, "state")
 out = []
+today = datetime.now().strftime("%Y-%m-%d")
 # 1 stalls: gaps > 10 min between cycle.log lines during RTH today
 try:
-    lines = [l for l in open(os.path.join(S, "cycle.log")) if l[:2].isdigit()]
+    allc = open(os.path.join(S, "cycle.log")).read().splitlines()
+    start = max([i for i, l in enumerate(allc) if "pre-open" in l] or [0])  # only the current session
+    lines = [l for l in allc[start:] if l[:2].isdigit()]
     ts = [int(l[:2]) * 60 + int(l[3:5]) for l in lines[-300:] if l[2] == ":"]
     gaps = [(b - a, a) for a, b in zip(ts, ts[1:]) if b - a > 10 and 570 <= a <= 960]
     if gaps: out.append(f"STALL: {len(gaps)} cycle gaps >10 min today, worst {max(gaps)[0]} min at {max(gaps)[1]//60:02d}:{max(gaps)[1]%60:02d} -> investigate cron/heartbeat")
@@ -18,6 +21,9 @@ for f in ("failsafe.log", "launchd.err", "odds.err", "history.err"):
     p = os.path.join(S, f)
     if os.path.exists(p):
         tail = open(p).read().splitlines()[-20:]
+        if f == "failsafe.log":  # only lines stamped today; older errors were already fixed
+            dated = [l for l in open(p).read().splitlines() if l[:10] == today]
+            tail = [l for l in open(p).read().splitlines()[-40:] if l[:10] == today or not l[:4].isdigit()] if dated else []
         bad = [l for l in tail if any(k in l.lower() for k in ("error", "not found", "traceback", "denied"))]
         if bad: out.append(f"ERRORS in {f}: {bad[-1][:140]}")
 # 3 journal: order errors / engine flags today

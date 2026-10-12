@@ -126,6 +126,10 @@ def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
     pool = [(v, oc - m_oc, cc - m_cc) for v, oc, cc in pool]
     rnd = random.Random(seed); out = []
     ip = intraday_pool(c, sym, vix_now, mins_left) if (mins_left and frac_today < 1) else None
+    trim = float(sys.argv[sys.argv.index("--trim") + 1]) if "--trim" in sys.argv else 0.0
+    if ip and trim > 0:  # drop the largest |move| days: shows the edge on a NORMAL day, not the tail bet
+        ip = sorted(ip, key=abs)[: max(20, int(len(ip) * (1 - trim)))]
+        intraday_pool.which += f", trimmed top {trim:.0%} -> sd {100*statistics.pstdev(ip):.2f}%"
     forecast.source = f"intraday {getattr(intraday_pool,'which','?')}" if ip else "daily o->c scaled"
     for _ in range(n):
         r = 1.0
@@ -151,7 +155,8 @@ def ev_spread(paths, spot, typ, k1, k2, cost):
 def scan():
     sym = arg("--sym", "SPY"); min_ev = arg("--min-ev", 0.10, float)
     c = conn()
-    vix_now = c.execute("SELECT close FROM bars WHERE symbol='^VIX' AND interval='1d' ORDER BY ts DESC LIMIT 1").fetchone()[0]
+    # PRIOR-day close only: yfinance writes a live partial bar for today, which is not the gate/analog input
+    vix_now = c.execute("SELECT close FROM bars WHERE symbol='^VIX' AND interval='1d' AND ts < date('now','localtime') ORDER BY ts DESC LIMIT 1").fetchone()[0]
     qf = arg("--quotes", None)
     if qf:  # REAL-TIME Robinhood quotes written by the cycle: {"spot":..,"expiry":..,"quotes":[{"type","strike","bid","ask","oi"}]}
         J = json.load(open(qf)); spot = float(J["spot"])

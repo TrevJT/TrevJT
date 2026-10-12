@@ -224,3 +224,14 @@ I skipped the market data refresh, the score run and the news search. With no po
 
 **Still pending: today's end-of-day report.** It runs on the first cycle at or after 16:05 ET, and this cycle ran at 16:03. Since you asked for exactly one cycle, I didn't run it. Unless the orchestrator session comes back in time, or the failsafe fires again before 16:06, today's report, history archive and git commit won't happen on their own.
 2026-10-09 14:03:17 one-shot cycle finished
+2026-10-12 07:24:20 heartbeat stale 765s -> running one-shot cycle
+2026-10-12 07:25:07 one-shot cycle finished
+I ran one failsafe cycle at 09:25 ET (Monday Oct 12) and placed no trades.
+
+- **Account:** Robinhood shows no option positions and no orders today. Equity and cash are both $171.55.
+- **Why no trade:** today's pre-open had already run and marked the day STAND_DOWN, because VIX closed at 14.84 on Friday, below the 16 cutoff, and there was no prediction-market shock. VIX is 15.41 now (written to `day.json`). It was also before the 09:40 entry window, so nothing qualified anyway. No positions meant nothing to manage.
+- **News:** the last hour's headlines are mostly oil: attacks on Saudi Arabia and Middle East tankers, and backlash over a Trump–Putin oil deal. That fits the oil flag pre-open had already set (WTI +2.2%), so I left the regime at NORMAL. Stock futures are flat.
+- **Files written:** `heartbeat.json` with source=failsafe, plus one line each in `cycle.log` and `failsafe.log`. I removed `cycle.lock`.
+
+**One gap you should know about:** the 5-minute SPY/QQQ price bars stored on disk stop at Oct 8, 18:00 UTC, so Oct 8's last two hours and all of Oct 9 are missing. I fetched them from Robinhood but didn't load them into the bot's bar files, and I didn't run the momentum score. Neither could change a decision today because the day is stood down. Still, they need loading before the score's output (or the 09:45 shadow scans) can be trusted.
+2026-10-12 07:25:15 one-shot cycle finished

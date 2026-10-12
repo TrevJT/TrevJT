@@ -1,0 +1,19 @@
+{
+ "ts": 1791812471.5775151,
+ "hours": 0.1,
+ "errors": [],
+ "items": [
+  {
+   "t": 1791812457.0,
+   "src": "cnbc",
+   "title": "S&P 500 is little changed to start the week; Micron leads tech lower: Live updates",
+   "flag": ""
+  },
+  {
+   "t": 1791812171.0,
+   "src": "gnews-markets",
+   "title": "A handful of tech stocks are masking an ugly S&P 500 problem - Yahoo Finance",
+   "flag": ""
+  }
+ ]
+}

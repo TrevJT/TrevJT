@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/Users/trevorthompson/code/TrevJT/agents/options-100/bot/predictions.py", line 180, in <module>
+    {"update": update, "snap": snap, "fastsnap": fastsnap, "now": now, "movers": movers}.get(sys.argv[1] if len(sys.argv) > 1 else "now", now)()
+  File "/Users/trevorthompson/code/TrevJT/agents/options-100/bot/predictions.py", line 117, in snap
+    c.execute("INSERT OR REPLACE INTO pm_prices VALUES (?,?,?,?)", ("poly", str(m["id"]), ts, p)); n += 1
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+Traceback (most recent call last):
+  File "/Users/trevorthompson/code/TrevJT/agents/options-100/bot/edge.py", line 242, in <module>
+    {"snap": snap, "scan": scan, "grade": grade}.get(sys.argv[1] if len(sys.argv) > 1 else "scan", scan)()
+  File "/Users/trevorthompson/code/TrevJT/agents/options-100/bot/edge.py", line 64, in snap
+    c.execute("INSERT OR REPLACE INTO option_snaps VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+sqlite3.OperationalError: database is locked

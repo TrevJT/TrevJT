@@ -193,3 +193,12 @@
 2026-10-09 13:49 MT | quiet: STAND_DOWN, no shock, flat $171.55
 2026-10-09 13:54 MT | quiet: flat $171.55, waiting for 16:05 report
 16:03 - - 15.53 NORMAL 0 failsafe quiet: STAND_DOWN, flat $171.55, broker confirms 0 positions/0 orders
+2026-10-12 07:06 MT | pre-open done early: VIX 14.84 STAND_DOWN, CHOPPY, WTI 93.84, no shock. flat $171.55
+2026-10-12 07:11 MT | pre-window: built news.py (RSS), wired into CYCLE.md
+09:25 - - 15.41 NORMAL 0 failsafe quiet: pre-window STAND_DOWN, flat $171.55, 0 orders; news: Saudi tanker attacks/oil (known theme), no new shock; bars gap since 10-08 18:00Z not ingested
+2026-10-12 07:26 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-12 07:31 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-12 07:36 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-12 07:41 MT | quiet: STAND_DOWN, no shock, flat $171.55
+2026-10-12 07:46 MT | 09:45 EV scan live (spot 779.06 same-batch); shadow only (STAND_DOWN). flat $171.55
+2026-10-12 07:47 MT | fixed edge.py prior-VIX bug; added --trim diagnostic (top EV 206%->30% trimmed)

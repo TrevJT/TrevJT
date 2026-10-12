@@ -20,3 +20,5 @@
 {"ts":"2026-10-09T13:24:21Z","et":"09:24","event":"router","date":"2026-10-09","equity":171.55,"vix_prior":15.53,"vix_pre":15.18,"vix_gate":"STAND_DOWN","regime_hist":"CHOPPY","playbooks":["EV live-quote probes","P5 watch"],"evidence":"futures +0.4/+0.8 on oil down + chip rebound; DAL miss/guide cut; telecom hit by SpaceX mobile"}
 {"ts":"2026-10-09T09:47","event":"no_entry","reason":"EV scan top 779C +57% but vix_gate STAND_DOWN, no pm shock; engine untrusted"}
 {"ts":"2026-10-09T16:05","event":"eod","end_equity":171.55,"pnl":0,"trades":0}
+{"ts":"2026-10-12T09:10","event":"no_trade_day","reason":"prior VIX 14.84 < 16, no PM shock; CHOPPY; shadow scans only","pending":"lifts if shock"}
+{"ts":"2026-10-12T16:55","event":"eod","end_equity":171.55,"pnl":0,"trades":0,"engine_today":"-100% vs +139% predicted"}

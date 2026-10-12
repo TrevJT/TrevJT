@@ -35,12 +35,17 @@ def fetch(url):
 
 
 def main():
+    import signal  # hard cap: a feed that drips bytes can defeat the per-socket timeout and hang the trading cycle
+    signal.signal(signal.SIGALRM, lambda *a: (_ for _ in ()).throw(TimeoutError("news.py 25s cap")))
+    signal.alarm(25)
     hours = float(sys.argv[sys.argv.index("--hours") + 1]) if "--hours" in sys.argv else 12
     cutoff = time.time() - hours * 3600
     items, seen, errs = [], set(), []
     for src, url in FEEDS.items():
         try:
             root = ET.fromstring(fetch(url))
+        except TimeoutError:
+            errs.append(f"{src}: total-cap"); break
         except Exception as e:
             errs.append(f"{src}: {type(e).__name__}"); continue
         for it in root.iter("item"):

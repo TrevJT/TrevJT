@@ -1,76 +1,76 @@
 {
- "ts": "2026-10-12 09:46",
- "spot": 779.06,
+ "ts": "2026-10-12 11:01",
+ "spot": 778.27,
  "expiry": "2026-10-12",
  "quotes": [
   {
    "type": "put",
    "strike": 778,
-   "bid": 0.52,
-   "ask": 0.53,
+   "bid": 0.55,
+   "ask": 0.56,
    "oi": 7820
   },
   {
    "type": "put",
    "strike": 777,
-   "bid": 0.29,
-   "ask": 0.3,
+   "bid": 0.26,
+   "ask": 0.27,
    "oi": 7854
   },
   {
    "type": "put",
    "strike": 776,
-   "bid": 0.17,
-   "ask": 0.18,
+   "bid": 0.13,
+   "ask": 0.14,
    "oi": 6994
   },
   {
    "type": "put",
    "strike": 775,
-   "bid": 0.1,
-   "ask": 0.11,
+   "bid": 0.08,
+   "ask": 0.09,
    "oi": 10666
   },
   {
    "type": "put",
    "strike": 774,
-   "bid": 0.07,
-   "ask": 0.08,
+   "bid": 0.05,
+   "ask": 0.06,
    "oi": 5786
   },
   {
    "type": "call",
    "strike": 780,
-   "bid": 0.47,
-   "ask": 0.48,
+   "bid": 0.14,
+   "ask": 0.15,
    "oi": 15934
   },
   {
    "type": "call",
    "strike": 781,
-   "bid": 0.23,
-   "ask": 0.24,
+   "bid": 0.06,
+   "ask": 0.07,
    "oi": 5777
   },
   {
    "type": "call",
    "strike": 782,
-   "bid": 0.11,
-   "ask": 0.12,
+   "bid": 0.03,
+   "ask": 0.04,
    "oi": 7279
   },
   {
    "type": "call",
    "strike": 783,
-   "bid": 0.06,
-   "ask": 0.07,
+   "bid": 0.02,
+   "ask": 0.03,
    "oi": 10038
   },
   {
    "type": "call",
    "strike": 784,
-   "bid": 0.03,
-   "ask": 0.04,
+   "bid": 0.02,
+   "ask": 0.03,
    "oi": 5732
   }
  ]

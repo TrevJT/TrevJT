@@ -1,18 +1,18 @@
 {
- "ts": 1791812471.5775151,
- "hours": 0.1,
+ "ts": 1791833627.1375391,
+ "hours": 0.08,
  "errors": [],
  "items": [
   {
-   "t": 1791812457.0,
-   "src": "cnbc",
-   "title": "S&P 500 is little changed to start the week; Micron leads tech lower: Live updates",
-   "flag": ""
+   "t": 1791832285.0,
+   "src": "gnews-oil-iran",
+   "title": "Iran offers to mediate Saudi-Houthi talks during foreign ministers' call - The Jerusalem Post",
+   "flag": "war"
   },
   {
-   "t": 1791812171.0,
-   "src": "gnews-markets",
-   "title": "A handful of tech stocks are masking an ugly S&P 500 problem - Yahoo Finance",
+   "t": 1791832190.0,
+   "src": "cnbc",
+   "title": "Katie Stockton says retail stocks could be primed for a counter-trend rally. These stocks may lead the bounce",
    "flag": ""
   }
  ]

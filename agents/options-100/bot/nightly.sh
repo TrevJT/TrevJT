@@ -5,6 +5,7 @@ d=$(TZ=America/New_York date +%F)
 python3 bot/history.py update
 python3 bot/predictions.py update
 python3 bot/edge.py grade > state/edge_grade.txt
+python3 bot/volmodel.py fit SPY >> state/edge_grade.txt 2>&1; python3 bot/volmodel.py fit QQQ >> state/edge_grade.txt 2>&1
 { echo "# Research log $d"; echo; python3 bot/selfaudit.py; echo; echo '## Correlation scan'; python3 bot/correlate.py scan --top 20;
   echo '## Edge engine report card'; cat state/edge_grade.txt; echo; echo '## SPY score-model backtest'; python3 bot/context.py backtest --sym SPY --target 0.6 --stop 0.6;
   python3 bot/context.py backtest --sym SPY --target 0.6 --stop 0.6 --score 5 --rvol 1.3;

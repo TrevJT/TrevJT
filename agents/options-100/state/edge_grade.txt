@@ -1,3 +1,3 @@
-graded 0 new; all-time 31 picks, return on premium +168% (engine predicted avg EV +151%), win rate 29%
-  calls: 8 picks, return -5% vs predicted +65%, win 25%
-  puts: 23 picks, return +258% vs predicted +181%, win 30%
+graded 0 new; all-time 41 picks, return on premium +113% (engine predicted avg EV +148%), win rate 22%
+  calls: 14 picks, return -34% vs predicted +104%, win 14%
+  puts: 27 picks, return +209% vs predicted +171%, win 26%

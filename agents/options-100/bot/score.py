@@ -10,7 +10,8 @@ All clock times are ET (HH:MM)."""
 import json, os, sys, statistics
 from datetime import datetime, timezone, timedelta
 
-ET = timezone(timedelta(hours=-4))  # EDT until 2026-11-01, then -5
+from zoneinfo import ZoneInfo
+ET = ZoneInfo("America/New_York")
 STATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "state")
 
 

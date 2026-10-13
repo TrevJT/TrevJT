@@ -13,7 +13,8 @@ from datetime import datetime, timezone, timedelta
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(ROOT, "data", "market.db")
-ET = timezone(timedelta(hours=-4))
+from zoneinfo import ZoneInfo
+ET = ZoneInfo("America/New_York")
 UA = {"User-Agent": "options-100-research/0.1"}
 
 # topic -> Polymarket search queries

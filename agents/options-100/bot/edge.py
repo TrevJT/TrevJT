@@ -17,7 +17,8 @@ from datetime import datetime, timezone, timedelta, date
 warnings.filterwarnings("ignore")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(ROOT, "data", "market.db")
-ET = timezone(timedelta(hours=-4))
+from zoneinfo import ZoneInfo
+ET = ZoneInfo("America/New_York")  # was fixed UTC-4: would break when DST ends Nov 1
 FEE = 0.04
 
 
@@ -126,6 +127,18 @@ def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
     pool = [(v, oc - m_oc, cc - m_cc) for v, oc, cc in pool]
     rnd = random.Random(seed); out = []
     ip = intraday_pool(c, sym, vix_now, mins_left) if (mins_left and frac_today < 1) else None
+    em = getattr(forecast, "model_emove", None)
+    if ip and em:  # volmodel: SCALE from today's VIX + morning range + context, SHAPE from standardized residuals (conditional tails)
+        import volmodel
+        zp = volmodel.zpool(sym)
+        if zp:
+            mz = statistics.mean(abs(z) for z in zp)
+            ip = [z * em / mz for z in zp]
+            intraday_pool.which = f"volmodel E|move| {em*100:.3f}% x standardized shape (n={len(zp)}, sd {100*statistics.pstdev(ip):.2f}%)"
+        else:
+            cur = statistics.mean(abs(x) for x in ip)
+            ip = [x * em / cur for x in ip]
+            intraday_pool.which += f", SCALED by volmodel to E|move| {em*100:.3f}% (sd {100*statistics.pstdev(ip):.2f}%)"
     trim = float(sys.argv[sys.argv.index("--trim") + 1]) if "--trim" in sys.argv else 0.0
     if ip and trim > 0:  # drop the largest |move| days: shows the edge on a NORMAL day, not the tail bet
         ip = sorted(ip, key=abs)[: max(20, int(len(ip) * (1 - trim)))]
@@ -139,6 +152,20 @@ def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
             r *= 1 + rnd.choice(pool)[2]
         out.append(r)
     return out, len(pool)
+
+
+VM_OOS_BIAS = 1.10  # walk-forward: model over-predicted E|move| by ~10% out of sample (research_vol.py model)
+
+
+def implied_sd(q, spot):
+    """Normal-model sd (fraction of spot) that best fits the quoted mids: the market's expected move to expiry."""
+    pts = [(typ, k, (b + a) / 2) for e, typ, k, b, a, iv, oi, vol in q if a > 0 and (b + a) / 2 >= 0.03]
+    if len(pts) < 3: return None
+    def price(typ, k, sd):
+        s = sd * spot; dd = ((k - spot) if typ == "call" else (spot - k)) / s
+        return s * (math.exp(-dd * dd / 2) / math.sqrt(2 * math.pi) - dd * 0.5 * math.erfc(dd / math.sqrt(2)))
+    best = min((sum((price(t, k, sd) - m) ** 2 for t, k, m in pts), sd) for sd in [x / 100000 for x in range(20, 2000)])
+    return best[1]
 
 
 def ev_long(paths, spot, typ, k, cost):
@@ -165,7 +192,10 @@ def scan():
     else:
         spot, rows = chains(sym); src = "Yahoo (delayed ~15m; research only, never for orders)"
     exps = sorted({r[0] for r in rows}); exp = arg("--exp", exps[0])
-    now = datetime.now(ET); today = now.date(); ed = date.fromisoformat(exp)
+    now = datetime.now(ET)
+    if "--asof" in sys.argv:  # replay a past scan: --asof "YYYY-MM-DD HH:MM" (ET)
+        now = datetime.strptime(arg("--asof", None), "%Y-%m-%d %H:%M").replace(tzinfo=ET)
+    today = now.date(); ed = date.fromisoformat(exp)
     open_now = now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
     mins_left = max(0, (16 * 60) - (now.hour * 60 + now.minute)) if open_now else 0
     frac = mins_left / 390 if open_now else 0
@@ -176,6 +206,26 @@ def scan():
         if d.weekday() < 5: sess += 1
     if not open_now and sess > 0:  # after hours: next session is a full open->close; first draw uses o->c via frac=1
         frac, sess = 1.0, sess - 1
+    forecast.model_emove = None; vm_note = "volmodel off"
+    if open_now and sess == 0 and "--no-model" not in sys.argv:
+        try:
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            import volmodel
+            o = h = l = None
+            if qf and all(k in J for k in ("open", "high", "low")):
+                o, h, l = float(J["open"]), float(J["high"]), float(J["low"]); vsrc = "quotes file"
+            else:
+                tb = volmodel.today_bars(c, sym, today.isoformat(), now.strftime("%H:%M"))
+                if tb: o, h, l, _ = tb; vsrc = "5m bars in db"
+            if o:
+                em, det = volmodel.predict(sym, mins_left, o, h, l, spot, today.isoformat(), c)
+                if em:
+                    forecast.model_emove = em / VM_OOS_BIAS
+                    vm_note = f"volmodel E|move| {em/VM_OOS_BIAS*100:.3f}% (morning range {det['morn_rng']*100:.2f}% from {vsrc})"
+            else:
+                vm_note = "volmodel: no open/high/low for today -> unscaled pool"
+        except Exception as ex:
+            vm_note = f"volmodel error {type(ex).__name__}: {ex}"
     paths, npool = forecast(c, sym, vix_now, sess, frac, mins_left=mins_left if open_now else None)
     q = [r for r in rows if r[0] == exp and r[4] > 0]
     res = []
@@ -202,6 +252,15 @@ def scan():
     print(f"{sym} {exp}: spot {spot:.2f}, prior VIX {vix_now:.2f} ({npool} analog days), forecast horizon "
           f"{frac*390:.0f} min today + {sess} sessions{'' if open_now else ' [market closed: quotes stale, indicative only]'}")
     print(f"  quotes: {src} | forecast: {getattr(forecast, 'source', '?')}")
+    print(f"  {vm_note}")
+    imp_sd = implied_sd(q, spot) if open_now and sess == 0 else None
+    if imp_sd:
+        msd = statistics.pstdev([g - 1 for g in paths])
+        print(f"  market-implied sd to close {imp_sd*100:.3f}% vs engine sd {msd*100:.3f}%  (ratio {msd/imp_sd:.2f}; >1 = engine thinks options cheap)")
+        if "--log" in sys.argv:
+            c.execute("CREATE TABLE IF NOT EXISTS vol_obs(ts TEXT, symbol TEXT, mins_left INTEGER, spot REAL, implied_sd REAL, engine_sd REAL, model_emove REAL, realized REAL)")
+            c.execute("INSERT INTO vol_obs VALUES (?,?,?,?,?,?,?,NULL)", (now.strftime("%Y-%m-%d %H:%M"), sym, mins_left, spot, imp_sd, msd, forecast.model_emove))
+            c.commit()
     print(f"  {len(res)} structures priced; {len(qual)} with EV ≥ {min_ev:+.0%} vs history (held to expiry, fees in)")
     for evv, pw, desc, oi in res[:10]:
         print(f"  EV {evv:+6.0%}  P(profit) {pw:4.0%}  {desc}")
@@ -228,6 +287,20 @@ def grade():
         pnl = (intr - cost) * 100 - (4 if k2 is not None else 2) * FEE
         c.execute("UPDATE edge_picks SET graded_pnl=? WHERE rowid=?", (pnl, rid)); n += 1
     c.commit()
+    # Self-learning loop: who forecasts the move-to-close better, the market (implied) or the engine?
+    c.execute("CREATE TABLE IF NOT EXISTS vol_obs(ts TEXT, symbol TEXT, mins_left INTEGER, spot REAL, implied_sd REAL, engine_sd REAL, model_emove REAL, realized REAL)")
+    for rid, sym, ts, spot in c.execute("SELECT rowid, symbol, ts, spot FROM vol_obs WHERE realized IS NULL").fetchall():
+        r = c.execute("SELECT close FROM bars WHERE symbol=? AND interval='1d' AND ts=?", (sym, ts[:10])).fetchone()
+        if r and ts[:10] < datetime.now(ET).strftime("%Y-%m-%d") or (r and datetime.now(ET).hour >= 17):
+            c.execute("UPDATE vol_obs SET realized=? WHERE rowid=?", (abs(math.log(r[0] / spot)), rid))
+    c.commit()
+    vo = c.execute("SELECT implied_sd, engine_sd, realized FROM vol_obs WHERE realized IS NOT NULL").fetchall()
+    if vo:
+        days = c.execute("SELECT COUNT(DISTINCT substr(ts,1,10)) FROM vol_obs WHERE realized IS NOT NULL").fetchone()[0]
+        mr = statistics.mean(x[2] for x in vo)
+        print(f"vol_obs: {len(vo)} scans over {days} days. realized E|move| {mr*100:.3f}% vs market-implied {statistics.mean(x[0] for x in vo)*0.798*100:.3f}%"
+              f" vs engine {statistics.mean(x[1] for x in vo)*0.798*100:.3f}%  -> realized/market {mr/(statistics.mean(x[0] for x in vo)*0.798):.2f},"
+              f" realized/engine {mr/(statistics.mean(x[1] for x in vo)*0.798):.2f}  (engine trusted only if realized/market > 1 over >= 20 days)")
     allg = c.execute("SELECT cost, graded_pnl, ev FROM edge_picks WHERE graded_pnl IS NOT NULL").fetchall()
     if allg:
         spent = sum(x[0] * 100 for x in allg); pnl = sum(x[1] for x in allg)

@@ -27,6 +27,7 @@ Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until
 | P12 | Midterm relief call spread | LIVE (small) | SPY Nov 6 +1%/+2% call spread, buy Nov 3 15:45, exit Nov 4-5 | Nov 3 | SPY up day-after in 7/8 midterms since 1994, avg +0.48% | ≤ $20 |
 | P2 | Macro-print straddle (CPI/PPI/NFP) | RETIRED | — | — | realized/implied 0.74-0.82; CPI moves below normal days in last 12 prints | — |
 | P6 | Full-Kelly momentum (concepts/3) | RETIRED | — | — | log-growth negative at forced sizing; no directional edge found | — |
+| P13 | Single-stock news chase (headline -> long options) | RETIRED 2026-10-13 | — | — | 81 stocks × 730 sessions, 4,220 non-earnings ≥4% shocks: post-10:30 drift ≈ 0 (+0.03% close, +0.07% 3d), 97% of 3d move done by 10:30, ATM option proxy −33…−53%; laggard-peer catch-up ≈ 0; only ≥3σ sector shocks +0.49% (t 2.1, ~180 tests, fades OOS). research/news_trading.md | — |
 | P7 | Power-hour / far-OTM lotto | RETIRED | — | — | 0.05Δ finishes ITM 1.5% vs 10% fair; Mondays 0/138; power-hour continuation 14.4% vs 15.2% reversal | — |
 
 Universal execution rules (from the research): never buy below 0.10Δ; prefer debit spreads over singles; place a resting take-profit (2× for P8/P1, 3× for P11) immediately after every fill; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.

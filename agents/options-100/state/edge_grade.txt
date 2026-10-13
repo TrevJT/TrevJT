@@ -1,3 +1,5 @@
 graded 0 new; all-time 41 picks, return on premium +113% (engine predicted avg EV +148%), win rate 22%
   calls: 14 picks, return -34% vs predicted +104%, win 14%
   puts: 27 picks, return +209% vs predicted +171%, win 26%
+fit SPY: 2904 decisions / 726 sessions, in-sample bias 1.00, beta -2.96 +0.58 +0.45 +0.01 -0.10 +0.08; kurtosis raw 61.1 -> standardized 17.3 (normal 3.0)
+fit QQQ: 2904 decisions / 726 sessions, in-sample bias 1.00, beta -2.47 +0.43 +0.44 +0.11 -0.01 +0.04; kurtosis raw 51.2 -> standardized 18.7 (normal 3.0)

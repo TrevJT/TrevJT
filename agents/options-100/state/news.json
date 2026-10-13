@@ -1,19 +1,25 @@
 {
- "ts": 1791833627.1375391,
- "hours": 0.08,
+ "ts": 1791921930.77155,
+ "hours": 0.1,
  "errors": [],
  "items": [
   {
-   "t": 1791832285.0,
+   "t": 1791921807.0,
+   "src": "cnbc",
+   "title": "S&P 500 closes near flat after big banks post earnings and memory chip stocks decline: Live updates",
+   "flag": ""
+  },
+  {
+   "t": 1791921668.0,
    "src": "gnews-oil-iran",
-   "title": "Iran offers to mediate Saudi-Houthi talks during foreign ministers' call - The Jerusalem Post",
+   "title": "Iran Shipping Update \u2013 October 13, 2026 - United Against Nuclear Iran | UANI",
    "flag": "war"
   },
   {
-   "t": 1791832190.0,
-   "src": "cnbc",
-   "title": "Katie Stockton says retail stocks could be primed for a counter-trend rally. These stocks may lead the bounce",
-   "flag": ""
+   "t": 1791921605.0,
+   "src": "gnews-oil-iran",
+   "title": "Live Updates: Latest from Israel, Iran, and the Middle East - The Jerusalem Post",
+   "flag": "war"
   }
  ]
 }

@@ -257,6 +257,17 @@ def scan():
     if imp_sd:
         msd = statistics.pstdev([g - 1 for g in paths])
         print(f"  market-implied sd to close {imp_sd*100:.3f}% vs engine sd {msd*100:.3f}%  (ratio {msd/imp_sd:.2f}; >1 = engine thinks options cheap)")
+        mem = statistics.mean(abs(g - 1) for g in paths)
+        print(f"  E|move| apples-to-apples: market {imp_sd*0.798*100:.3f}% vs engine {mem*100:.3f}% (ratio {mem/(imp_sd*0.798):.2f})")
+        # per-strike engine fair value / market mid: the smile already charges for tails, so a ratio that rises toward the
+        # wings means the engine's tail shape (not its scale) is what makes OTM look cheap (LEARNINGS 2026-10-13)
+        sm = []
+        for e, typ, k, b, a, iv, oi, vol in sorted(q, key=lambda r: (r[1], r[2])):
+            mid = (b + a) / 2
+            if mid < 0.03: continue
+            fair = statistics.mean(max(0.0, (spot * g - k) if typ == "call" else (k - spot * g)) for g in paths)
+            sm.append(f"{typ[0].upper()}{k:g} {fair/mid:.2f}")
+        print("  engine fair/mid by strike: " + "  ".join(sm))
         if "--log" in sys.argv:
             c.execute("CREATE TABLE IF NOT EXISTS vol_obs(ts TEXT, symbol TEXT, mins_left INTEGER, spot REAL, implied_sd REAL, engine_sd REAL, model_emove REAL, realized REAL)")
             c.execute("INSERT INTO vol_obs VALUES (?,?,?,?,?,?,?,NULL)", (now.strftime("%Y-%m-%d %H:%M"), sym, mins_left, spot, imp_sd, msd, forecast.model_emove))

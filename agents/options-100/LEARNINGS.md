@@ -150,3 +150,11 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
     - some filers tag shares or float in thousands, so guard against >20× jumps.
   - Never open the 1M-entry submissions.zip in many processes (~400MB per opener).
 - Fill study (21:00 Oct 14): option trades print at mid (median position 0.50 over 32 tickers); they pay a median 37% of the quoted half-spread. Thin names show fake-wide quotes. Use limit-at-mid-and-walk, and re-price backtests at real fills. Even so, only mid-cap gem 1-year calls (sell at 6m) turn positive (+4%). The IV markup (~1.5× RV) is the binding cost.
+- 2026-10-14 gem deep dive (research/gems_deepdive.md):
+  - About 1/3 of the 45 "undervalued" names were cheap for reasons the filings miss: buyouts, tariff-refund COGS, peak-cycle margins, partial-ownership MLPs, missed debt, and the wrong ticker.
+  - FIXED in research_fundamental.py:
+    - more debt tags, plus a summed notes/convertibles floor;
+    - interest paid with no debt tag now means debt = NaN, never 0;
+    - a ticker owned by another live CIK is rejected (Graybar's "form10-k" prefix had become FORM).
+  - The gem result is unchanged after the fix (small OOS +7.4%, t 3.0).
+  - Lesson: always run the screen → "why is it cheap" read before acting. Small-cap growth names rarely list LEAPS, so true LEAPS candidates skew to $2B+.

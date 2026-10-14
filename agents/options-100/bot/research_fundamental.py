@@ -88,7 +88,11 @@ INST = {
     "equity": ["StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
     "cash": ["CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents", "Cash"],
     "sti": ["ShortTermInvestments", "MarketableSecuritiesCurrent", "AvailableForSaleSecuritiesDebtSecuritiesCurrent"],
-    "ltd": ["LongTermDebt", "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities", "DebtLongtermAndShorttermCombinedAmount"],
+    "ltd": ["LongTermDebt", "LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities", "DebtLongtermAndShorttermCombinedAmount",
+            "DebtAndCapitalLeaseObligations", "LongTermDebtAndFinanceLeaseObligations"],  # UPBD tags only DebtAndCapitalLeaseObligations (2026-10-14)
+    # separately-tagged instruments, summed as a floor (REAL: notes + converts on different tags; old screen saw $144M of $463M)
+    "conv": ["ConvertibleDebtNoncurrent", "ConvertibleNotesPayable", "ConvertibleDebt"],
+    "notes": ["SeniorNotes", "LongTermNotesPayable", "SecuredDebt", "UnsecuredDebt", "LongTermLoansPayable"],
     "ltdnc": ["LongTermDebtNoncurrent", "LongTermDebtAndCapitalLeaseObligations", "ConvertibleNotesPayableNoncurrent",
               "SeniorLongTermNotes", "LongTermNotesPayable", "LongTermLineOfCredit"],
     "ltdc": ["LongTermDebtCurrent", "DebtCurrent", "LongTermDebtAndCapitalLeaseObligationsCurrent"],
@@ -97,7 +101,7 @@ INST = {
     "inv": ["InventoryNet"],
 }
 # for "max" groups take the max across concepts per period (totals >= components); others take first-priority
-MAXGROUP = {"rev", "cogs", "ltdnc", "ltdc", "stb", "cash", "sti"}
+MAXGROUP = {"rev", "cogs", "ltdnc", "ltdc", "stb", "cash", "sti", "conv", "notes"}
 D = np.timedelta64(1, "D")
 FORMS = {"10-K", "10-Q", "10-K/A", "10-Q/A", "10-KT", "10-KT/A", "10-QT"}
 
@@ -471,6 +475,7 @@ def tickers():
     print("current mapped", len(out), "need HF mapping", len(need))
     cache = load("instpref.pkl") if P("instpref.pkl").exists() else {}
     fails = defaultdict(int)
+    owner = {t: c for c, t in cur.items()}   # a symbol a *different* live company owns today is never ours
     for k, cik in enumerate(need):
         sb = subs_[cik]
         per = [x for x in sb["per"] if x[1] >= "2010-06-01"]
@@ -489,6 +494,10 @@ def tickers():
         f0, f1 = pd.Period(per[0][1], "M"), pd.Period(per[-1][1], "M")
         best = None
         for c, w in sorted(cands.items(), key=lambda x: -x[1]):
+            if owner.get(c, cik) != cik:
+                # Graybar's documents are "form10-k.htm" -> prefix FORM -> FormFactor's bars (2026-10-14)
+                fails["owned"] += 1
+                continue
             if c not in sym_months.index:
                 fails["nosym"] += 1
                 continue
@@ -551,7 +560,12 @@ def qfeatures(facts, subs_):
     Q["adjx"] = Q.sbc.fillna(0) + Q.amort.fillna(0) + Q.restr.fillna(0)
     d1 = Q.ltd.fillna(0) + Q.stb.fillna(0)
     d2 = Q.ltdnc.fillna(0) + Q.ltdc.fillna(0) + Q.stb.fillna(0)
-    Q["debt"] = np.maximum(d1, d2)
+    d3 = Q.conv.fillna(0) + Q.notes.fillna(0) + Q.ltdc.fillna(0) + Q.stb.fillna(0)
+    Q["debt"] = np.maximum(np.maximum(d1, d2), d3)
+    # paying >$1M/qtr interest with no debt found = an untagged instrument, not "debt-free": mark unknown so EV/S can't flatter it
+    miss = (Q.debt <= 0) & (Q.intexp > 1e6)
+    print(f"  debt audit: {int(miss.sum())} of {len(Q)} quarter rows pay interest with no debt tag -> debt=NaN")
+    Q.loc[miss, "debt"] = np.nan
     Q["cashx"] = Q.cash.fillna(0) + Q.sti.fillna(0)
     Q["shq"] = Q.dilsh.fillna(Q.bassh)
     g = Q.groupby("cik")

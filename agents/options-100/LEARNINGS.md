@@ -54,3 +54,83 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
 ## 2026-10-13: news trading tested (Trevor: "are those trades already priced in? realtime feed?")
 - Event study (bot/research_news.py, research/news_trading.md): single-stock news is priced in before a 5-minute RSS bot can act. Post-shock drift is about 0 and the ATM option proxy is −33…−53%. Today: the STX/WDC low was 09:25, and by the 10:38 'plummet' headline 60% of the drop had already reversed. P13 RETIRED.
 - Use news as a VETO (skip entries when a headline's move is already ≥1.5σ) rather than as a trigger. Fastest feed: Alpaca free news websocket (Benzinga). Needs Trevor to open an account and hand over the key; no-account fallback is SEC 8-K polling. Proposed, not built.
+
+## 2026-10-14: market.db lock root cause
+- Observed: history.py update hit "database is locked" two days running (Oct 13 09:26, Oct 14 09:35).
+- Cause: the launchd odds job (`predictions.py update`) held one write transaction from its first INSERT through hundreds of Polymarket history fetches (25 s timeout × 3 tries each). On Oct 14 that ran 07:17–10:10.
+- Fix: commit after discover, after each market's history, and after each Kalshi series. Verified: history.py update succeeded right after (381k bars upserted).
+- Also: the Robinhood MCP get_portfolio hung for 17 min at 09:35, so the 09:45 shadow scan was missed. Idea: run pre-open MCP calls before 09:30 so a hang doesn't eat the entry window.
+- CORRECTION (11:46): most of today's "hangs" were the Mac SLEEPING. pmset log shows deep sleep on battery all morning, with ~45 s DarkWakes every ~16 min until 11:45 ET. The 17-min MCP "hang", predictions.py running 3 h, and stale heartbeats all trace to that. The IPv6 timeout is still real (tested while awake) and the fixes stand.
+  Fix: new launchd agent com.trevjt.options100.awake runs `caffeinate -is` 09:20–16:10 ET on weekdays. The failsafe's own caffeinate can't help, because launchd doesn't fire while asleep. Limit: a closed lid on battery still sleeps.
+
+## 2026-10-14: direction predictability tested (research/direction.md, bot/research_direction.py)
+- 560 OOS tests (75 indicators × 4 horizons × SPY/QQQ; train <2015, test 2015+): 0 survive BH/Bonferroni. Macro "hits" (claims, Sahm, payrolls, 200d MA) flipped sign after 2015. Pre-FOMC drift and turn-of-month are dead OOS.
+- Combined model for SPY next-day open→close: 50.8% vs 53.5% for always-up.
+- The 0DTE straddle engine (VIX≥16) models at −22.5% per trade, and bootstrap ruin is 100%.
+- Only survivor family: buy short-term oversold (RSI2<10 / VIX>25 / VIX/VIX3M>1) via a 14–30d call, held 5–10 sessions. +11% per trade, t 1.7, ~12/yr. Puts lose everywhere.
+- XSP (mini-SPX) options are tradable on this account; a 14–30d ATM call costs ~$84–123.
+- Trevor 12:50: do NOT retire yet. Status is "not yet found" for SPY/QQQ. Keep the dip-buy. Research continues: oracle break-even + pooled ML, a 300-ticker universe scan, intraday early-session timing (research/INDEX.md).
+
+## 2026-10-14: universe scan
+- Owner asked whether any other index, sector or individual stock fits the models better than SPY. Tested 299 tickers × 11 models (research/universe.md, bot/research_universe.py): ranked on 2010–18, evaluated on 2019+. Excess is measured against each ticker's own random-day return; options priced at RV20 × market implied/realized and today's real spreads.
+- **Answer: no.** Ticker-level dip-buy skill does not persist: IS→OOS Spearman 0.01–0.09, and the IS top decile does no better OOS than the whole universe. 0 positive BH survivors out of 3,186 tests.
+- Single-name dip-buy calls: −5% EV pooled. SPY: +15% (RSI2).
+- The cheap-contract "hidden gem" idea fails. The 43 names with ATM ~21d calls ≤ $85 return −9%, because tick-size spreads are 10–25% of premium.
+- The oversold effect itself is universal on the underlying: +0.1–0.2% per 5 days, t 3.6, replicated in both periods and every equity class. It is too small to pay single-stock IV and spreads. Keep the dip-buy on XSP only.
+- Pricing lesson: a flat k×RV20 IV proxy flatters dip-buys by 5–8 points. SPY's implied/realized is 1.18 on a median day but 1.35 on RSI2<10 days. Price dips with the live ratio, not a constant.
+- Overbought names do underperform (t 3.1 OOS), but puts lose in every class except VXX/UVXY. Trend, single-stock PEAD and ATR-shock dips are retired.
+- Character persists (VR5 ρ 0.46): mean-reverting names dip-buy better (ρ −0.2, p ≤ 0.002 for 3-down, BB and ATR triggers). Only a tilt; it does not flip the sign.
+- Lead to paper-test on shares only: crypto-linked names (MARA, RIOT, CLSK, COIN, MSTR, HOOD) fill their gaps. +2.3% per event open→close, 64% hit rate, t 3.0. It was found after the fact, so it needs an intraday replay first.
+- Trevor 13:05: account size is NOT a research filter. Keep any strategy with edge, and record its minimum capital (e.g. 1 SPY 30d call ≈ $1,000+, so ~$3–5k at 20–35% sizing) on a "ready when funded" list.
+
+## 2026-10-14: oracle + ML direction
+- Oracle (research/oracle_ml.md, bot/research_oracle_ml.py). Break-even accuracy at fair 0DTE pricing (implied = realized per VIX bucket):
+  - XSP 0DTE ATM at the open: 51.5%. 0.30Δ: 53%. Intraday entries: 55–59% on SPY, 62–69% on QQQ/IWM.
+  - 1–2 week ATM: ~56%. 4 week: 54%. SPY/QQQ 1% debit spreads: 52–53%.
+- The 0DTE pricing assumption swings the break-even from 34% (live-quote k=0.29 extrapolated) to 69% (direction.md's 0.8·VIX convention). MEASURE IT: log the 09:35 XSP/SPY 0DTE straddle against realized before trusting any 0DTE result.
+- Sizing: 20% of equity is over-Kelly below about 65% accuracy. Daily 0DTE at 60% accuracy still ruins the account 73% of the time at 20% sizing. Kelly is 3–7% at 55–60%.
+- Pooled ML (130 symbols, 782k rows, yearly walk-forward with purge, LR + HistGB, 4 targets) never beats "always up" overall (AUC 0.51–0.53).
+  - Confident buckets reach 56–68%, but bucket accuracy equals the bucket's up-rate: the model picks bullish regimes (oversold, VIX/VIX3M) and calls down days no better than a coin flip.
+  - Non-overlapping, it adds nothing over the RSI2<10 rule. RSI2<10 → XSP 1wk ATM call: +27%/trade, t 2.3, 9/12 years.
+  - 0 of 36 ML option tests pass Bonferroni.
+- The "big-move" target is look-ahead when mapped to P&L (scored only on days that did move). Never use it for P&L.
+- Owner rule: account size is not a filter. Report min capital (contract cost ÷ sizing) and keep a "ready when funded" list (in oracle_ml.md).
+
+## 2026-10-14: intraday timing
+- Tested whether the first minutes or hours predict the rest of the day (research/intraday.md, bot/research_intraday.py). Data: 4,841 one-minute sessions, 2007-01 to 2026-03, from the public HuggingFace mirror `Rrishab/OHLCV-1m`. It was checked against market.db: 1h closes match at 0.0 bp and daily closes within 1 bp, with no missing SPY/QQQ sessions. Train 2007–2018, OOS 2019+.
+- Result: 3 of 323 OOS tests pass BH, and none of them is tradable (a 0.1 bp 5-minute reversal, and one ex-post subset). Gao intraday momentum was t 3.1–4.0 in 2007–18 and is gone from 2019 (SPY t −0.3, IWM −2.0, reversed). ORB, gap-and-go, VWAP, lunch, power hour and the QQQ/semis/TLT/dollar/oil leads are all dead OOS.
+- "No midday news upset" helps only after the fact: on QQQ the first hour holds to the close at +0.07% (t 3.4) on days with no later 4σ shock. The tradable exit-on-shock version is +0.05%, which is worth about +1% EV on an option.
+- Owner's crypto gap-fade lead: intraday from 09:35 it is +0.46% per event (t 2.0), not +2.3%. It was positive 2021–25 and −1.15% in 2026 Q1. Weeklies come out −2%. Undetermined.
+- PRICING TRAP: 0DTE IV = VIX on calendar minutes, the convention that matches vol_obs, makes realized/implied 1.3–1.65×, so always-call and always-put both come out +27%. direction.md's VIX/√252×0.8 per session is about 2.3× dearer and gives −28%. The answer flips on this. Rank signals with FAIR IV (implied = realized on the same days) and collect real 0DTE quotes (XSP 0.40Δ mid/IV at 10:30 and 15:00) before trusting any 0DTE EV.
+- Paper-only watch: SPY/QQQ first-hour continuation when VIX is in the bottom tercile (OOS t 2.7, about 43 days/yr, fair EV about +20%, rich −11%). Even +15–20% EV at PoP 30% loses at the median at 15–25% sizing (volatility drag).
+
+## 2026-10-14: small-cap scan
+- Owner idea: $1–5B small caps should have option liquidity but less crowding, so edges should survive (research/smallcap.md, bot/research_smallcap.py). Universe: SPSM/MDY live holdings plus IWM via Wayback (the iShares CSV endpoint now returns HTML to scripts). That gave 2,400 names → 810 at $1–5B → 758 optionable.
+- **Liquidity is the wall.** Median ATM spread is 44% of mid. Only 11 names pass OI≥500, ≥200 contracts/day and ≤10% spread; 65 pass at ≤20%. Quiet names: 28% median spread. Crowded names: 17%. Small-cap option liquidity exists only where the crowd is.
+- No pooled strategy passes BH out of sample (16 families, t clustered by week). At measured spreads every long-option structure loses 10–25% of premium. At mid fills the dips are +4% and breakouts +14%, so the spread is the whole story.
+- The owner's thesis is rejected as stated. The quiet-name dip edge on the stock is +0.30% per 5 days (t 1.1) against +0.24% for crowded names: no bigger. 52-week breakouts work only in crowded names (+12 pts x OOS, t 2.6; IS +10, t 2.2). Crowding is measured today, so treat that as a lead, not an edge.
+- **Survivorship rule:** measure excess against each ticker's own unconditional drift, never against IWM. Today's list compounds at 21%/yr against 10.7% for IWM. Against IWM, PEAD and the pre-earnings run-up look significant (t 2–2.8); against own drift they are t ≤1.4.
+  - yfinance returns no bars for delisted tickers. 43% of the 2018 IWM cohort is unrecoverable, and its survivors returned +134% against +96% for IWM.
+- Mean-reversion character (VR5) does not persist in small caps (IS→OOS ρ 0.08), unlike the large-cap scan. Small caps no longer lag SPY: the IS lead t 2.1 is OOS t −1.0.
+- Watchlist (paper only):
+  - STNE RSI2<10 21d call ($79, 7.9% spread, OOS +31% on n=104, IS-selected).
+  - When funded: PLNT/OMER/CALM/DHT RSI2<10 calls, only when SPY<200dMA or VIX>20.
+  - XSP dip-buy remains the better vehicle: same dip effect, 1–3% spread, PoP 48% against 38–43% here.
+
+## 2026-10-14: forensic red flags + binary events
+- Owner ideas: a "mini Hindenburg" (buy puts on short-seller-style red flags) and "stocks hinging on a binary event" (research/forensic_events.md, bot/research_forensic_events.py). Nothing beats XSP dip-buy. Nothing is retired.
+- **Activist short reports (560 events, 2012–26):** day 0 is −6.8% excess (t −13). After it, the mean drift is small and the median keeps sliding (−23% at 250d). Fraud-type reports drift −13% by 120d (t −3.2). Still, day-1 puts lose −23% to −33% at IV 1.25×RV, and −6% even for 1y fraud-only puts at IV=RV. Post-report IV (~65%) already prices the drift: same lesson as news_trading.md.
+- **Forensic flags (EDGAR, point-in-time by filing date):**
+  - They raise 12m crash odds 1.2–2.2×, mostly because flagged names are more volatile, which own-vol option pricing already charges for.
+  - Beneish, DSRI and soft-asset flags do NOT predict underperformance in 2012–26 mid/small caps; they flag growers and acquirers. Filing-event flags (8-K 4.02 restatement, NT late filings, going concern, auditor change) are the consistently negative ones (−5 to −14 pts per 6m OOS).
+  - Puts on them break even only at IV ≈ realized; at 1.2×RV every cell is negative.
+  - Use score ≥3 or a recent 4.02/NT as a "never buy calls" filter.
+- The screen would have flagged about 20% of activist targets in advance (Beneish 2.7×, restatement 2.6× base) at roughly 12 false positives per hit.
+- **FDA:** expected |move| ≈ 19% at a 25% CRL base rate, and 22% of CRLs fall more than 50%. Live small-cap PDUFA straddles price 1–3× that, so don't buy straddles. Lead (paper): names that fell into the PDUFA (bottom tercile of 20d return vs XBI) got CRLs 1.7× as often, IS and OOS. A 20%-OTM put pays only if the implied event move is ≤20%.
+- **Merger arb:** wide spreads overstate break risk (>40% implied → about 10% realized). Break puts lose; completion calls are capped at the spread. Index adds are all in the overnight gap.
+- **Data tools found:**
+  - EDGAR full-text search API: `efts.sec.gov/LATEST/search-index?q="phrase"&forms=10-K&dateRange=custom&startdt&enddt&from=`, 100 hits per page, about 6 req/s is fine.
+  - `submissions.zip` carries 8-K item codes (4.01/4.02/5.02) per filing.
+  - Open each big zip ONCE per worker process: the ~1M-entry central directory takes about 25s per open.
+- **Pitfall:** tickers get reused. Merger targets and short-report targets mapped by ticker alone produced −90% "completed deals". Cut price series at long gaps and validate the CIK with company-name overlap.
+- Owner's options-book case (a financial-services name down on pending legislation) was not found in any searchable book. Best fit, low–medium confidence: SLM 2007. A $60 LBO broke after the student-loan subsidy cut, and the stock fell 67% in 6 months at about 25% realized vol, so an 80%-strike put bought in July paid about 30–60×.

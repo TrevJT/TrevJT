@@ -729,3 +729,27 @@ I ran one failsafe cycle at 16:00 ET. Nothing was traded, and the account is fla
 
 The end-of-day step starts at 16:05 ET, so I didn't run it: the daily report, the `history.py update` retry and the commit are still to do. The 09:26 `history.py update` hit a database lock, and its retry is part of that step. Whoever runs the next cycle at or after 16:05 needs to pick these up.
 2026-10-13 14:01:01 one-shot cycle finished
+2026-10-14 08:28:01 heartbeat stale 66151s -> running one-shot cycle
+I ran one failsafe cycle at 10:29 ET. It was idle: no trades and no orders.
+
+- **Broker:** no option positions and no option orders today. Equity and cash are both $171.55.
+- **Gate:** STAND_DOWN. Yesterday's VIX close was 15.68 and it's 15.70 now, both under the 16 threshold, and there's no prediction-market shock. So no 0DTE entries today, and the router scored every playbook below 2.
+- **News:** the hot CPI print has traders betting on a Fed hike again. Ships are being sunk in Hormuz and Saudi Aramco facilities were attacked, pushing oil up. Today's flags already cover all of this, and with entries switched off, setting a market regime would change nothing.
+- **Files written:** `state/heartbeat.json` with `source: "failsafe"`, one line each in `cycle.log` and the journal, and the VIX update in `day.json`. I removed `cycle.lock`.
+
+The main orchestrator session may not actually be down. It wrote its own heartbeat (pre-open done late after the MCP hang) at 10:28:08 ET, 7 seconds after the failsafe started this run. This run was probably a near-miss on the 480-second stale-heartbeat timer, not a real outage.
+
+`day.json` also flags an open question for you: the +$100 deposit still hasn't shown up in cash.
+2026-10-14 08:34:19 one-shot cycle finished
+2026-10-14 09:00:33 heartbeat stale 542s -> running one-shot cycle
+I ran one failsafe cycle at 11:01 ET. It was a stand-down cycle: no orders were placed and the account is flat.
+
+- **Gate:** the day is still STAND_DOWN. Yesterday's VIX close was below 16, VIX is 15.77 now, and there's no prediction-market shock, so the rules allow no new trades today.
+- **Account:** Robinhood shows 0 option positions and 0 orders today, which matches the bot's own records. Equity and cash are both $171.55. There was nothing to manage or exit.
+- **Heartbeat:** I wrote `state/heartbeat.json` with `source: failsafe`, added a line to `cycle.log`, updated `day.json` with VIX 15.77, and removed `cycle.lock`.
+- **News check:** this step didn't work. `news.py --hours 1` hung for over 60 seconds with no output and I killed it. A feed hang already happened this morning and was logged as fixed at 10:51, so it seems to still be there. With no trades allowed today it changes nothing, but it needs looking at before a day when trading is allowed.
+
+Two more things for you:
+- **Deposit:** `day.json` notes that the +$100 deposit hasn't shown up in cash; it's still at $171.55.
+- **Uncommitted changes:** the bot's source files (`news.py`, `predictions.py`, `idle.sh`) and `LEARNINGS.md` have changes that aren't committed. I left them for the end-of-day commit.
+2026-10-14 09:14:46 one-shot cycle finished

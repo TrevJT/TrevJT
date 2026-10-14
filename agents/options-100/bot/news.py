@@ -6,6 +6,9 @@
 
 Writes state/news.json {ts, items:[{t, src, title, flag}]}. Flag = matched keyword group (fed, war, tariff, oil, macro, shock).
 """
+import socket as _sk  # IPv6 connects time out on this network (2026-10-14: v6 5 s timeout vs v4 0.08 s); force IPv4
+_gai = _sk.getaddrinfo
+_sk.getaddrinfo = lambda h, p, f=0, *a, **k: _gai(h, p, _sk.AF_INET, *a, **k)
 import json, re, sys, time, urllib.request, email.utils, xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -38,6 +41,17 @@ def main():
     import signal  # hard cap: a feed that drips bytes can defeat the per-socket timeout and hang the trading cycle
     signal.signal(signal.SIGALRM, lambda *a: (_ for _ in ()).throw(TimeoutError("news.py 25s cap")))
     signal.alarm(25)
+    # SIGALRM and watchdog threads both failed to break a stuck sock_connect (2026-10-14: hung 17 min, starved the heartbeat).
+    # Backstop: a forked child SIGKILLs us after 40 s. It closes stdio so pipelines (news.py | grep) don't wait on it.
+    import os
+    me = os.getpid()
+    if os.fork() == 0:
+        dn = os.open(os.devnull, os.O_RDWR)
+        for fd in (0, 1, 2): os.dup2(dn, fd)
+        time.sleep(40)
+        try: os.kill(me, 9)
+        except OSError: pass
+        os._exit(0)
     hours = float(sys.argv[sys.argv.index("--hours") + 1]) if "--hours" in sys.argv else 12
     cutoff = time.time() - hours * 3600
     items, seen, errs = [], set(), []

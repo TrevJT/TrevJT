@@ -1,24 +1,24 @@
 {
- "ts": 1791921930.77155,
+ "ts": 1792007791.950881,
  "hours": 0.1,
  "errors": [],
  "items": [
   {
-   "t": 1791921807.0,
+   "t": 1792007641.0,
    "src": "cnbc",
-   "title": "S&P 500 closes near flat after big banks post earnings and memory chip stocks decline: Live updates",
+   "title": "CoreWeave shares tumble as bond yields near 15% on concern about AI borrowing binge",
    "flag": ""
   },
   {
-   "t": 1791921668.0,
+   "t": 1792007632.0,
    "src": "gnews-oil-iran",
-   "title": "Iran Shipping Update \u2013 October 13, 2026 - United Against Nuclear Iran | UANI",
-   "flag": "war"
+   "title": "Hormuz hit hands marine war underwriters another total loss as attacks surge and rhetoric escalates - Insurance Business",
+   "flag": "war,shock"
   },
   {
-   "t": 1791921605.0,
+   "t": 1792007525.0,
    "src": "gnews-oil-iran",
-   "title": "Live Updates: Latest from Israel, Iran, and the Middle East - The Jerusalem Post",
+   "title": "Man in Iran International attack plot told police he was paid \u00a32,000 to film - Iran International",
    "flag": "war"
   }
  ]

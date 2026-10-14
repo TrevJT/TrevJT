@@ -8,6 +8,9 @@ Stores into data/market.db:
   predictions.py now         print the current odds board (what the bot reads pre-open)
   predictions.py movers      biggest 1-day and 5-day odds moves among tracked markets
 """
+import socket as _sk  # IPv6 connects time out on this network (2026-10-14: v6 5 s timeout vs v4 0.08 s); force IPv4
+_gai = _sk.getaddrinfo
+_sk.getaddrinfo = lambda h, p, f=0, *a, **k: _gai(h, p, _sk.AF_INET, *a, **k)
 import os, sys, json, sqlite3, time, urllib.request, urllib.parse
 from datetime import datetime, timezone, timedelta
 
@@ -75,6 +78,7 @@ def poly_discover(c):
     for mid, (topic, qn, ev, end, vol, tok, prob) in found.items():
         c.execute("INSERT OR REPLACE INTO pm_markets VALUES (?,?,?,?,?,?,?,?)", ("poly", mid, topic, qn, ev, end, vol, tok))
         c.execute("INSERT OR REPLACE INTO pm_prices VALUES (?,?,?,?)", ("poly", mid, datetime.now(ET).strftime("%Y-%m-%d %H:%M"), prob))
+    c.commit()  # never hold the market.db write lock across network fetches (blocked history.py 07:17-10:10 on 2026-10-14)
     return found
 
 
@@ -84,6 +88,7 @@ def poly_history(c, found):
         h = get("https://clob.polymarket.com/prices-history", {"market": tok, "interval": "max", "fidelity": 1440}) or {}
         rows = [("poly", mid, datetime.fromtimestamp(p["t"], ET).strftime("%Y-%m-%d"), float(p["p"])) for p in h.get("history", [])]
         c.executemany("INSERT OR REPLACE INTO pm_prices VALUES (?,?,?,?)", rows); n += len(rows)
+        c.commit()
     return n
 
 
@@ -99,6 +104,7 @@ def kalshi(c):
                 c.execute("INSERT OR REPLACE INTO pm_markets VALUES (?,?,?,?,?,?,?,?)",
                           ("kalshi", m["ticker"], topic, m.get("title"), m.get("event_ticker"), m.get("close_time"), vol, s))
                 c.execute("INSERT OR REPLACE INTO pm_prices VALUES (?,?,?,?)", ("kalshi", m["ticker"], ts, float(p))); n += 1
+            c.commit()
     return n
 
 

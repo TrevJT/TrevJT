@@ -134,3 +134,18 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
   - Open each big zip ONCE per worker process: the ~1M-entry central directory takes about 25s per open.
 - **Pitfall:** tickers get reused. Merger targets and short-report targets mapped by ticker alone produced −90% "completed deals". Cut price series at long gaps and validate the CIK with company-name overlap.
 - Owner's options-book case (a financial-services name down on pending legislation) was not found in any searchable book. Best fit, low–medium confidence: SLM 2007. A $60 LBO broke after the student-loan subsidy cut, and the stock fell 67% in 6 months at about 25% realized vol, so an 80%-strike put bought in July paid about 30–60×.
+
+## 2026-10-14: fundamental peer valuation
+- Owner idea: find under/over-valued $300M–$10B stocks vs direct competitors (Fiserv crash, Alkami "cheap") and buy calls/puts (research/fundamental.md, bot/research_fundamental.py). Data: SEC EDGAR companyfacts (earliest-*filed* value per period = point-in-time), SIC peer groups, plus delisted prices from HuggingFace `paperswithbacktest/Stocks-Daily-Price` mapped by 10-K doc-name ticker prefixes. That covers 84–96% of the eligible universe each year, against 49% for survivors only.
+- **Stock-level edge, small caps only.** "Gem" = EV/S-vs-growth residual + gross profit/assets, both peer z. The top−bottom quintile, peer-relative, earns +5.4%/12m IS (t 3.8) and +7.2% OOS (t 3.0, BH), and was positive in 13 of 14 years. It is ~0 IS in $2–10B and fades in the most liquid small caps. Classic value (P/E, EV/EBIT, FCF yield), F-score, accruals, insiders and Rule of 40 are all dead OOS.
+- **Options cannot capture it.** Live 3–6m ATM spreads are 59% of mid in small caps (30% mid; LEAPS 42/19%) and IV/RV is 1.47. Gem calls lose −34% to −56% per trade with ≈0 excess over random calls. Today's picks need +21% in 5 months to break even. Bankroll P(grow) ≤ 7% at every size. Status: NOT YET FOUND (options), not retired. Ready when funded as a stock long/short. Paper: mid-cap gem LEAPS at mid (+11% only at mid fills).
+- **Collapse flags are volatility.** "Overvalued + deteriorating" lifts −30% odds 1.3–1.8×, but only 1.07–1.27× against same-vol names, with 74–89% false positives. Puts lose 41–62%. This agrees with forensic_events.md.
+- **Fiserv was not catchable from filings.** It peaked at $237.79 on 2025-03-03 and fell −44% on 2025-10-29 (now $46, −81%). Before each drop its growth (7%), margins (rising), CFO/NI (2×) and DSO were fine; only "rich for its growth vs fintech peers" (z +1.0) flagged. The risk score put it at the 37th–46th percentile. The GAAP deterioration shows only in filings after the drops.
+- **Alkami.** Cheap for its growth vs Q2/nCino/JKHY (2.9× sales at 27% growth), but growth is acquisition-inflated and decelerating, SBC is 15% of revenue and GAAP margin −7%. Gem z +0.27, and historical analogs show no edge.
+- **Lessons.**
+  - Survivors-only samples inflated value/quality spreads ~50% and hid ~21% of crashes.
+  - EDGAR quirks:
+    - DEF 14A pay-vs-performance facts pollute NetIncomeLoss, so keep 10-K/10-Q only;
+    - companyfacts can miss a whole 10-Q (ALKT Q1-26), so derive it from YTD;
+    - some filers tag shares or float in thousands, so guard against >20× jumps.
+  - Never open the 1M-entry submissions.zip in many processes (~400MB per opener).

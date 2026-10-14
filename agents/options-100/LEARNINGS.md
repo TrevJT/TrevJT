@@ -149,3 +149,4 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
     - companyfacts can miss a whole 10-Q (ALKT Q1-26), so derive it from YTD;
     - some filers tag shares or float in thousands, so guard against >20× jumps.
   - Never open the 1M-entry submissions.zip in many processes (~400MB per opener).
+- Fill study (21:00 Oct 14): option trades print at mid (median position 0.50 over 32 tickers); they pay a median 37% of the quoted half-spread. Thin names show fake-wide quotes. Use limit-at-mid-and-walk, and re-price backtests at real fills. Even so, only mid-cap gem 1-year calls (sell at 6m) turn positive (+4%). The IV markup (~1.5× RV) is the binding cost.

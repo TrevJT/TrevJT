@@ -28,7 +28,7 @@ Caches: data/research_fund_*.pkl / .json (data/ is gitignored).
 import socket as _sk
 _gai = _sk.getaddrinfo
 _sk.getaddrinfo = lambda h, p, f=0, *a, **k: _gai(h, p, _sk.AF_INET, *a, **k)   # IPv6 times out on this machine
-import sys, json, math, pickle, time, re, zipfile, warnings, datetime as dt
+import os, sys, json, math, pickle, time, re, zipfile, warnings, datetime as dt
 from pathlib import Path
 from collections import defaultdict
 import numpy as np
@@ -1309,6 +1309,16 @@ def bs(S, K, T, sig, call=True, r=0.035):
     return np.where(call, c, c - S + K * np.exp(-r * T))
 
 
+# 2026-10-15 IV correction. yfinance's `impliedVolatility` runs high (Robinhood BAH Jan-28 70C 33% vs yf 46%).
+# These are median IV/rv3 over the same 200-name random sample and cached chains (2026-10-14), with IV re-solved from the
+# bid/ask MID by bot/ivsolve.py in the backtest's own pricing convention (bs(): r=3.5%, q=0), so model premium == quoted mid.
+# Keys (bucket, tenor "36"=60-200 DTE / "leap"=300+ DTE, side). Old yfinance values: small 1.48, mid 1.34 for everything.
+# IVFIX=0 env var reproduces the pre-correction run.
+IVRV_MID = {("small", "36", "call"): 1.340, ("small", "36", "put"): 1.300, ("small", "leap", "call"): 1.352, ("small", "leap", "put"): 1.357,
+            ("mid", "36", "call"): 1.219, ("mid", "36", "put"): 1.267, ("mid", "leap", "call"): 1.297, ("mid", "leap", "put"): 1.284}
+IVFIX = os.environ.get("IVFIX", "1") != "0"
+
+
 def opt_trades(d, call, T_m, hold_m, k, spread, mny=1.0):
     """entry at month-end close: ATM (or mny*S) option, T_m months to expiry, exit after hold_m months.
     IV = rv3 x k (entry) and rv3(exit month) x k; cost = buy mid*(1+s/2), sell mid*(1-s/2)."""
@@ -1367,7 +1377,10 @@ def options():
             base = U[(U.bucket == b) & U[f"r{hold}"].notna() & U.rv3.notna() & U.z_gem.notna()].copy()
             sp = L[b]["sleap"] if Tm >= 12 else L[b]["s36"]
             k = L[b]["ivrv"]
-            for lab, kk, ss in (("measured", k, sp), ("half_spread", k, sp / 2), ("mid_fill", k, 0.0), ("iv+20%", k * 1.2, sp), ("iv-20%", k * 0.8, sp)):
+            if IVFIX:   # 2026-10-15 IV correction: IV solved from the bid/ask mid in this file's own bs() (r=3.5%, q=0), by tenor & side
+                k = IVRV_MID[(b, "leap" if Tm >= 12 else "36", side)]
+            for lab, kk, ss in (("measured", k, sp), ("half_spread", k, sp / 2), ("typical_37", k, sp * 0.37), ("mid_fill", k, 0.0),
+                                ("iv+20%", k * 1.2, sp), ("iv-20%", k * 0.8, sp)):
                 ret, prem = opt_trades(base, call, Tm, hold, kk, ss)
                 base["ret"], base["prem"] = ret, prem
                 sel = base.pct >= 0.8 if call else base.pct <= 0.2
@@ -1411,7 +1424,7 @@ def options():
             b = bankroll_r(tbm, cbm, start, f=f, k_pos=kpos, rounds=rpy * 3)
             R["bank"].append({"struct": str(keyT), "start": start, "k_pos": kpos, "f": f, **b})
     print(pd.DataFrame(R["bank"]).round(3).to_string())
-    with open(P("options.json"), "w") as f:
+    with open(P("options.json" if IVFIX else "options_yfiv.json"), "w") as f:
         json.dump(R, f, default=str, indent=1)
     print(f"done {time.time() - t0:.0f}s")
 

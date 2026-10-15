@@ -158,3 +158,8 @@ Never act on a number it has reason to distrust. "Probably stale" means "go get 
     - a ticker owned by another live CIK is rejected (Graybar's "form10-k" prefix had become FORM).
   - The gem result is unchanged after the fix (small OOS +7.4%, t 3.0).
   - Lesson: always run the screen → "why is it cheap" read before acting. Small-cap growth names rarely list LEAPS, so true LEAPS candidates skew to $2B+.
+- 2026-10-15 **yfinance impliedVolatility looks biased HIGH on long-dated calls.**
+  - Robinhood IV vs yfinance's figure: BAH Jan-28 70C 33% vs 46%; REAL 72% vs 90%; ACEL Apr-27 32% vs 38%. Black-Scholes at r≈4% reproduces the RH price at 33%, so the RH number is right; the likely cause is that yfinance ignores rates/dividends.
+  - Consequence: the "IV ≈ 1.47× RV" input in fundamental.md §4 and universe.md came from yfinance chains and is probably overstated, more so the longer the expiry. The LEAPS backtest conclusions may be too pessimistic.
+  - RESOLVED (fundamental.md §7): bot/ivsolve.py solves IV from the bid/ask mid. At r≈4% and q=0 it matches RH (BAH 33.3% vs 33%, ACEL 31.7% vs 32%); RH ignores dividends. yfinance's bias is name-specific and mostly on calls (median +1-3 pts, up to +10). Corrected IV/rv3: small 1.34 (was 1.48), mid 1.22 (6m) / 1.30 (LEAPS). The re-run improves option EVs by 1-9 pts, but nothing new turns positive at typical fills; mid 12m LEAPS goes +4% → +5% (t 0.9). Rule: never use yfinance impliedVolatility; use ivsolve.py.
+  - On live RH quotes: IV/RV is BAH 0.77, BRKR 0.96, REAL 1.04, ACEL 1.02.

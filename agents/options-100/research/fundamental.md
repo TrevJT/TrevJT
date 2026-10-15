@@ -502,3 +502,44 @@ Data caveats:
 - **Gem was formed after a first look** at IS and OOS results. Its components are each positive in both periods, but treat the OOS t as about 2.5.
 - **Earnings dates** for the earnings-window variant are actual 8-K 2.02 dates. Schedules are usually announced in advance, so this is a mild look-ahead.
 - **Fundamentals use the filing date** (earliest filed value per period); prices are month-end closes on or after it. Companyfacts occasionally omits a 10-Q (ALKT Q1-26); those quarters are derived from later YTD values and dated by the later filing.
+
+## 7. IV correction 2026-10-15
+
+**Why.** yfinance's `impliedVolatility` ran high against Robinhood: BAH Jan-28 70C 46% vs 33%, ACEL Apr-27 12.5C 38% vs 32%, REAL Jan-28 10C 90% vs 72%. §4 priced every option as RV × the yfinance IV/RV ratio.
+
+**Fix.** `bot/ivsolve.py` solves Black-Scholes-Merton IV from the bid/ask **mid**. It takes r from the 13-week T-bill (^IRX, 4.07% today) and q from yfinance `dividendRate`/spot, and skips quotes where bid or ask is ≤0.
+- **Live check, 10:10 ET today.** The mid-solved IV matches RH when q = 0 and r ≈ 4%: BAH 70C 33.3% (RH 33%), ACEL 31.7% (RH 32%).
+  - RH seems to ignore dividends. With BAH's 3.3% yield the BSM IV is 40%, and only that value makes BAH call and put IVs agree (calls 34%, puts 45% at q = 0).
+  - REAL's yfinance quote was 0/0, so it could not be checked. Its last trade solves to 82%.
+- **Where yfinance's error shows up.** Near-ATM (0.9–1.1 moneyness), the median yf − mid IV gap is +3–5 pts on BAH, +3–9 on M and +6.5 on ACEL. It is about 0 on SPY, KSS, REAL and BRKR. By DTE bucket across all 7 names: <30d −0.8, 30–120 +0.4, 120–300 +1.2, >300 −0.3 pts.
+  - So the error is name-specific and mostly on **calls**, not a uniform offset. Quotes under 30 days with wide spreads are unreliable either way.
+
+**Corrected IV/RV.** Same 200-name random sample and cached 2026-10-14 chains (893 two-sided ATM quotes). IV is solved in §4's own pricing convention (r = 3.5%, q = 0), so model premium equals the quoted mid. Medians across tickers:
+
+| bucket | tenor | yf IV/rv3 (old) | mid IV/rv3 calls | puts | mid IV/rv12 (calls/puts) |
+|---|---|---|---|---|---|
+| small $0.3–2B | 60–200 DTE | 1.46 (calls 1.54) | **1.34** | 1.30 | 1.13 / 1.09 |
+| small | 300+ DTE | 1.33 (calls 1.44) | **1.35** | 1.36 | 1.12 / 1.04 |
+| mid $2–10B | 60–200 DTE | 1.34 (calls 1.41) | **1.22** | 1.27 | 1.04 / 1.10 |
+| mid | 300+ DTE | 1.30 (calls 1.40) | **1.30** | 1.28 | 1.06 / 1.06 |
+
+- The yf − mid gap on these chains was +1.4/+2.3/+3.1 pts at 60–120, 120–200 and 300+ DTE.
+- With dividends (true BSM) the ratios are within 0.04 of these.
+- Against 1-year RV the ratios are only 1.04–1.13. The 3-month RV that §4 uses was elevated in Aug–Oct 2026.
+
+**Backtest re-run** (`research_fundamental.py options`; `IVFIX=0` reproduces the old run). OOS EV per trade, before → after. "Typical" fill = 37% of the quoted half-spread paid each way (research_fills.py).
+
+| structure | k old → new | mid fill | typical fill | full spread |
+|---|---|---|---|---|
+| small 6m call, sell at 3m | 1.48 → 1.34 | −4% → −1% | −22% → −20% | −46% → −44% |
+| small 6m call, hold 6m | 1.48 → 1.34 | −14% → −5% | −30% → −23% | −52% → −47% |
+| small 12m LEAPS, sell at 6m | 1.48 → 1.35 | +1% → +4% | −14% → −11% | −35% → −33% |
+| mid 6m call, sell at 3m | 1.34 → 1.22 | +3% → +7% | −7% → −3% | −22% → −19% |
+| mid 6m call, hold 6m | 1.34 → 1.22 | −1% → +8% | −11% → −3% | −25% → −19% |
+| **mid 12m LEAPS, sell at 6m** | 1.34 → 1.30 | +11% → +12% | **+4% → +5%** (t 0.9) | −6% → −5% |
+| small 12m put, hold 12m | 1.48 → 1.36 | −30% → −23% | −40% → −34% | −55% → −50% |
+
+**Verdict.** The correction helps every structure by 1–9 pts, but **no new structure turns positive at typical fills**. Mid-cap 12m LEAPS (sell at 6m) stays the only positive one: +5%, t 0.9, not significant, and its IS hold-to-expiry was negative.
+- Spreads, not IV, decide these trades. A uniform IV/RV shift mostly cancels, because entry and exit are both priced at RV × k, so only the theta cost falls.
+- §4's conclusions stand.
+- Not re-run: universe.md's IV/RV20 of 1.30–1.43 and research_smallcap.py's `iv_call` also come from yfinance's field and are likely about 0.1× high on calls.

@@ -753,3 +753,24 @@ Two more things for you:
 - **Deposit:** `day.json` notes that the +$100 deposit hasn't shown up in cash; it's still at $171.55.
 - **Uncommitted changes:** the bot's source files (`news.py`, `predictions.py`, `idle.sh`) and `LEARNINGS.md` have changes that aren't committed. I left them for the end-of-day commit.
 2026-10-14 09:14:46 one-shot cycle finished
+2026-10-14 14:06:00 heartbeat stale 572s -> running one-shot cycle
+I ran one failsafe cycle at 16:06 ET. No orders were placed.
+
+- **Account:** The broker shows no open option positions and no option orders today. Equity and cash are both $171.55.
+- **End-of-day:** The Oct 14 report, journal entry and commit were already done, and `day.json` is marked as reported, so I didn't redo any of it. It was a no-trade day because the prior-day VIX was 15.68, under the 16 cutoff.
+- **Bookkeeping:** I wrote `state/heartbeat.json` with `source: "failsafe"`, added a line to `cycle.log` and the journal, and removed `cycle.lock`.
+
+The $100 deposit noted in `day.json` still hasn't arrived: pending deposits are $0 and cash is unchanged at $171.55.
+2026-10-14 14:06:29 one-shot cycle finished
+2026-10-15 07:25:54 heartbeat stale 62369s -> running one-shot cycle
+I ran one failsafe cycle at 09:28 ET, two minutes before the open. It was the day's pre-open step, and no orders were placed.
+
+- **Account:** The broker shows no open positions and no option orders today. Equity and cash are both $171.55, so the $100 deposit still hasn't landed.
+- **Volatility gate:** Yesterday's VIX closed at 16.87, which puts today in STRICT mode. VIX is 17.53 now. The day's regime call is CHOPPY. Any 0DTE entry needs a score of at least ±5 and RVOL of at least 1.3.
+- **Playbooks:** P1 (the 0DTE momentum score) is allowed today under the strict rules, and P5 (the Iran/oil odds-shock watch) is armed. P8 needs VIX at 20 or above, so it's off. Because it's PPI day, no window-A entry can go in before 10:00. Tomorrow is opex, so window A only.
+- **Pre-market news:** PPI came in hot at 6.3% year over year, the biggest since 2022. Chip and AI stocks are selling off before the open. Oil is around $107 after a strike on Aramco's headquarters and an incident in the Strait of Hormuz. These are logged as flags in `day.json`, but no trading regime is set yet.
+- **Problem:** The market-history update failed because its database was locked, so `context_today.md` is built on data through Oct 14. I loaded yesterday's 5-minute bars straight from Robinhood so the scorer still has them, but it can't score anything until today's first bars arrive.
+- **Written:** `state/day.json` for Oct 15, journal entries `day_start` and `router`, `state/heartbeat.json` with `source: "failsafe"`, and a line in `cycle.log`. I removed `cycle.lock`.
+
+The orchestrator session is still down and RTH starts in two minutes. Until you restart it, failsafe.sh will start a one-shot cycle each time the heartbeat goes stale.
+2026-10-15 07:28:25 one-shot cycle finished

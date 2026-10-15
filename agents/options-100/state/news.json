@@ -1,25 +1,31 @@
 {
- "ts": 1792007791.950881,
+ "ts": 1792094170.128958,
  "hours": 0.1,
  "errors": [],
  "items": [
   {
-   "t": 1792007641.0,
+   "t": 1792094036.0,
+   "src": "gnews-oil-iran",
+   "title": "Live Updates: Latest from Israel, Iran, and the Middle East - The Jerusalem Post",
+   "flag": "war"
+  },
+  {
+   "t": 1792094029.0,
    "src": "cnbc",
-   "title": "CoreWeave shares tumble as bond yields near 15% on concern about AI borrowing binge",
+   "title": "Harvard\u2019s endowment jumps 27% in fiscal 2026, lifted by SpaceX as top holding",
    "flag": ""
   },
   {
-   "t": 1792007632.0,
-   "src": "gnews-oil-iran",
-   "title": "Hormuz hit hands marine war underwriters another total loss as attacks surge and rhetoric escalates - Insurance Business",
-   "flag": "war,shock"
+   "t": 1792094021.0,
+   "src": "cnbc",
+   "title": "KFC to switch to Coca-Cola beverages in U.S. restaurants for the first time in decades",
+   "flag": ""
   },
   {
-   "t": 1792007525.0,
-   "src": "gnews-oil-iran",
-   "title": "Man in Iran International attack plot told police he was paid \u00a32,000 to film - Iran International",
-   "flag": "war"
+   "t": 1792094009.0,
+   "src": "cnbc-mkts",
+   "title": "Brian Sullivan: Why the 'real' price of oil is likely $30-$40 higher than where it is now",
+   "flag": "oil"
   }
  ]
 }

@@ -1,6 +1,6 @@
-vol_obs: 5 scans over 1 days. realized E|move| 0.100% vs market-implied 0.207% vs engine 0.283%  -> realized/market 0.48, realized/engine 0.35  (engine trusted only if realized/market > 1 over >= 20 days)
-graded 0 new; all-time 66 picks, return on premium +42% (engine predicted avg EV +111%), win rate 17%
-  calls: 29 picks, return -31% vs predicted +80%, win 14%
-  puts: 37 picks, return +102% vs predicted +136%, win 19%
-fit SPY: 2908 decisions / 727 sessions, in-sample bias 1.00, beta -2.94 +0.57 +0.45 +0.01 -0.10 +0.08; kurtosis raw 61.2 -> standardized 17.4 (normal 3.0)
-fit QQQ: 2908 decisions / 727 sessions, in-sample bias 1.00, beta -2.47 +0.43 +0.44 +0.11 -0.01 +0.04; kurtosis raw 51.3 -> standardized 18.7 (normal 3.0)
+vol_obs: 7 scans over 2 days. realized E|move| 0.142% vs market-implied 0.233% vs engine 0.298%  -> realized/market 0.61, realized/engine 0.48  (engine trusted only if realized/market > 1 over >= 20 days)
+graded 0 new; all-time 71 picks, return on premium +28% (engine predicted avg EV +105%), win rate 17%
+  calls: 31 picks, return -40% vs predicted +77%, win 13%
+  puts: 40 picks, return +80% vs predicted +127%, win 20%
+fit SPY: 2912 decisions / 728 sessions, in-sample bias 1.00, beta -2.95 +0.57 +0.45 +0.01 -0.10 +0.08; kurtosis raw 61.2 -> standardized 17.4 (normal 3.0)
+fit QQQ: 2912 decisions / 728 sessions, in-sample bias 1.00, beta -2.46 +0.44 +0.43 +0.12 -0.01 +0.04; kurtosis raw 51.2 -> standardized 18.6 (normal 3.0)

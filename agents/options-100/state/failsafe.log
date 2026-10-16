@@ -774,3 +774,31 @@ I ran one failsafe cycle at 09:28 ET, two minutes before the open. It was the da
 
 The orchestrator session is still down and RTH starts in two minutes. Until you restart it, failsafe.sh will start a one-shot cycle each time the heartbeat goes stale.
 2026-10-15 07:28:25 one-shot cycle finished
+2026-10-15 14:05:26 heartbeat stale 560s -> running one-shot cycle
+I ran one failsafe cycle at 16:05 ET, the end-of-day slot. It placed no orders.
+
+- **Account:** Robinhood shows no open option positions and no option orders today. Equity and cash are both $171.55.
+- **End of day:** The Oct 15 wrap-up had already been done before this cycle. `day.json` is marked as reported with end equity of $171.55, and it was committed as `aa85667`. Today was a stand-down with no trades, so I didn't write the report or message you a second time.
+- **Written:** `state/heartbeat.json` with `source: "failsafe"`, plus one line in `state/cycle.log`. I removed `state/cycle.lock`.
+
+The main orchestrator session is still down, and tomorrow is opex. It needs restarting before 09:24 ET tomorrow, or the failsafe will be the only thing running cycles. Tomorrow's gate is STRICT and only window A is allowed.
+2026-10-15 14:05:53 one-shot cycle finished
+2026-10-16 07:24:22 heartbeat stale 62314s -> running one-shot cycle
+I ran one failsafe cycle at 09:24–09:26 ET (Fri 2026-10-16). It was today's pre-open. No orders were placed and the account is flat.
+
+- **Account:** $171.55, all cash. The broker shows no option positions and no orders today.
+- **Gate is STRICT.** Yesterday's VIX closed at 16.46 (live VIX 15.92). Any 0DTE entry needs a score of at least ±5, RVOL at least 1.3 and ATR5 at least 0.06%. The day is also rated CHOPPY, which asks for the same score and RVOL.
+- **Opex today:** entries are allowed only in window A (09:40–11:00 ET).
+- **Router:** P1 (0DTE momentum) and P5 (Iran-odds → oil watch) are armed. P8 is off because it needs VIX of at least 20. I journaled `day_start` and `router`.
+- **News:** the main Iran/oil items are an Iranian tanker fire in the Gulf of Oman and Trump talking about a possible strike on Iran's Pickaxe Mountain site. Neither was big enough to change the trading regime. Fed odds jumped 16–20 points toward "no change" at the October meeting. I didn't count that as a prediction-market shock, and it couldn't change a STRICT day anyway.
+- **Data updates:** I updated the market history and loaded yesterday's 5-minute SPY/QQQ bars from Robinhood. I wrote `state/day.json` and `context_today.md`, wrote `state/heartbeat.json` with `source: "failsafe"`, added a line to `cycle.log`, and removed `cycle.lock`.
+
+Things that weren't done or are off:
+- The context brief still shows 10-15 numbers, because today's daily bar doesn't exist before the open. The VIX gate itself uses the correct 10-15 close. I noted this in the day's flags.
+- `premarket.json` is from 10-09, so I ignored it.
+- I didn't read `LEARNINGS.md` or the self-audit to pick an improvement for idle time. That's a pre-open step from CYCLE.md that this one-shot run skipped.
+- `timeout` isn't installed on this Mac, so my first history update didn't start. The rerun worked.
+
+The main session is still down. Until it's restarted, the 09:40–11:00 window A cycles will only run when the failsafe fires.
+2026-10-16 07:26:38 one-shot cycle finished
+2026-10-16 14:05:05 heartbeat stale 539s -> running one-shot cycle

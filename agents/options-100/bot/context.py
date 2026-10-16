@@ -10,6 +10,7 @@ The backtest uses the underlying, not option prices (no free option history). A 
 `target` x ATR5 in the signal direction before moving `stop` x ATR5 against it, within `hold` minutes. With
 0.10-0.20 delta 0DTE options, ~1 ATR5 favourable is roughly what +50-100% on premium needs.
 """
+from zoneinfo import ZoneInfo
 import os, sys, sqlite3, statistics, math, json
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -46,7 +47,11 @@ def brief():
     spy = daily("SPY"); vix = {r[0]: r[4] for r in daily("^VIX")}
     v9 = {r[0]: r[4] for r in daily("^VIX9D")}; v3 = {r[0]: r[4] for r in daily("^VIX3M")}
     tnx = {r[0]: r[4] for r in daily("^TNX")}
-    target = arg("--date", spy[-1][0])
+    target = arg("--date", datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d"))
+    if spy[-1][0] < target and datetime.strptime(target, "%Y-%m-%d").weekday() < 5:
+        # pre-open: today's SPY daily bar doesn't exist yet. Add a provisional row (open = prior close,
+        # so gap reads 0) so the brief describes TODAY with yesterday's VIX close, not yesterday.
+        pc = spy[-1][4]; spy = spy + [(target, pc, pc, pc, pc)]
     idx = max(i for i, r in enumerate(spy) if r[0] <= target)
     # features for every day i using only data up to the prior close (+ today's open for the gap)
     def feats(i):

@@ -20,8 +20,9 @@ Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until
 | P9 | **Mega-cap earnings strangle** | LIVE | OTM call debit spread + OTM put debit spread, long strikes ≈ ±8-9%, expiry 2 days out; buy 15:30-15:55 day of AMC report; sell next day 09:45-10:30 | TSLA Oct 21 AMC, META ~Oct 28 AMC (confirm dates); skip if ATM straddle > 9% (TSLA) / > 10% (META) | Last 15 reports: TSLA avg move 9.2% vs ~6.4% implied; META 9.4% vs ~7% | TSLA ≤ $70; META funded from TSLA proceeds |
 | P10 | Oct 28 triple stack | WATCH→LIVE on Oct 28 if P9 META not taken | QQQ 2-day ~1.5% OTM call + put debit spreads, $3 wide, 13:30; exit Oct 29 by 11:00 | FOMC + GOOGL/MSFT/META same day | QQQ >2.5% moves on 15.8% of FOMC days vs 7.6% base, realized/implied 0.97 | ≤ $40 |
 | P11 | Gap-day QQQ breakout | WATCH | QQQ 0DTE debit spread in break direction after first 5m close outside 15-min opening range; resting sell 3× | |gap| ≥ 1% | gap ≥1% → ≥1% move with gap 25% vs 10% base; ORB replication ≈ 0 after costs | none until validated |
-| P1 | 0DTE momentum score | LIVE, re-tooled | Was 0.10-0.20Δ singles → now ATM/+$3 debit spreads only (0.10Δ singles: −46…−73% EV/bet) | VIX ≥ 18 and |S| ≥ 5 and RVOL ≥ 1.3 | score itself ≈ coin flip (60 sessions); spreads cut the bleed | ≤ 35% equity |
-| P5 | Iran-odds shock → oil | WATCH | USO/XLE 1-week debit spread in direction of odds move | tracked Iran/Hormuz market moves ≥ 10 pt in a day | next-day crude move 3.58% vs 2.47% (n=19, p≈0.05, not multiple-test robust) | none until validated |
+| P1 | 0DTE momentum score | LIVE, re-tooled | ATM single only (never 0.10-0.20Δ: −15…−51%/trade). Exits exactly as PLAN.md; NO resting 2× take-profit (−18% vs −6%) | VIX ≥ 18 (16-18 band removed 2026-10-17) and |S| ≥ 5 and RVOL ≥ 1.3 and term_gate PASS | score ≈ coin flip on 4,841 sessions; written exits are the least-bad of 6 tested (−6%/trade OOS) | ≤ 35% equity |
+| P5 | Iran-odds shock → oil | WATCH (probe after 20 graded RTH events) | USO weekly single long call/put in the oil direction implied by the odds move | `bot/p5check.sh` SHOCK: any Iran/Hormuz market ≥ 5 pt within 60 min; first per 24h only (de-clustered) | crude +86 bp/24h after de-clustered shocks (226 headlines, t 3.4; 2026 only; 94% of it overnight). Grade on CL 24h | probe ≤ $15 once promoted |
+| P15 | Gap-day straddle (XSP) | WATCH, paper 20 signals | XSP 0DTE ATM call + ATM put (two single legs), buy 09:35, hold to 15:45, no stop | |SPY gap| ≥ 0.7% or |TLT gap| ≥ 0.6% or |HYG gap| ≥ 0.4% (top quintiles) | VIX1D era n=875: realized/implied 1.16-1.18 (t 2.1-2.3) on top-quintile gaps vs 1.00-1.04 bottom; EV +5..+15% after costs; 1-2 signals/week | ~$40 once promoted |
 | P3 | Catalyst sniper (concepts/1) | WATCH | weeklies into scheduled events | — | CPI/NFP/FOMC realized < implied for SPY (0.61-0.82×): event premium already priced | — |
 | P4 | Headline/peace (concepts/4) | LIVE (swing) | Jan-2027 debit spreads | mapped odds ≥ +5 pt over 5d | thesis-driven, no backtest | ≤ 25%, swing cap |
 | P12 | Midterm relief call spread | LIVE (small) | SPY Nov 6 +1%/+2% call spread, buy Nov 3 15:45, exit Nov 4-5 | Nov 3 | SPY up day-after in 7/8 midterms since 1994, avg +0.48% | ≤ $20 |
@@ -30,7 +31,7 @@ Status: LIVE = may trade; WATCH = log signals + real quotes only, no money until
 | P13 | Single-stock news chase (headline -> long options) | RETIRED 2026-10-13 | — | — | 81 stocks × 730 sessions, 4,220 non-earnings ≥4% shocks: post-10:30 drift ≈ 0 (+0.03% close, +0.07% 3d), 97% of 3d move done by 10:30, ATM option proxy −33…−53%; laggard-peer catch-up ≈ 0; only ≥3σ sector shocks +0.49% (t 2.1, ~180 tests, fades OOS). research/news_trading.md | — |
 | P7 | Power-hour / far-OTM lotto | RETIRED | — | — | 0.05Δ finishes ITM 1.5% vs 10% fair; Mondays 0/138; power-hour continuation 14.4% vs 15.2% reversal | — |
 
-Universal execution rules (from the research): never buy below 0.10Δ; prefer debit spreads over singles; place a resting take-profit (2× for P8/P1, 3× for P11) immediately after every fill; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.
+Universal execution rules (from the research; revised 2026-10-17): never buy below 0.10Δ; prefer debit spreads over singles; no new long premium when gates.py term_gate = BLOCK; resting take-profit immediately after fill only for P8/P11 (2×/3×) and only when prior VIX ≥ 20, never for P1; sell into spikes instead of holding to expiry; trade only when the volatility gate allows.
 
 ## Prime directive: recursive self-improvement
 Read LEARNINGS.md at every pre-open and work the top open improvement when idle. Any anomaly → observe, hypothesize, test, fix, verify, log. Never trade on an input you distrust: replace it first. Option prices for decisions come ONLY from live Robinhood quotes (`edge.py scan --quotes`); Yahoo chains are research/archive only.
@@ -56,9 +57,10 @@ Edge can only come from: (a) options priced cheaper than the move history says i
    Anything that stops earning is demoted automatically on Friday's review.
 
 ## Daily selection (pre-open, after context brief + odds board)
-1. Gates: compute vix_gate (P8 needs prior VIX ≥ 20; P1 needs ≥ 18; nothing 0DTE below 16) (PLAN.md), regime_hist (context.py brief), pm_shock, and the event calendar for today/tomorrow.
+1. Gates: compute vix_gate (P8 needs prior VIX ≥ 20; P1 needs ≥ 18; nothing 0DTE below 18) (PLAN.md), term_gate + size_up (`bot/gates.py`), regime_hist (context.py brief), pm_shock, and the event calendar for today/tomorrow.
 2. Score each playbook 0-3 on today's evidence:
-   - P1: 3 if VIX ≥ 18 and TRENDY; 2 if VIX 16-18 or PM shock; 0 if STAND_DOWN.
+   - P1: 3 if VIX ≥ 18 and TRENDY; 2 if VIX ≥ 18 or PM shock; 0 if STAND_DOWN or term_gate BLOCK.
+   - P15: 2 (paper) if a gap threshold is met at 09:30; log the 09:35 XSP ATM call+put asks and the 15:45 bids.
    - P2: 3 if a top-tier print is tomorrow (CPI/FOMC/NFP) and VIX9D/VIX < 0.95; 2 for tier-2 (PPI, retail sales, mega-cap earnings); else 0.
    - P3: 2 if an event in its universe is 3-7 sessions out and IV/HV < 1.3; else 0.
    - P4: 2 if a mapped odds market moved ≥ +5 pt over 5d toward the payoff; 1 if flat; 0 if moving against.

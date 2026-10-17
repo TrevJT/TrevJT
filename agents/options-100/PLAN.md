@@ -12,14 +12,14 @@ The bot now chooses among playbooks P1-P7 each day per ROUTER.md. The Concept 2 
 
 ## Volatility gate (approved by Trevor 2026-10-07 after day-1 review)
 Source: SPY 1993-2026, prior-day VIX vs next-day range corr 0.74; direction ~coin flip.
-- Prior-day VIX < 16 → NO 0DTE entries (stand down). Exception: a prediction-market shock (any tracked iran/fed/midterms/trump market with stable same-day |r| ≥ 0.4 to SPY/QQQ/CL=F/XLE moving ≥ 8 pts since prior close) lifts the gate for that day, entries still need |S| ≥ 5.
-- Prior-day VIX 16-18 → entries need |S| ≥ 5, RVOL ≥ 1.3, ATR5 ≥ 0.06% of price.
+- Prior-day VIX < 18 → NO 0DTE entries (stand down; the 16-18 STRICT band was removed 2026-10-17: 19y backtest −8%/trade, 46.7% hit — research/2026-10-17-weekend-edge-hunt.md). Exception: a prediction-market shock (any tracked iran/fed/midterms/trump market with stable same-day |r| ≥ 0.4 to SPY/QQQ/CL=F/XLE moving ≥ 8 pts since prior close) lifts the gate for that day, entries still need |S| ≥ 5.
 - Prior-day VIX ≥ 18 → base rules below, plus RVOL ≥ 1.3 and ATR5 ≥ 0.06% of price.
+- Term-structure gate (approved 2026-10-17, all playbooks): `bot/gates.py` → if prior-day VIX9D/VIX is in its 2-year bottom tercile (term_gate BLOCK) → no new long premium that day (0DTE straddle −30% there vs −1% top tercile). VIX ≥ 25 (size_up) is the only band where long 0DTE premium was positive (+3-4%).
 - Standing down is a valid, logged decision ("no_trade_day" in the journal with the reason).
 
 ## Strategy (from concepts/2-0dte-momentum-scalper.md)
 - Universe: SPY and QQQ 0DTE (1DTE on Tue/Thu before 14:00). IWM only if RVOL ≥ 1.5.
-- Contract: delta 0.10–0.20, mid $0.15–0.40, spread ≤ 12% of mid, bid ≥ $0.05.
+- Contract: ATM single (ROUTER P1 re-tool; 0.10–0.20Δ singles tested −15…−51%/trade, never use), spread ≤ 12% of mid, bid ≥ $0.05.
 - Entry windows (ET): A 9:40–11:00, B 14:00–15:10. No new entries 11:00–14:00 or after 15:10.
 - Score S (−6…+6) from 5-min bars: VWAP side, >0.5 ATR from VWAP, VWAP slope, 3 of 4 bars in direction, range break (opening range in A, 13:00–14:00 range in B), RVOL ≥ 1.3. S ≥ +4 call, S ≤ −4 put.
 - Regime gate: VIX 13–28 (proxy if unavailable). Event days: FOMC minutes Oct 7 and FOMC Oct 28 → no entries 13:30–14:15. CPI Oct 14, PPI Oct 15, GDP/PCE Oct 29, jobs Nov 6 → no window-A entry before 10:00. Opex Oct 16 → window A only.

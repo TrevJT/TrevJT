@@ -119,6 +119,20 @@ def intraday_pool(c, sym, vix_now, mins_left):
     return long_pool
 
 
+VIX1D_REALIZED = 0.92  # buyers get 0.92 of the VIX1D-implied move (research/2026-10-17-weekend-edge-hunt.md)
+VIX1D_K = {"SPY": 1.0, "QQQ": 1.25, "IWM": 1.3}  # rough vol ratio to SPX; refit from option_snaps at 60 sessions
+
+
+def vix1d_level(c):
+    """Today's OPENING ^VIX1D (the research measured realized/implied against the open value): --vix1d arg,
+    else today's first 5m bar, else the prior daily close (stale fallback). None if never logged."""
+    if "--vix1d" in sys.argv:
+        return float(arg("--vix1d", None))
+    r = c.execute("SELECT open FROM bars WHERE symbol='^VIX1D' AND interval='5m' AND ts >= date('now','localtime') ORDER BY ts LIMIT 1").fetchone() \
+        or c.execute("SELECT close FROM bars WHERE symbol='^VIX1D' AND interval='1d' ORDER BY ts DESC LIMIT 1").fetchone()
+    return r[0] if r else None
+
+
 def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
     rows = hist(c, sym)
     pool = [r for r in rows if abs(r[0] - vix_now) <= 2.5] or rows
@@ -139,6 +153,17 @@ def forecast(c, sym, vix_now, days, frac_today, n=5000, seed=7, mins_left=None):
             cur = statistics.mean(abs(x) for x in ip)
             ip = [x * em / cur for x in ip]
             intraday_pool.which += f", SCALED by volmodel to E|move| {em*100:.3f}% (sd {100*statistics.pstdev(ip):.2f}%)"
+    v1 = vix1d_level(c)
+    if ip and v1 and "--no-vix1d" not in sys.argv:  # weekend edge hunt: anchor today's level to VIX1D x 0.92 (realized/implied 2023-26, n=874) until 60 live sessions of option_snaps exist
+        # same convention as research/weekend/overnight.py: daily sd = VIX1D/sqrt(252), intraday share 0.69 of variance
+        sd_rem = v1 / 100 / math.sqrt(252) * math.sqrt(0.69 * mins_left / 390) * VIX1D_K.get(sym, 1.0) * VIX1D_REALIZED
+        target = sd_rem * math.sqrt(2 / math.pi)
+        cur = statistics.mean(abs(x) for x in ip)
+        if target < cur:  # cap only: never let the pool imply bigger moves than VIX1D-realized (conservative, like the pool choice)
+            ip = [x * target / cur for x in ip]
+            intraday_pool.which += f", CAPPED by VIX1D {v1:.2f} -> E|move| {target*100:.3f}%"
+        else:
+            intraday_pool.which += f", VIX1D {v1:.2f} cap {target*100:.3f}% not binding"
     trim = float(sys.argv[sys.argv.index("--trim") + 1]) if "--trim" in sys.argv else 0.0
     if ip and trim > 0:  # drop the largest |move| days: shows the edge on a NORMAL day, not the tail bet
         ip = sorted(ip, key=abs)[: max(20, int(len(ip) * (1 - trim)))]

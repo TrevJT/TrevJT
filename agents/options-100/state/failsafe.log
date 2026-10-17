@@ -802,3 +802,13 @@ Things that weren't done or are off:
 The main session is still down. Until it's restarted, the 09:40–11:00 window A cycles will only run when the failsafe fires.
 2026-10-16 07:26:38 one-shot cycle finished
 2026-10-16 14:05:05 heartbeat stale 539s -> running one-shot cycle
+I ran the failsafe cycle at 16:05 ET on Friday. There was nothing to trade or close, and I placed no orders.
+
+- **End of day was already done.** Today's eod journal line was written at 16:05:10 ET, `day.json` shows `reported: true`, and `reports/2026-10-16.md` exists with no uncommitted changes. I didn't run the end-of-day step a second time.
+- **Account:** flat, no positions. Equity is $171.55 and P&L today is $0, with no trades. That is from today's state files; I didn't query Robinhood again.
+- **Housekeeping:** I wrote `state/heartbeat.json` with `source: "failsafe"`, added a line to `cycle.log`, and removed `cycle.lock`.
+
+The orchestrator heartbeat was 539 seconds stale when the failsafe fired, but the eod line was written 13 seconds before this cycle started. So either the main session is still running or another cycle wrote it.
+
+The failsafe log says the main session went down earlier today. If it is still down, it needs restarting before Monday's open, because until then the bot only runs when the failsafe fires.
+2026-10-16 14:05:29 one-shot cycle finished

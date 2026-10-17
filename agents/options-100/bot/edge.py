@@ -119,7 +119,7 @@ def intraday_pool(c, sym, vix_now, mins_left):
     return long_pool
 
 
-VIX1D_REALIZED = 0.92  # buyers get 0.92 of the VIX1D-implied move (research/2026-10-17-weekend-edge-hunt.md)
+VIX1D_REALIZED = 0.83  # real RH 0DTE straddle prints, 248 days (research/2026-10-0dte-level-backfill.md, CI 0.74-0.93); was 0.92 from CBOE VIX1D
 VIX1D_K = {"SPY": 1.0, "QQQ": 1.25, "IWM": 1.3}  # rough vol ratio to SPX; refit from option_snaps at 60 sessions
 
 

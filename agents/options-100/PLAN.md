@@ -14,7 +14,7 @@ The bot now chooses among playbooks P1-P7 each day per ROUTER.md. The Concept 2 
 Source: SPY 1993-2026, prior-day VIX vs next-day range corr 0.74; direction ~coin flip.
 - Prior-day VIX < 18 → NO 0DTE entries (stand down; the 16-18 STRICT band was removed 2026-10-17: 19y backtest −8%/trade, 46.7% hit — research/2026-10-17-weekend-edge-hunt.md). Exception: a prediction-market shock (any tracked iran/fed/midterms/trump market with stable same-day |r| ≥ 0.4 to SPY/QQQ/CL=F/XLE moving ≥ 8 pts since prior close) lifts the gate for that day, entries still need |S| ≥ 5.
 - Prior-day VIX ≥ 18 → base rules below, plus RVOL ≥ 1.3 and ATR5 ≥ 0.06% of price.
-- Term-structure gate (approved 2026-10-17, all playbooks): `bot/gates.py` → if prior-day VIX9D/VIX is in its 2-year bottom tercile (term_gate BLOCK) → no new long premium that day (0DTE straddle −30% there vs −1% top tercile). VIX ≥ 25 (size_up) is the only band where long 0DTE premium was positive (+3-4%).
+- Term-structure gate (approved 2026-10-17; DOWNGRADED same day to LOG-ONLY: on 248 days of real RH 0DTE prices the bottom tercile flips sign, +9% at the open / −13% at 09:40, CIs include 0 — research/2026-10-0dte-level-backfill.md): `bot/gates.py` → record term_gate in day.json and the journal, do NOT block entries. Original model claim (0DTE straddle −30% there vs −1% top tercile). VIX ≥ 25 (size_up) is the only band where long 0DTE premium was positive (+3-4%).
 - Standing down is a valid, logged decision ("no_trade_day" in the journal with the reason).
 
 ## Strategy (from concepts/2-0dte-momentum-scalper.md)

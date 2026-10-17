@@ -1,0 +1,67 @@
+
+### DAY-OPEN set (entry = first day print, spot = SPY open)
+ALL: ratio n=248 mean=0.947 med=0.820 CI[0.852,1.047] | EV net n=248 mean=-0.073 med=-0.200 CI[-0.163,0.027] | prem%spot mean 0.510
+by month:
+  2025-10: ratio n=10 mean=0.739 med=0.892 CI[0.422,1.045] | EV -0.244
+  2025-11: ratio n=19 mean=1.164 med=0.803 CI[0.799,1.645] | EV +0.123
+  2025-12: ratio n=22 mean=0.950 med=0.673 CI[0.592,1.324] | EV -0.079
+  2026-01: ratio n=20 mean=0.755 med=0.728 CI[0.561,0.961] | EV -0.276
+  2026-02: ratio n=17 mean=1.245 med=1.019 CI[0.841,1.757] | EV +0.215
+  2026-03: ratio n=22 mean=0.908 med=0.744 CI[0.638,1.192] | EV -0.115
+  2026-04: ratio n=21 mean=0.958 med=0.673 CI[0.624,1.308] | EV -0.063
+  2026-05: ratio n=20 mean=0.793 med=0.723 CI[0.567,1.045] | EV -0.222
+  2026-06: ratio n=21 mean=1.166 med=1.106 CI[0.806,1.602] | EV +0.145
+  2026-07: ratio n=22 mean=0.756 med=0.646 CI[0.551,0.989] | EV -0.273
+  2026-08: ratio n=21 mean=0.929 med=0.655 CI[0.592,1.337] | EV -0.079
+  2026-09: ratio n=21 mean=0.941 med=0.883 CI[0.633,1.303] | EV -0.070
+  2026-10: ratio n=12 mean=0.991 med=0.449 CI[0.492,1.595] | EV -0.000
+by prior-close VIX tercile:
+  VIX lo: ratio n=83 mean=0.974 med=0.821 CI[0.798,1.165] | EV -0.046 | prem% 0.379
+  VIX mid: ratio n=82 mean=0.877 med=0.844 CI[0.711,1.056] | EV -0.140 | prem% 0.488
+  VIX hi: ratio n=83 mean=0.990 med=0.803 CI[0.840,1.155] | EV -0.033 | prem% 0.662
+by |gap| quintile:
+  q1: ratio n=50 mean=0.901 med=0.759 CI[0.727,1.094] | EV -0.111 | gap<=0.12%
+  q2: ratio n=49 mean=0.998 med=0.917 CI[0.800,1.206] | EV -0.029 | gap<=0.23%
+  q3: ratio n=50 mean=1.005 med=0.815 CI[0.776,1.263] | EV -0.025 | gap<=0.40%
+  q4: ratio n=49 mean=0.923 med=0.758 CI[0.732,1.120] | EV -0.096 | gap<=0.61%
+  q5: ratio n=50 mean=0.908 med=0.670 CI[0.675,1.181] | EV -0.102 | gap<=2.60%
+by VIX9D/VIX tercile:
+  term lo: ratio n=83 mean=1.117 med=0.917 CI[0.915,1.328] | EV +0.093
+  term mid: ratio n=82 mean=0.850 med=0.766 CI[0.723,0.982] | EV -0.172
+  term hi: ratio n=83 mean=0.873 med=0.735 CI[0.721,1.036] | EV -0.141
+gate: bottom tercile EV +0.093 (n=83) vs others -0.156 (n=165); boot CI lo (np.float64(-0.09496679780693632), np.float64(0.3052362281992262)), others (np.float64(-0.2519058734239096), np.float64(-0.05284382186212244))
+EV boot CI overall (np.float64(-0.1622630985671431), np.float64(0.02659912206472126))
+premium / VIX1D-implied |move| (price level): n=248 mean=0.734 med=0.717 CI[0.715,0.754]
+realized |C-O| / VIX1D-implied |move|: n=248 mean=0.670 med=0.562 CI[0.605,0.743]
+
+### INTRADAY set (entry = first real 5m bar at 09:35-09:50, spot = SPY 5m open)
+ALL: ratio n=67 mean=0.861 med=0.670 CI[0.688,1.053] | EV net n=67 mean=-0.087 med=-0.283 CI[-0.272,0.118] | prem%spot mean 0.398
+by month:
+  2026-07: ratio n=13 mean=0.882 med=0.734 CI[0.499,1.290] | EV -0.221
+  2026-08: ratio n=21 mean=0.733 med=0.606 CI[0.463,1.040] | EV -0.126
+  2026-09: ratio n=21 mean=0.912 med=0.717 CI[0.635,1.282] | EV -0.022
+  2026-10: ratio n=12 mean=0.974 med=0.581 CI[0.517,1.553] | EV +0.014
+by prior-close VIX tercile:
+  VIX lo: ratio n=23 mean=0.833 med=0.668 CI[0.552,1.178] | EV -0.081 | prem% 0.342
+  VIX mid: ratio n=23 mean=0.768 med=0.579 CI[0.501,1.070] | EV -0.073 | prem% 0.378
+  VIX hi: ratio n=21 mean=0.994 med=0.791 CI[0.668,1.368] | EV -0.108 | prem% 0.483
+by |gap| quintile:
+  q1: ratio n=14 mean=0.783 med=0.759 CI[0.492,1.100] | EV -0.151 | gap<=0.10%
+  q2: ratio n=13 mean=0.787 med=0.579 CI[0.380,1.299] | EV -0.042 | gap<=0.25%
+  q3: ratio n=13 mean=0.702 med=0.641 CI[0.452,0.940] | EV -0.138 | gap<=0.36%
+  q4: ratio n=13 mean=1.081 med=0.717 CI[0.674,1.535] | EV +0.033 | gap<=0.51%
+  q5: ratio n=14 mean=0.951 med=0.580 CI[0.517,1.502] | EV -0.128 | gap<=1.21%
+by VIX9D/VIX tercile:
+  term lo: ratio n=23 mean=0.678 med=0.606 CI[0.478,0.897] | EV -0.126
+  term mid: ratio n=22 mean=1.091 med=0.701 CI[0.692,1.539] | EV +0.116
+  term hi: ratio n=22 mean=0.823 med=0.699 CI[0.582,1.073] | EV -0.249
+gate: bottom tercile EV -0.126 (n=23) vs others -0.067 (n=44); boot CI lo (np.float64(-0.36855423256016095), np.float64(0.12068545862686587)), others (np.float64(-0.3164983746802454), np.float64(0.2130800654449607))
+EV boot CI overall (np.float64(-0.26884631459731495), np.float64(0.11541167015624859))
+entry times: {'13:40': 59, '13:35': 8}
+premium / VIX1D-implied |move| (day-implied, understates remaining-day): n=67 mean=0.687 med=0.671 CI[0.654,0.722]
+realized |C-S_in| / VIX1D-implied: n=67 mean=0.574 med=0.464 CI[0.461,0.699]
+
+### VIX1D_REALIZED-comparable constant (sd form, full day from the open)
+all days n=250: rms z = 0.830 CI [0.738 0.93 ]; mean|z|*sqrt(pi/2) = 0.803
+straddle-backfill days n=248: rms z = 0.832
+day-open premium vs intraday-entry premium (same days, n=67): mean ratio open/intra = 1.032, median 1.037

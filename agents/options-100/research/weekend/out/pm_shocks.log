@@ -1,0 +1,405 @@
+
+==== threshold 5 pts / 60min: 1771 events (100 in RTH); by topic: {'fed': 468, 'iran': 448, 'macro': 195, 'trump': 188, 'ukraine': 147, 'china': 131, 'midterms': 104, 'oil': 90}
+
+==== threshold 8 pts / 60min: 833 events (61 in RTH); by topic: {'fed': 225, 'iran': 185, 'trump': 103, 'macro': 99, 'ukraine': 59, 'oil': 59, 'china': 58, 'midterms': 45}
+
+==== threshold 10 pts / 60min: 512 events (42 in RTH); by topic: {'fed': 147, 'iran': 104, 'macro': 61, 'trump': 61, 'oil': 40, 'ukraine': 35, 'china': 32, 'midterms': 32}
+ pts  sym     subset           horizon    n  mean_bp   hit     t             p
+   5  SPY all_signed                b1  892      0.7 0.522  1.26  2.096258e-01
+   5  SPY all_signed                a1  892      2.7 0.548  1.17  2.427534e-01
+   5  SPY all_signed                a4  892      2.5 0.548  1.06  2.913598e-01
+   5  SPY all_signed               a24  892      6.1 0.541  2.40  1.640759e-02
+   5  SPY  iran_only                b1  448      0.2 0.507  0.21  8.367445e-01
+   5  SPY  iran_only                a1  448      3.4 0.549  0.96  3.391530e-01
+   5  SPY  iran_only                a4  448      3.3 0.549  0.91  3.641633e-01
+   5  SPY  iran_only               a24  448     10.2 0.576  2.84  4.751396e-03
+   5  SPY   fed_only                b1  468     -0.3 0.220 -0.62  5.324668e-01
+   5  SPY   fed_only                a1  468     -1.2 0.259 -0.61  5.388718e-01
+   5  SPY   fed_only                a4  468     -1.0 0.261 -0.49  6.244024e-01
+   5  SPY   fed_only               a24  468     -0.9 0.229 -0.35  7.274161e-01
+   5  SPY rth_signed                b1   36      2.5 0.639  0.70  4.912729e-01
+   5  SPY rth_signed                a1   36      0.9 0.472  0.28  7.831767e-01
+   5  SPY rth_signed                a4   36     -0.4 0.417 -0.10  9.235323e-01
+   5  SPY rth_signed               a24   36     23.6 0.611  2.98  5.203425e-03
+   5  QQQ all_signed                b1  892      0.7 0.504  0.88  3.817411e-01
+   5  QQQ all_signed                a1  892      7.7 0.563  2.20  2.827425e-02
+   5  QQQ all_signed                a4  892      7.8 0.561  2.14  3.285164e-02
+   5  QQQ all_signed               a24  892     13.7 0.555  3.29  1.059525e-03
+   5  QQQ  iran_only                b1  448     -0.5 0.507 -0.45  6.494271e-01
+   5  QQQ  iran_only                a1  448     11.8 0.554  2.17  3.019048e-02
+   5  QQQ  iran_only                a4  448     11.9 0.554  2.17  3.065583e-02
+   5  QQQ  iran_only               a24  448     20.7 0.600  3.44  6.258127e-04
+   5  QQQ   fed_only                b1  468      0.1 0.203  0.15  8.815989e-01
+   5  QQQ   fed_only                a1  468     -2.1 0.259 -0.69  4.893317e-01
+   5  QQQ   fed_only                a4  468     -1.6 0.259 -0.50  6.200180e-01
+   5  QQQ   fed_only               a24  468      0.3 0.203  0.06  9.504485e-01
+   5  QQQ rth_signed                b1   36      4.7 0.667  0.69  4.946949e-01
+   5  QQQ rth_signed                a1   36      3.2 0.528  0.56  5.789684e-01
+   5  QQQ rth_signed                a4   36      3.3 0.472  0.45  6.579029e-01
+   5  QQQ rth_signed               a24   36     46.3 0.694  2.73  9.845990e-03
+   5 CL=F all_signed                b1  892      1.1 0.513  0.84  4.038933e-01
+   5 CL=F all_signed                a1  892     22.1 0.521  2.79  5.335342e-03
+   5 CL=F all_signed                a4  892     18.7 0.502  1.99  4.642380e-02
+   5 CL=F all_signed               a24  892     44.3 0.513  3.31  9.631796e-04
+   5 CL=F  iran_only                b1  448      0.4 0.509  0.19  8.501346e-01
+   5 CL=F  iran_only                a1  448     38.3 0.518  3.16  1.670356e-03
+   5 CL=F  iran_only                a4  448     31.6 0.511  2.28  2.303813e-02
+   5 CL=F  iran_only               a24  448     82.1 0.567  4.15  4.054388e-05
+   5 CL=F   fed_only                b1  468      0.3 0.229  0.33  7.397281e-01
+   5 CL=F   fed_only                a1  468      4.2 0.246  0.57  5.682186e-01
+   5 CL=F   fed_only                a4  468     -0.5 0.218 -0.05  9.594287e-01
+   5 CL=F   fed_only               a24  468     -1.3 0.192 -0.10  9.186338e-01
+   5 CL=F rth_signed                b1   36     12.2 0.528  1.21  2.326586e-01
+   5 CL=F rth_signed                a1   36      0.3 0.528  0.03  9.725775e-01
+   5 CL=F rth_signed                a4   36     -6.4 0.472 -0.85  4.013249e-01
+   5 CL=F rth_signed               a24   36     44.3 0.667  2.06  4.683839e-02
+   5 ZN=F all_signed                b1  892      0.1 0.386  0.49  6.216054e-01
+   5 ZN=F all_signed                a1  892     -0.8 0.429 -2.06  3.967281e-02
+   5 ZN=F all_signed                a4  892     -0.1 0.470 -0.17  8.635441e-01
+   5 ZN=F all_signed               a24  892     -0.6 0.485 -0.58  5.643905e-01
+   5 ZN=F  iran_only                b1  448      0.3 0.422  1.03  3.048693e-01
+   5 ZN=F  iran_only                a1  448     -1.8 0.413 -2.97  3.092585e-03
+   5 ZN=F  iran_only                a4  448     -1.3 0.431 -1.78  7.646663e-02
+   5 ZN=F  iran_only               a24  448     -3.9 0.446 -2.70  7.092847e-03
+   5 ZN=F   fed_only                b1  468     -0.1 0.147 -0.35  7.270795e-01
+   5 ZN=F   fed_only                a1  468      0.1 0.199  0.20  8.451158e-01
+   5 ZN=F   fed_only                a4  468      0.7 0.235  1.40  1.618657e-01
+   5 ZN=F   fed_only               a24  468     -0.2 0.201 -0.18  8.542891e-01
+   5 ZN=F rth_signed                b1   36      1.3 0.556  0.71  4.810420e-01
+   5 ZN=F rth_signed                a1   36      3.2 0.583  2.40  2.180807e-02
+   5 ZN=F rth_signed                a4   36      7.8 0.722  2.00  5.341860e-02
+   5 ZN=F rth_signed               a24   36      9.5 0.611  1.00  3.240943e-01
+   5 ^VIX all_signed                b1  892      5.7 0.521  1.44  1.512486e-01
+   5 ^VIX all_signed                a1  892    -26.4 0.509 -1.34  1.820376e-01
+   5 ^VIX all_signed                a4  892    -28.6 0.510 -1.20  2.303466e-01
+   5 ^VIX all_signed               a24  892     65.0 0.516  2.32  2.082451e-02
+   5 ^VIX  iran_only                b1  448     -1.3 0.504 -0.30  7.629870e-01
+   5 ^VIX  iran_only                a1  448    -73.5 0.480 -2.31  2.116585e-02
+   5 ^VIX  iran_only                a4  448    -70.4 0.478 -2.10  3.601755e-02
+   5 ^VIX  iran_only               a24  448     39.1 0.504  1.12  2.638450e-01
+   5 ^VIX   fed_only                b1  468     10.3 0.265  2.45  1.458348e-02
+   5 ^VIX   fed_only                a1  468     35.7 0.276  2.55  1.108738e-02
+   5 ^VIX   fed_only                a4  468     35.0 0.274  1.34  1.796051e-01
+   5 ^VIX   fed_only               a24  468     20.8 0.235  0.68  4.977466e-01
+   5 ^VIX rth_signed                b1   36     93.2 0.556  1.83  7.596358e-02
+   5 ^VIX rth_signed                a1   36     35.4 0.444  0.72  4.782927e-01
+   5 ^VIX rth_signed                a4   36     24.7 0.444  0.44  6.633041e-01
+   5 ^VIX rth_signed               a24   36    398.2 0.667  3.19  3.023768e-03
+   5  SPY    abs_all a1_abs_vs_typical 1770     46.5 0.645 23.88 1.716087e-109
+   5 CL=F    abs_all a1_abs_vs_typical 1770     88.0 0.453 11.43  2.920837e-29
+   8  SPY all_signed                b1  418      1.7 0.533  2.01  4.533810e-02
+   8  SPY all_signed                a1  418      7.1 0.581  2.21  2.739425e-02
+   8  SPY all_signed                a4  418      7.0 0.581  2.08  3.817939e-02
+   8  SPY all_signed               a24  418      9.2 0.560  2.46  1.444950e-02
+   8  SPY  iran_only                b1  185      1.9 0.546  1.60  1.118864e-01
+   8  SPY  iran_only                a1  185      7.1 0.557  1.22  2.228611e-01
+   8  SPY  iran_only                a4  185      7.6 0.562  1.31  1.925853e-01
+   8  SPY  iran_only               a24  185     12.9 0.573  2.20  2.933348e-02
+   8  SPY   fed_only                b1  225     -0.4 0.222 -0.48  6.314679e-01
+   8  SPY   fed_only                a1  225      3.6 0.320  1.36  1.765601e-01
+   8  SPY   fed_only                a4  225      3.6 0.316  1.16  2.453530e-01
+   8  SPY   fed_only               a24  225      2.5 0.280  0.64  5.249671e-01
+   8  SPY rth_signed                b1   20      6.0 0.750  1.07  3.000672e-01
+   8  SPY rth_signed                a1   20      4.6 0.500  0.96  3.469964e-01
+   8  SPY rth_signed                a4   20      3.3 0.400  0.57  5.724591e-01
+   8  SPY rth_signed               a24   20     27.6 0.700  2.81  1.109964e-02
+   8  QQQ all_signed                b1  418      2.5 0.517  2.07  3.939171e-02
+   8  QQQ all_signed                a1  418     14.6 0.603  2.89  4.053248e-03
+   8  QQQ all_signed                a4  418     14.9 0.600  2.78  5.616325e-03
+   8  QQQ all_signed               a24  418     19.8 0.589  3.14  1.825641e-03
+   8  QQQ  iran_only                b1  185      2.3 0.551  1.27  2.045763e-01
+   8  QQQ  iran_only                a1  185     16.8 0.568  1.96  5.109541e-02
+   8  QQQ  iran_only                a4  185     17.7 0.568  2.05  4.144970e-02
+   8  QQQ  iran_only               a24  185     24.8 0.616  2.60  1.019260e-02
+   8  QQQ   fed_only                b1  225      0.2 0.200  0.18  8.588276e-01
+   8  QQQ   fed_only                a1  225      6.2 0.324  1.36  1.756334e-01
+   8  QQQ   fed_only                a4  225      6.8 0.324  1.25  2.141160e-01
+   8  QQQ   fed_only               a24  225      8.9 0.267  1.28  2.012339e-01
+   8  QQQ rth_signed                b1   20     11.8 0.800  1.11  2.825401e-01
+   8  QQQ rth_signed                a1   20      6.0 0.550  0.79  4.421008e-01
+   8  QQQ rth_signed                a4   20      8.4 0.500  0.82  4.241420e-01
+   8  QQQ rth_signed               a24   20     51.3 0.750  2.44  2.452589e-02
+   8 CL=F all_signed                b1  418      1.8 0.505  1.02  3.064993e-01
+   8 CL=F all_signed                a1  418     16.1 0.550  1.55  1.218226e-01
+   8 CL=F all_signed                a4  418     17.9 0.505  1.42  1.573658e-01
+   8 CL=F all_signed               a24  418     47.2 0.498  2.58  1.014094e-02
+   8 CL=F  iran_only                b1  185      1.5 0.476  0.51  6.117058e-01
+   8 CL=F  iran_only                a1  185     26.3 0.535  1.55  1.221803e-01
+   8 CL=F  iran_only                a4  185     20.5 0.508  1.05  2.945458e-01
+   8 CL=F  iran_only               a24  185     68.9 0.535  2.49  1.354752e-02
+   8 CL=F   fed_only                b1  225     -1.1 0.227 -0.80  4.263984e-01
+   8 CL=F   fed_only                a1  225     -3.5 0.289 -0.36  7.215562e-01
+   8 CL=F   fed_only                a4  225     -4.4 0.240 -0.35  7.246189e-01
+   8 CL=F   fed_only               a24  225     -3.0 0.222 -0.17  8.676536e-01
+   8 CL=F rth_signed                b1   20     29.3 0.700  1.84  8.143368e-02
+   8 CL=F rth_signed                a1   20      5.9 0.650  0.54  5.933955e-01
+   8 CL=F rth_signed                a4   20     -1.4 0.500 -0.13  9.010749e-01
+   8 CL=F rth_signed               a24   20     44.7 0.700  1.75  9.612809e-02
+   8 ZN=F all_signed                b1  418     -0.1 0.376 -0.41  6.811678e-01
+   8 ZN=F all_signed                a1  418     -0.0 0.455 -0.06  9.499615e-01
+   8 ZN=F all_signed                a4  418      0.8 0.505  1.07  2.866228e-01
+   8 ZN=F all_signed               a24  418      0.4 0.495  0.24  8.125082e-01
+   8 ZN=F  iran_only                b1  185     -0.0 0.432 -0.09  9.311437e-01
+   8 ZN=F  iran_only                a1  185     -0.9 0.416 -0.90  3.710876e-01
+   8 ZN=F  iran_only                a4  185     -0.4 0.465 -0.32  7.481948e-01
+   8 ZN=F  iran_only               a24  185     -2.6 0.459 -1.21  2.271943e-01
+   8 ZN=F   fed_only                b1  225      0.2 0.173  0.55  5.815696e-01
+   8 ZN=F   fed_only                a1  225      0.5 0.227  1.11  2.665479e-01
+   8 ZN=F   fed_only                a4  225      1.3 0.267  1.81  7.161138e-02
+   8 ZN=F   fed_only               a24  225      0.5 0.227  0.26  7.948853e-01
+   8 ZN=F rth_signed                b1   20      0.7 0.550  0.27  7.863558e-01
+   8 ZN=F rth_signed                a1   20      3.8 0.600  2.02  5.779376e-02
+   8 ZN=F rth_signed                a4   20     13.4 0.800  2.49  2.209079e-02
+   8 ZN=F rth_signed               a24   20     16.3 0.650  1.21  2.422183e-01
+   8 ^VIX all_signed                b1  418      7.3 0.505  1.11  2.697347e-01
+   8 ^VIX all_signed                a1  418    -26.6 0.505 -0.92  3.596262e-01
+   8 ^VIX all_signed                a4  418    -22.2 0.517 -0.57  5.706647e-01
+   8 ^VIX all_signed               a24  418    106.4 0.524  2.46  1.441456e-02
+   8 ^VIX  iran_only                b1  185     -0.5 0.465 -0.08  9.389220e-01
+   8 ^VIX  iran_only                a1  185    -80.4 0.470 -1.59  1.142887e-01
+   8 ^VIX  iran_only                a4  185    -67.5 0.481 -1.28  2.017475e-01
+   8 ^VIX  iran_only               a24  185     -8.7 0.454 -0.18  8.607887e-01
+   8 ^VIX   fed_only                b1  225     13.5 0.284  1.89  6.049272e-02
+   8 ^VIX   fed_only                a1  225     58.4 0.311  2.74  6.636156e-03
+   8 ^VIX   fed_only                a4  225     66.0 0.316  1.33  1.862609e-01
+   8 ^VIX   fed_only               a24  225     65.8 0.284  1.24  2.172412e-01
+   8 ^VIX rth_signed                b1   20    158.9 0.650  2.16  4.411438e-02
+   8 ^VIX rth_signed                a1   20     79.7 0.550  0.92  3.690193e-01
+   8 ^VIX rth_signed                a4   20    106.7 0.550  1.20  2.458961e-01
+   8 ^VIX rth_signed               a24   20    446.5 0.750  3.29  3.869630e-03
+   8  SPY    abs_all a1_abs_vs_typical  833     43.3 0.622 14.68  1.395760e-43
+   8 CL=F    abs_all a1_abs_vs_typical  833     80.4 0.437  7.09  2.826910e-12
+  10  SPY all_signed                b1  246      1.3 0.528  1.07  2.841139e-01
+  10  SPY all_signed                a1  246      4.6 0.577  1.07  2.872574e-01
+  10  SPY all_signed                a4  246      4.1 0.585  0.90  3.674468e-01
+  10  SPY all_signed               a24  246      7.8 0.541  1.57  1.184531e-01
+  10  SPY  iran_only                b1  104      0.4 0.529  0.24  8.146390e-01
+  10  SPY  iran_only                a1  104     -1.0 0.490 -0.12  9.024038e-01
+  10  SPY  iran_only                a4  104     -0.8 0.500 -0.09  9.249218e-01
+  10  SPY  iran_only               a24  104      8.2 0.510  0.96  3.416053e-01
+  10  SPY   fed_only                b1  147     -0.8 0.218 -0.89  3.743849e-01
+  10  SPY   fed_only                a1  147      3.2 0.313  1.03  3.065930e-01
+  10  SPY   fed_only                a4  147      3.1 0.306  0.81  4.205479e-01
+  10  SPY   fed_only               a24  147     -0.3 0.245 -0.06  9.497547e-01
+  10  SPY rth_signed                b1   12      2.5 0.667  0.28  7.833051e-01
+  10  SPY rth_signed                a1   12      8.1 0.583  1.36  2.011856e-01
+  10  SPY rth_signed                a4   12      6.4 0.583  0.88  3.956393e-01
+  10  SPY rth_signed               a24   12     16.3 0.667  1.49  1.643953e-01
+  10  QQQ all_signed                b1  246      2.0 0.508  1.20  2.296610e-01
+  10  QQQ all_signed                a1  246      9.1 0.589  1.35  1.794034e-01
+  10  QQQ all_signed                a4  246      8.6 0.585  1.20  2.319332e-01
+  10  QQQ all_signed               a24  246     16.5 0.593  1.96  5.154773e-02
+  10  QQQ  iran_only                b1  104      0.9 0.529  0.34  7.351553e-01
+  10  QQQ  iran_only                a1  104      0.8 0.481  0.07  9.476485e-01
+  10  QQQ  iran_only                a4  104      0.7 0.481  0.06  9.528656e-01
+  10  QQQ  iran_only               a24  104     13.7 0.577  0.98  3.305541e-01
+  10  QQQ   fed_only                b1  147     -0.7 0.197 -0.51  6.100795e-01
+  10  QQQ   fed_only                a1  147      7.3 0.320  1.39  1.654102e-01
+  10  QQQ   fed_only                a4  147      7.3 0.313  1.12  2.641693e-01
+  10  QQQ   fed_only               a24  147      6.3 0.259  0.78  4.385762e-01
+  10  QQQ rth_signed                b1   12      1.6 0.667  0.09  9.269044e-01
+  10  QQQ rth_signed                a1   12     12.0 0.583  1.33  2.101870e-01
+  10  QQQ rth_signed                a4   12     11.7 0.500  0.88  3.957068e-01
+  10  QQQ rth_signed               a24   12     26.8 0.667  1.01  3.352659e-01
+  10 CL=F all_signed                b1  246      2.8 0.520  1.25  2.138167e-01
+  10 CL=F all_signed                a1  246     -3.1 0.537 -0.27  7.856111e-01
+  10 CL=F all_signed                a4  246      1.2 0.484  0.08  9.362212e-01
+  10 CL=F all_signed               a24  246      7.9 0.451  0.35  7.295047e-01
+  10 CL=F  iran_only                b1  104      1.8 0.481  0.47  6.397007e-01
+  10 CL=F  iran_only                a1  104     -6.0 0.471 -0.33  7.389648e-01
+  10 CL=F  iran_only                a4  104    -15.3 0.404 -0.69  4.912187e-01
+  10 CL=F  iran_only               a24  104      4.3 0.433  0.11  9.089465e-01
+  10 CL=F   fed_only                b1  147      0.3 0.211  0.20  8.384297e-01
+  10 CL=F   fed_only                a1  147      0.7 0.293  0.05  9.584203e-01
+  10 CL=F   fed_only                a4  147      4.9 0.259  0.29  7.718303e-01
+  10 CL=F   fed_only               a24  147      3.3 0.211  0.14  8.920674e-01
+  10 CL=F rth_signed                b1   12     52.2 0.833  2.35  3.823219e-02
+  10 CL=F rth_signed                a1   12      6.2 0.667  0.44  6.718281e-01
+  10 CL=F rth_signed                a4   12     -3.3 0.417 -0.27  7.938908e-01
+  10 CL=F rth_signed               a24   12     16.3 0.583  0.46  6.571878e-01
+  10 ZN=F all_signed                b1  246     -0.5 0.350 -1.29  1.999947e-01
+  10 ZN=F all_signed                a1  246      0.6 0.472  0.84  4.027882e-01
+  10 ZN=F all_signed                a4  246      1.2 0.524  1.18  2.373173e-01
+  10 ZN=F all_signed               a24  246      1.8 0.528  0.84  4.013146e-01
+  10 ZN=F  iran_only                b1  104     -0.5 0.394 -0.84  4.053281e-01
+  10 ZN=F  iran_only                a1  104      0.4 0.452  0.36  7.199815e-01
+  10 ZN=F  iran_only                a4  104      0.7 0.500  0.45  6.562500e-01
+  10 ZN=F  iran_only               a24  104     -1.1 0.500 -0.34  7.355462e-01
+  10 ZN=F   fed_only                b1  147      0.1 0.177  0.30  7.673582e-01
+  10 ZN=F   fed_only                a1  147      0.2 0.218  0.31  7.548801e-01
+  10 ZN=F   fed_only                a4  147      0.7 0.259  0.72  4.710916e-01
+  10 ZN=F   fed_only               a24  147     -1.4 0.204 -0.61  5.408466e-01
+  10 ZN=F rth_signed                b1   12     -4.0 0.417 -1.18  2.621013e-01
+  10 ZN=F rth_signed                a1   12      2.4 0.500  0.89  3.912361e-01
+  10 ZN=F rth_signed                a4   12     10.5 0.667  1.29  2.218461e-01
+  10 ZN=F rth_signed               a24   12     11.5 0.667  0.61  5.543627e-01
+  10 ^VIX all_signed                b1  246      6.3 0.516  0.69  4.934250e-01
+  10 ^VIX all_signed                a1  246    -27.1 0.488 -0.69  4.890091e-01
+  10 ^VIX all_signed                a4  246    -44.1 0.504 -0.80  4.235233e-01
+  10 ^VIX all_signed               a24  246    136.6 0.524  2.30  2.208888e-02
+  10 ^VIX  iran_only                b1  104     -1.1 0.462 -0.14  8.917687e-01
+  10 ^VIX  iran_only                a1  104   -114.3 0.413 -1.62  1.075818e-01
+  10 ^VIX  iran_only                a4  104   -121.2 0.423 -1.62  1.075585e-01
+  10 ^VIX  iran_only               a24  104    -23.9 0.413 -0.34  7.316810e-01
+  10 ^VIX   fed_only                b1  147     16.1 0.279  2.00  4.717417e-02
+  10 ^VIX   fed_only                a1  147     77.7 0.299  2.93  3.880045e-03
+  10 ^VIX   fed_only                a4  147     79.6 0.320  1.25  2.125316e-01
+  10 ^VIX   fed_only               a24  147     60.6 0.279  0.95  3.461677e-01
+  10 ^VIX rth_signed                b1   12    185.8 0.583  1.61  1.365214e-01
+  10 ^VIX rth_signed                a1   12    133.4 0.500  0.99  3.438613e-01
+  10 ^VIX rth_signed                a4   12    123.8 0.583  1.02  3.290848e-01
+  10 ^VIX rth_signed               a24   12    303.2 0.667  2.29  4.279000e-02
+  10  SPY    abs_all a1_abs_vs_typical  512     42.5 0.621 11.00  2.144707e-25
+  10 CL=F    abs_all a1_abs_vs_typical  512     69.0 0.400  4.67  3.803349e-06/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3023: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3024: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3023: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3024: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3023: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/opt/homebrew/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3024: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+/Users/trevorthompson/code/TrevJT/agents/options-100/research/weekend/pm_shocks.py:147: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  j = pd.concat([dpr.rename("dp"), r.rename("r")], axis=1).dropna()
+
+BH survivors (q=0.10) out of 246 :  pts  sym     subset           horizon    n  mean_bp     t
+   5  SPY  iran_only               a24  448     10.2  2.84
+   5  SPY rth_signed               a24   36     23.6  2.98
+   5  QQQ all_signed               a24  892     13.7  3.29
+   5  QQQ  iran_only               a24  448     20.7  3.44
+   5  QQQ rth_signed               a24   36     46.3  2.73
+   5 CL=F all_signed                a1  892     22.1  2.79
+   5 CL=F all_signed               a24  892     44.3  3.31
+   5 CL=F  iran_only                a1  448     38.3  3.16
+   5 CL=F  iran_only               a24  448     82.1  4.15
+   5 ZN=F  iran_only                a1  448     -1.8 -2.97
+   5 ZN=F  iran_only               a24  448     -3.9 -2.70
+   5 ^VIX   fed_only                a1  468     35.7  2.55
+   5 ^VIX rth_signed               a24   36    398.2  3.19
+   5  SPY    abs_all a1_abs_vs_typical 1770     46.5 23.88
+   5 CL=F    abs_all a1_abs_vs_typical 1770     88.0 11.43
+   8  SPY rth_signed               a24   20     27.6  2.81
+   8  QQQ all_signed                a1  418     14.6  2.89
+   8  QQQ all_signed                a4  418     14.9  2.78
+   8  QQQ all_signed               a24  418     19.8  3.14
+   8  QQQ  iran_only               a24  185     24.8  2.60
+   8 CL=F all_signed               a24  418     47.2  2.58
+   8 ^VIX   fed_only                a1  225     58.4  2.74
+   8 ^VIX rth_signed               a24   20    446.5  3.29
+   8  SPY    abs_all a1_abs_vs_typical  833     43.3 14.68
+   8 CL=F    abs_all a1_abs_vs_typical  833     80.4  7.09
+  10 ^VIX   fed_only                a1  147     77.7  2.93
+  10  SPY    abs_all a1_abs_vs_typical  512     42.5 11.00
+  10 CL=F    abs_all a1_abs_vs_typical  512     69.0  4.67
+
+== 1h lead-lag cross-correlation (prob change vs SPY/CL 1h return), lag>0 means asset leads odds
+   topic                                                  q  sym    n  lag-2  lag-1   lag0   lag1   lag2
+midterms           2026 Balance of Power: R Senate, R House  SPY 2197 -0.013  0.007 -0.004 -0.002 -0.017
+midterms           2026 Balance of Power: R Senate, R House CL=F 7064  0.005  0.006  0.000  0.003 -0.006
+midterms           2026 Balance of Power: R Senate, R House ZN=F 7013 -0.014  0.001 -0.008  0.007  0.006
+midterms Will the Democratic Party control the House after   SPY 2197    NaN    NaN    NaN    NaN    NaN
+midterms Will the Democratic Party control the House after  CL=F 7064 -0.008 -0.001 -0.000  0.002  0.005
+midterms Will the Democratic Party control the House after  ZN=F 7013  0.010  0.003  0.009  0.002  0.001
+midterms Will the Republican Party control the House after   SPY 2197    NaN    NaN    NaN    NaN    NaN
+midterms Will the Republican Party control the House after  CL=F 7064  0.008  0.002 -0.004 -0.002 -0.001
+midterms Will the Republican Party control the House after  ZN=F 7013 -0.004  0.001 -0.017 -0.004 -0.006
+     fed              Will no Fed rate cuts happen in 2026?  SPY 1847  0.033 -0.009 -0.004 -0.000 -0.000
+     fed              Will no Fed rate cuts happen in 2026? CL=F 5933 -0.007  0.020  0.001 -0.007 -0.005
+     fed              Will no Fed rate cuts happen in 2026? ZN=F 5924  0.002 -0.014  0.003  0.008 -0.003
+    iran             Will the U.S. invade Iran before 2027?  SPY 1658  0.004 -0.021  0.012  0.001 -0.014
+    iran             Will the U.S. invade Iran before 2027? CL=F 5322  0.014  0.027  0.007 -0.012  0.003
+    iran             Will the U.S. invade Iran before 2027? ZN=F 5337 -0.005 -0.004 -0.011  0.004  0.005
+    iran Will Mojtaba Khamenei be head of state in Iran end  SPY 1120 -0.004  0.022 -0.028  0.019  0.009
+    iran Will Mojtaba Khamenei be head of state in Iran end CL=F 3605  0.019 -0.027 -0.007  0.007  0.004
+    iran Will Mojtaba Khamenei be head of state in Iran end ZN=F 3617 -0.012  0.002  0.003 -0.010 -0.008
+    iran               Will Reza Pahlavi lead Iran in 2026?  SPY 1120  0.009  0.034 -0.029  0.007  0.026
+    iran               Will Reza Pahlavi lead Iran in 2026? CL=F 3605 -0.015 -0.009 -0.004 -0.008 -0.027
+    iran               Will Reza Pahlavi lead Iran in 2026? ZN=F 3617 -0.011  0.006 -0.009  0.015  0.010
+    iran Strait of Hormuz traffic returns to normal by Dece  SPY  777  0.030  0.021 -0.026 -0.003  0.030
+    iran Strait of Hormuz traffic returns to normal by Dece CL=F 2482 -0.002 -0.013 -0.007  0.006  0.025
+    iran Strait of Hormuz traffic returns to normal by Dece ZN=F 2482 -0.009  0.014  0.001 -0.004 -0.012
+     fed Will the Fed increase interest rates by 25 bps aft  SPY  595  0.009 -0.056  0.008 -0.075  0.015
+     fed Will the Fed increase interest rates by 25 bps aft CL=F 1891 -0.003  0.002  0.004  0.001 -0.003
+     fed Will the Fed increase interest rates by 25 bps aft ZN=F 1893  0.009 -0.001 -0.007  0.006 -0.055
+     fed Will there be no change in Fed interest rates afte  SPY  588 -0.005  0.074 -0.001  0.066 -0.014
+     fed Will there be no change in Fed interest rates afte CL=F 1868  0.004  0.005  0.016  0.010  0.002
+     fed Will there be no change in Fed interest rates afte ZN=F 1870 -0.015  0.012 -0.008 -0.011  0.059
+     fed Will the Fed decrease interest rates by 25 bps aft  SPY  588 -0.014 -0.002 -0.034  0.022  0.004
+     fed Will the Fed decrease interest rates by 25 bps aft CL=F 1868 -0.006  0.010 -0.006 -0.018  0.013
+     fed Will the Fed decrease interest rates by 25 bps aft ZN=F 1870  0.004 -0.015 -0.003 -0.008 -0.009
+     fed Will the Fed decrease interest rates by 50+ bps af  SPY  588    NaN    NaN    NaN    NaN    NaN
+     fed Will the Fed decrease interest rates by 50+ bps af CL=F 1868 -0.015  0.007 -0.001 -0.001  0.012
+     fed Will the Fed decrease interest rates by 50+ bps af ZN=F 1870  0.000 -0.010  0.007  0.013 -0.010

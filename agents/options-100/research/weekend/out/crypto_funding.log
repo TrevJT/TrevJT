@@ -1,0 +1,105 @@
+== F1 funding -> BTC forward returns (contrarian spread = low-funding quintile minus high)
+                 test feat  h period    n  spread_bp     t        p    rho  top_mean_bp  bot_mean_bp
+F1_funding_contrarian   f1  1     IS 1517       30.5  1.00 0.319054 -0.027         29.5         60.0
+F1_funding_contrarian   f1  1    OOS 1203      -43.7 -2.11 0.035007  0.063         36.3         -7.3
+F1_funding_contrarian   f1  3     IS 1517       59.2  0.70 0.482659 -0.036         62.3        121.5
+F1_funding_contrarian   f1  3    OOS 1201      -95.4 -1.92 0.055849  0.066         77.4        -18.0
+F1_funding_contrarian   f1  7     IS 1517      178.1  1.23 0.217538 -0.078         95.4        273.5
+F1_funding_contrarian   f1  7    OOS 1197     -104.0 -1.21 0.225266  0.065        104.4          0.4
+F1_funding_contrarian   f7  1     IS 1517       51.6  1.72 0.085340 -0.032          5.1         56.7
+F1_funding_contrarian   f7  1    OOS 1203      -23.3 -1.12 0.264346  0.039         19.9         -3.4
+F1_funding_contrarian   f7  3     IS 1517      126.8  1.40 0.160543 -0.041          8.6        135.4
+F1_funding_contrarian   f7  3    OOS 1201      -63.7 -1.26 0.207454  0.043         41.9        -21.9
+F1_funding_contrarian   f7  7     IS 1517      256.3  1.52 0.129217 -0.053         17.9        274.2
+F1_funding_contrarian   f7  7    OOS 1197     -115.2 -1.20 0.229660  0.036         79.6        -35.6
+F1_funding_contrarian  f1z  1     IS 1434       -7.9 -0.24 0.809914 -0.015          6.1         -1.8
+F1_funding_contrarian  f1z  1    OOS 1203      -48.4 -2.35 0.019149  0.079         36.7        -11.7
+F1_funding_contrarian  f1z  3     IS 1434      -32.3 -0.38 0.700936 -0.008         47.7         15.4
+F1_funding_contrarian  f1z  3    OOS 1201      -99.9 -2.13 0.033393  0.085         74.2        -25.7
+F1_funding_contrarian  f1z  7     IS 1434       49.5  0.31 0.756059 -0.040         25.0         74.5
+F1_funding_contrarian  f1z  7    OOS 1197     -127.7 -1.67 0.095956  0.087        124.8         -2.9
+F1_funding_contrarian  f7z  1     IS 1428        1.4  0.04 0.967878 -0.011          5.4          6.8
+F1_funding_contrarian  f7z  1    OOS 1203      -28.1 -1.47 0.142071  0.040         21.9         -6.2
+F1_funding_contrarian  f7z  3     IS 1428       -4.5 -0.05 0.960881 -0.026         21.5         17.0
+F1_funding_contrarian  f7z  3    OOS 1201      -67.8 -1.41 0.159356  0.033         25.5        -42.3
+F1_funding_contrarian  f7z  7     IS 1428        4.4  0.03 0.978136 -0.044         75.3         79.7
+F1_funding_contrarian  f7z  7    OOS 1197     -122.7 -1.49 0.137923  0.038         53.1        -69.6
+
+== F2/F3 BTC overnight/weekend -> crypto equities
+name                     test period   n    rho  tercile_spread_bp     t        p
+COIN     F3_btc_overnight->oc     IS 445 -0.010              -26.4 -0.50 0.620124
+COIN   F3_btc_overnight->935c     IS 445  0.004               -7.8 -0.15 0.879622
+COIN        gap->935c (fade?)     IS 445 -0.042               -0.0 -0.00 0.999479
+COIN          resid_gap->935c     IS 445 -0.051              -31.4 -0.57 0.569233
+COIN F2_weekend_btc->Mon_935c     IS  80  0.133              167.2  1.49 0.139239
+COIN      Mon_abs_oc_vs_other     IS  80    NaN                9.3  0.30      NaN
+COIN     F3_btc_overnight->oc    OOS 436  0.042               27.9  0.59 0.557217
+COIN   F3_btc_overnight->935c    OOS 436  0.034               22.3  0.50 0.613919
+COIN        gap->935c (fade?)    OOS 436  0.024               26.1  0.57 0.570331
+COIN          resid_gap->935c    OOS 436 -0.022              -14.6 -0.32 0.750379
+COIN F2_weekend_btc->Mon_935c    OOS  85  0.001              -36.9 -0.34 0.734598
+COIN      Mon_abs_oc_vs_other    OOS  85    NaN              -12.2 -0.38      NaN
+MSTR     F3_btc_overnight->oc     IS 388  0.089              104.8  1.80 0.072922
+MSTR   F3_btc_overnight->935c     IS 388  0.079               84.8  1.50 0.133767
+MSTR        gap->935c (fade?)     IS 388  0.066               79.5  1.35 0.178165
+MSTR          resid_gap->935c     IS 388 -0.068             -113.8 -1.86 0.064263
+MSTR F2_weekend_btc->Mon_935c     IS  67  0.119              285.8  1.96 0.054319
+MSTR      Mon_abs_oc_vs_other     IS  67    NaN               46.8  1.11      NaN
+MSTR     F3_btc_overnight->oc    OOS 436  0.053                3.9  0.06 0.950465
+MSTR   F3_btc_overnight->935c    OOS 436  0.049              -14.1 -0.24 0.810243
+MSTR        gap->935c (fade?)    OOS 436  0.015              -11.5 -0.20 0.842990
+MSTR          resid_gap->935c    OOS 436 -0.098             -114.9 -2.00 0.046554
+MSTR F2_weekend_btc->Mon_935c    OOS  85 -0.068             -148.6 -1.05 0.296190
+MSTR      Mon_abs_oc_vs_other    OOS  85    NaN               39.4  0.93      NaN
+MARA     F3_btc_overnight->oc     IS 445 -0.036              -11.1 -0.15 0.884173
+MARA   F3_btc_overnight->935c     IS 445 -0.031                8.7  0.12 0.905391
+MARA        gap->935c (fade?)     IS 445 -0.013               29.2  0.40 0.689687
+MARA          resid_gap->935c     IS 445  0.039               48.8  0.67 0.504491
+MARA F2_weekend_btc->Mon_935c     IS  81 -0.034              -13.2 -0.08 0.939063
+MARA      Mon_abs_oc_vs_other     IS  81    NaN               78.8  1.63      NaN
+MARA     F3_btc_overnight->oc    OOS 437  0.078               77.9  1.35 0.177045
+MARA   F3_btc_overnight->935c    OOS 437  0.065               47.6  0.87 0.387327
+MARA        gap->935c (fade?)    OOS 437 -0.033              -36.2 -0.63 0.531284
+MARA          resid_gap->935c    OOS 437 -0.173             -207.4 -3.61 0.000346
+MARA F2_weekend_btc->Mon_935c    OOS  85  0.059              111.5  0.70 0.486827
+MARA      Mon_abs_oc_vs_other    OOS  85    NaN               98.6  2.47      NaN
+RIOT     F3_btc_overnight->oc     IS 449  0.001               32.1  0.52 0.606215
+RIOT   F3_btc_overnight->935c     IS 449 -0.005               26.2  0.44 0.663050
+RIOT        gap->935c (fade?)     IS 449 -0.051              -38.1 -0.63 0.528917
+RIOT          resid_gap->935c     IS 449 -0.059             -110.3 -1.91 0.056680
+RIOT F2_weekend_btc->Mon_935c     IS  81  0.050               50.8  0.38 0.703135
+RIOT      Mon_abs_oc_vs_other     IS  81    NaN               26.0  0.65      NaN
+RIOT     F3_btc_overnight->oc    OOS 437  0.036                8.3  0.14 0.884907
+RIOT   F3_btc_overnight->935c    OOS 437  0.004              -42.1 -0.77 0.441581
+RIOT        gap->935c (fade?)    OOS 437 -0.039              -46.6 -0.86 0.389630
+RIOT          resid_gap->935c    OOS 437 -0.101             -136.3 -2.48 0.013331
+RIOT F2_weekend_btc->Mon_935c    OOS  85  0.028              -16.1 -0.12 0.903008
+RIOT      Mon_abs_oc_vs_other    OOS  85    NaN               26.3  0.79      NaN
+HOOD     F3_btc_overnight->oc     IS 449  0.002                8.7  0.23 0.819728
+HOOD   F3_btc_overnight->935c     IS 449  0.026               12.4  0.35 0.724122
+HOOD        gap->935c (fade?)     IS 449  0.007                4.1  0.12 0.907442
+HOOD          resid_gap->935c     IS 449 -0.029               -8.4 -0.24 0.811886
+HOOD F2_weekend_btc->Mon_935c     IS  81 -0.061              -16.9 -0.30 0.768676
+HOOD      Mon_abs_oc_vs_other     IS  81    NaN              -50.6 -3.05      NaN
+HOOD     F3_btc_overnight->oc    OOS 437 -0.019              -52.9 -1.17 0.243789
+HOOD   F3_btc_overnight->935c    OOS 437  0.025               -9.1 -0.22 0.827819
+HOOD        gap->935c (fade?)    OOS 437  0.010              -28.5 -0.64 0.521537
+HOOD          resid_gap->935c    OOS 437 -0.064              -60.0 -1.40 0.162191
+HOOD F2_weekend_btc->Mon_935c    OOS  85  0.025               -4.7 -0.04 0.967326
+HOOD      Mon_abs_oc_vs_other    OOS  85    NaN               48.5  1.40      NaN
+CLSK     F3_btc_overnight->oc     IS 446  0.018               40.9  0.55 0.580455
+CLSK   F3_btc_overnight->935c     IS 446 -0.015               -5.3 -0.08 0.939787
+CLSK        gap->935c (fade?)     IS 446 -0.080              -92.6 -1.34 0.180460
+CLSK          resid_gap->935c     IS 446 -0.088             -134.1 -1.95 0.051580
+CLSK F2_weekend_btc->Mon_935c     IS  81 -0.082             -128.2 -0.74 0.458789
+CLSK      Mon_abs_oc_vs_other     IS  81    NaN               71.7  1.45      NaN
+CLSK     F3_btc_overnight->oc    OOS 434  0.026               29.5  0.47 0.641363
+CLSK   F3_btc_overnight->935c    OOS 434  0.007              -13.0 -0.21 0.830012
+CLSK        gap->935c (fade?)    OOS 434 -0.057              -41.7 -0.68 0.499890
+CLSK          resid_gap->935c    OOS 434 -0.093              -72.0 -1.17 0.240771
+CLSK F2_weekend_btc->Mon_935c    OOS  84  0.022               -3.9 -0.02 0.980115
+CLSK      Mon_abs_oc_vs_other    OOS  84    NaN               39.8  0.94      NaN
+
+== BTC weekend (Fri16->Mon16) vs Mon->Tue/Wed continuation: {'n': 214, 'rho_fwd1': np.float64(-0.161), 'rho_fwd2': np.float64(-0.188), 'mean_abs_wkend_bp': np.float64(242.9), 'mean_abs_wkday_bp': np.float64(175.4)}
+IBIT {'price': 46.15, 'one_week_atm_call_est': np.float64(256.0), 'note': 'cost per contract at IV 50%; min capital at 35% sizing = ~3x that'}
+tests: 84 BH survivors: 1 | OOS tests: 42 OOS BH survivors: 1

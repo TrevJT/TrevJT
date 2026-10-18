@@ -77,6 +77,16 @@ def main():
     P = pd.read_pickle(D / "prices.pkl")
     caps = pd.read_pickle(D / "caps.pkl") if (D / "caps.pkl").exists() else {}
     meta = pd.read_pickle(D / "edgar_meta.pkl")
+    # point-in-time shares outstanding (EDGAR dei cover facts, by filing date) -> cap at the event = shares x entry close
+    import pickle as _pk
+    facts = _pk.load(open(ROOT / "data" / "research_fund_facts.pkl", "rb"))
+    shares = {}
+    for t, cik in meta.cik.items():
+        f = facts.get(int(cik))
+        if f and f.get("cover"):
+            cv = sorted((fd, sh) for fd, e, sh in f["cover"] if sh and sh > 0)
+            if cv:
+                shares[t] = (np.array([np.datetime64(fd) for fd, _ in cv]), np.array([sh for _, sh in cv]))
     gics = {}
     for n in ("sp500.csv", "sp400.csv"):
         p = SCRATCH / n
@@ -203,7 +213,14 @@ def main():
             run60 = C0 / c.iloc[i - 61] - 1 if i >= 61 else np.nan
             dist_hi = C0 / hi252.iloc[i - 1] - 1 if hi252.iloc[i - 1] == hi252.iloc[i - 1] else np.nan
             vratio = v.iloc[i - 5:i].mean() / v.iloc[i - 65:i - 5].mean() if i >= 65 and v.iloc[i - 65:i - 5].mean() > 0 else np.nan
-            cap_ev = cap_now * C0 / ctoday if cap_now else np.nan
+            cap_ev = np.nan
+            if t in shares:
+                fds, shs = shares[t]
+                j = np.searchsorted(fds, np.datetime64(r.R)) - 1
+                if j >= 0:
+                    cap_ev = float(shs[j]) * C0
+            if cap_ev != cap_ev and cap_now:
+                cap_ev = cap_now * C0 / ctoday
             out.append(dict(t=t, R=r.R, src=r.src, etiming=r.etiming, ytiming=r.ytiming, eps_est=r.eps_est, eps_act=r.eps_act,
                             surprise=r.surprise, C0=C0, co=co, cc=cc, c2=c2, oc=oc, rng=rng, pead5=pead5, pead20=pead20,
                             prevday=prev, rv20=rv20.iloc[i - 1], rv60=rv60.iloc[i - 1], adv20=adv20.iloc[i - 1],

@@ -65,6 +65,7 @@ def strike_grid(px):
 
 def main():
     PNL = pd.read_pickle(D / "panel.pkl")
+    raw = pd.read_pickle(D / "raw_close.pkl") if (D / "raw_close.pkl").exists() else {}   # UNADJUSTED closes (strikes live in raw prices)
     sc = pickle.load(open(SC, "rb"))
     chains = sc.get("chains", {})
     liq = {}
@@ -95,17 +96,21 @@ def main():
     rows = []
     for tr, names in sel.items():
         for t in names:
-            g = PNL[(PNL.t == t) & (PNL.R >= ("2019-01-01" if tr in ("mega",) else "2023-01-01"))]
+            g = PNL[(PNL.t == t) & (PNL.R >= ("2022-01-01" if tr in ("mega",) else "2024-07-01"))]
             for r in g.itertuples():
-                rows.append(dict(t=t, tier=tr, R=r.R.strftime("%Y-%m-%d"), entry=(r.R - pd.tseries.offsets.BDay(1)).strftime("%Y-%m-%d"),
-                                 C0=round(float(r.C0), 2), expiries=expiries(r.R), strikes=strike_grid(float(r.C0)),
+                entry = (r.R - pd.tseries.offsets.BDay(1))
+                c0 = float(raw[t].asof(entry)) if t in raw and raw[t].index[0] <= entry else float(r.C0)
+                if not (c0 > 0):
+                    continue
+                rows.append(dict(t=t, tier=tr, R=r.R.strftime("%Y-%m-%d"), entry=entry.strftime("%Y-%m-%d"),
+                                 C0=round(c0, 2), C0adj=round(float(r.C0), 2), expiries=(expiries(r.R) if tr == "mega" else expiries(r.R)[::-1]), strikes=strike_grid(c0),
                                  window=[(r.R - pd.Timedelta(days=8)).strftime("%Y-%m-%d"), (r.R + pd.Timedelta(days=2)).strftime("%Y-%m-%d")]))
     S = pd.DataFrame(rows).sort_values(["R", "t"]).reset_index(drop=True)
     S["eid"] = S.t + "_" + S.R
     S.to_pickle(D / "rh_spec_all.pkl")
     print("events", len(S), S.tier.value_counts().to_dict())
     # split into agent files: chunk by R so each agent's batches share windows
-    k = 8
+    k = 6
     parts = np.array_split(S.index.values, k)
     for i, idx in enumerate(parts):
         part = S.loc[idx]
@@ -116,7 +121,7 @@ def main():
             cur.append(dict(eid=r.eid, t=r.t, R=r.R, entry=r.entry, C0=r.C0, expiries=r.expiries, strikes=r.strikes, window=r.window))
         if cur:
             batches.append(cur)
-        json.dump(batches, open(D / f"rh_spec_{i}.json", "w"))
+        json.dump(batches, open(D / f"rh2_spec_{i}.json", "w"))
         print("agent", i, "events", len(part), "batches", len(batches))
 
 

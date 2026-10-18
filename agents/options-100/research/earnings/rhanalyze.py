@@ -66,10 +66,12 @@ def load():
                 rec.update(entry_used=e, S0=leg(e, 1) + leg(e, 3), c0=leg(e, 1), p0=leg(e, 3))
                 # 5-session earlier straddle (IV ramp)
                 early = [d for d in dates if d <= e][0]
-                rec.update(early=early, S_early=leg(early, 1) + leg(early, 3))
+                ce_, pe_ = leg(early, 1), leg(early, 3)
+                rec.update(early=early, S_early=(ce_ + pe_) if (ce_ > 0.011 and pe_ > 0.011 and early < e) else np.nan)
             if Rd in b:
-                rec.update(S_open=leg(Rd, 0) + leg(Rd, 2), S_close=leg(Rd, 1) + leg(Rd, 3), c_close=leg(Rd, 1), p_close=leg(Rd, 3),
-                           c_open=leg(Rd, 0), p_open=leg(Rd, 2))
+                co_, po_ = leg(Rd, 0), leg(Rd, 2)
+                rec.update(S_open=(co_ + po_) if (co_ > 0.011 and po_ > 0.011) else np.nan,   # 0.01 open = no trade yet (trade-based bars)
+                           S_close=leg(Rd, 1) + leg(Rd, 3), c_close=leg(Rd, 1), p_close=leg(Rd, 3), c_open=co_, p_open=po_)
             nxt = [d for d in dates if d > Rd]
             if nxt:
                 rec.update(S_next=leg(nxt[0], 1) + leg(nxt[0], 3))
@@ -113,7 +115,7 @@ def main():
     V["ret_open_net"] = V.ret_open - V.cost
     V["ret_next_net"] = V.ret_next - V.cost
     V["impl_vs_hist8"] = V.implied / V.hist8
-    V["iv_ramp"] = V.S0 / V.S_early - 1
+    V["iv_ramp"] = (V.S0 / V.S_early - 1).clip(-0.8, 3)
     V["moneyness"] = V.strike / V.C0 - 1
     V = V[V.moneyness.abs() < 0.06]
     V["oos"] = V.R >= "2025-01-01"
@@ -148,7 +150,7 @@ def main():
                              impl_hist8=r["impl_vs_hist8"]["mean"], ivramp=r["iv_ramp"]["mean"],
                              ret_open=r["ret_open"]["mean"], ret_close=r["ret_close"]["mean"], ret_next=r["ret_next"]["mean"],
                              net_open=r["ret_open_net"]["mean"], t_open=r["ret_open_net"]["t"], net_close=r["ret_close_net"]["mean"], t_close=r["ret_close_net"]["t"], pwin=r["p_win_close_net"]))
-        print(pd.DataFrame(rows).set_index("seg").round(3))
+        print(pd.DataFrame(rows).set_index("seg").round(3).to_string())
     show("all", {"all": out["all"]}); show("by tier", out["by_tier"]); show("by year", out["by_year"]); show("by industry", out["by_ind"]); show("by dte", out["by_dte"]); show("by timing", out["by_timing"])
 
     # features -> straddle net return (close exit), tercile spreads with cluster t; IS = <2025, OOS = 2025+
@@ -181,6 +183,13 @@ def main():
     out["calib"] = {tr: dict(impl_over_hist8_med=float(V[V.tier == tr].impl_vs_hist8.median()), impl_over_rv20daily=float((V[V.tier == tr].implied / (V[V.tier == tr].rv20 / np.sqrt(252))).median()))
                     for tr in tiers if (V.tier == tr).sum() >= 20}
     print("\ncalibration implied/hist8 by tier:", out["calib"])
+    X1 = V.ratio_mkt.clip(0, 4); y1 = V.ret_close.clip(-1, 4)
+    b, a = np.polyfit(X1, y1, 1)
+    out["calib_ret"] = dict(a=float(a), b=float(b), n=int(len(V)), r=float(np.corrcoef(X1, y1)[0, 1]),
+                            by_tier={tr: dict(a=float(np.polyfit(V[V.tier == tr].ratio_mkt.clip(0, 4), V[V.tier == tr].ret_close.clip(-1, 4), 1)[1]),
+                                              b=float(np.polyfit(V[V.tier == tr].ratio_mkt.clip(0, 4), V[V.tier == tr].ret_close.clip(-1, 4), 1)[0]))
+                                     for tr in tiers if (V.tier == tr).sum() >= 20})
+    print("straddle close-exit return = a + b x (realized/event-implied):", out["calib_ret"])
     # walk-forward model inside the sample: predict ret_close_net > 0 from features, train on R < season, test on season (2024Q1+)
     try:
         from sklearn.ensemble import HistGradientBoostingRegressor
@@ -190,7 +199,7 @@ def main():
         pred = pd.Series(np.nan, index=V.index)
         for s in seasons:
             trm = V.season < s; tem = V.season == s
-            if trm.sum() < 300 or tem.sum() < 20:
+            if trm.sum() < 120 or tem.sum() < 10:
                 continue
             m = HistGradientBoostingRegressor(max_depth=2, learning_rate=0.05, max_iter=100, random_state=0).fit(X[trm], y[trm])
             pred[tem] = m.predict(X[tem])

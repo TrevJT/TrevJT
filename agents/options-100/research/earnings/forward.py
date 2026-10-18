@@ -90,6 +90,8 @@ def chains():
     out = pd.read_pickle(f) if f.exists() else {}
     cand = W[(W.tier.isin(["mega", "large", "mid", "small"])) & (W.n_prior >= 8)]
     cand = cand.sort_values("hist8", ascending=False) if "movers" in sys.argv else cand.sort_values("pred_ratio", ascending=False)
+    if "mega" in sys.argv:
+        cand = W[(W.tier == "mega") | W.t.isin(["TSLA", "NFLX", "META", "MSFT", "GOOGL", "AMZN", "AAPL", "AVGO", "AMD", "COST", "LLY", "ORCL", "CRM", "NVDA", "JPM", "IBM", "INTC", "NOW", "SNAP", "COIN", "HOOD", "PLTR", "SOFI", "RBLX", "UBER", "SHOP", "SPOT", "ARM", "SMCI", "MSTR"])]
     todo = [t for t in cand.t if t not in out][: int(sys.argv[2]) if len(sys.argv) > 2 else 120]
     print("chains todo", len(todo))
     for i, t in enumerate(todo):
@@ -149,10 +151,19 @@ def report():
                              cost_mid=mid * 100, cost_ask=ask * 100, fits_170=ask * 100 <= 170, rv20=row.rv20, run20=row.run20, dist_hi=row.dist_hi))
     T = pd.DataFrame(rows)
     T = T[T.spread_pct < 0.5]
+    # EV at the close exit: straddle return = a + b x (realized/event-implied) from the Robinhood sample (rhanalyze.py), model's
+    # realized/implied forecast = pred_ratio x hist8 / implied_ev, minus the live round-trip spread (half the quoted spread each way)
+    cr = calib.get("calib_ret", {"a": -0.6, "b": 0.6, "by_tier": {}})
+    def ev(r):
+        c = cr.get("by_tier", {}).get(r.tier, cr)
+        return c["a"] + c["b"] * min(r.exp_over_impl, 3) - r.spread_pct / 2
+    T["ev_close"] = T.apply(ev, axis=1)
+    T["tier_hist_ret"] = T.tier.map({k: v["ret_close"]["mean"] for k, v in calib.get("by_tier", {}).items()})
     T.to_pickle(D / "fwd_table.pkl")
     pd.set_option("display.width", 250)
     first = T.sort_values(["t", "expiry"]).groupby("t").first().reset_index()
-    print(first.sort_values("exp_over_impl", ascending=False).head(40)[["t", "rdate", "timing", "tier", "ind", "expiry", "spot", "straddle_mid", "spread_pct", "implied", "implied_ev", "hist8", "pred_ratio", "exp_move", "exp_over_impl", "oi", "cost_ask", "fits_170"]].round(3).to_string())
+    print(first.sort_values("exp_over_impl", ascending=False).head(40)[["t", "rdate", "timing", "tier", "ind", "expiry", "spot", "straddle_mid", "spread_pct", "implied", "implied_ev", "hist8", "pred_ratio", "exp_move", "exp_over_impl", "ev_close", "oi", "cost_ask", "fits_170"]].round(3).to_string())
+    print("\nfits $170 (ask):"); print(first[first.fits_170].sort_values("exp_over_impl", ascending=False).head(25)[["t", "rdate", "timing", "tier", "ind", "expiry", "spot", "straddle_mid", "spread_pct", "implied_ev", "hist8", "exp_move", "exp_over_impl", "ev_close", "oi", "cost_ask"]].round(3).to_string())
 
 
 if __name__ == "__main__":

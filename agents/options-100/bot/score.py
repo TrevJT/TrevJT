@@ -85,7 +85,7 @@ def score_symbol(sym, now_hm, day=None):
     base = sum(comp.values()); comp["rvol"] = ((1 if base > 0 else -1) if base else 0) if rvol >= 1.3 else 0
     S = sum(comp.values()); decision = "CALL" if S >= 4 else ("PUT" if S <= -4 else "NONE")
     if window is None: decision = "NONE (outside entry window)"
-    stale = (hh * 60 + mm) - (last["t"].hour * 60 + last["t"].minute)
+    stale = (hh * 60 + mm) - (last["t"].hour * 60 + last["t"].minute) - 5  # minutes since the last COMPLETED bar closed (ingest skips the open bar)
     return {"symbol": sym, "last_bar": last["t"].strftime("%H:%M"), "bar_age_min": stale, "now": now_hm, "window": window,
             "close": round(close, 2), "vwap": round(vwap, 2), "vwap_slope_15m": round(slope, 3), "atr5": round(atr, 3),
             "range_hi": hi, "range_lo": lo, "rvol": round(rvol, 2), "components": comp, "score": S, "decision": decision}

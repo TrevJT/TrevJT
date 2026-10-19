@@ -7,12 +7,12 @@ NOW="${2:-$(TZ=America/New_York date '+%Y-%m-%d %H:%M')}"; SINCE="${1:-$(TZ=Amer
 HOUR="$(date -j -f '%Y-%m-%d %H:%M' -v-60M "$NOW" '+%Y-%m-%d %H:%M')"
 Q="(m.question like '%Iran%' or m.question like '%Hormuz%')"  # not WTI price-target markets: they just track crude (circular)
 echo "60-min moves:"
-sqlite3 "$DB" "with t as (select p.market_id, m.question q, p.ts, p.prob from pm_prices p join pm_markets m on m.market_id=p.market_id where length(p.ts)=16 and p.ts>='$SINCE' and p.ts<='$NOW' and $Q),
+sqlite3 -cmd ".timeout 8000" "$DB" "with t as (select p.market_id, m.question q, p.ts, p.prob from pm_prices p join pm_markets m on m.market_id=p.market_id where length(p.ts)=16 and p.ts>='$SINCE' and p.ts<='$NOW' and $Q),
 f as (select market_id, max(ts) b, (select max(ts) from t t2 where t2.market_id=t.market_id and t2.ts<='$HOUR') a from t group by market_id)
 select round(100*((select prob from t where t.market_id=f.market_id and ts=f.b)-(select prob from t where t.market_id=f.market_id and ts=f.a)),1) d,
  substr((select q from t where t.market_id=f.market_id limit 1),1,60) from f where a is not null order by abs(d) desc limit 3" | awk -F'|' '{print} ($1>=5||$1<=-5){s=1} END{print (s?"SHOCK":"no_shock")}'
 echo "day moves:"
-sqlite3 "$DB" "with t as (select p.market_id, m.question q, p.ts, p.prob from pm_prices p join pm_markets m on m.market_id=p.market_id where length(p.ts)=16 and p.ts>='$SINCE' and p.ts<='$NOW' and $Q),
+sqlite3 -cmd ".timeout 8000" "$DB" "with t as (select p.market_id, m.question q, p.ts, p.prob from pm_prices p join pm_markets m on m.market_id=p.market_id where length(p.ts)=16 and p.ts>='$SINCE' and p.ts<='$NOW' and $Q),
 f as (select market_id, min(ts) a, max(ts) b from t group by market_id)
 select round(100*((select prob from t where t.market_id=f.market_id and ts=f.b)-(select prob from t where t.market_id=f.market_id and ts=f.a)),1) d,
  substr((select q from t where t.market_id=f.market_id limit 1),1,60) from f order by abs(d) desc limit 3" | awk -F'|' '{print} ($1>=8||$1<=-8){s=1} END{print (s?"DAY_SHOCK":"no_day_shock")}'
